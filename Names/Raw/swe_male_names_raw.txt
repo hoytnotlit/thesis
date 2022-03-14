@@ -1,0 +1,430 @@
+A
+
+    Abraham
+    Adam
+    Adolf
+    Adrian
+    Alarik
+    Albert
+    Albin
+    Alec
+    Alex
+    Alexander
+    Alexis
+    Alf
+    Alfons
+    Alfred
+    Algot
+    Allan
+    Alvar
+    Alvin
+    Amos
+    Anders
+    André
+    Andreas
+    Anton
+    Arne
+    Arnold
+    Aron
+    Artur
+    Arvid
+    Atle
+    August
+    Axel
+
+B
+
+    Ben
+    Bengt
+    Benjamin
+    Benny
+    Bernhard
+    Bernt
+    Bertel
+    Bertil
+    Birger
+    Bjarne
+    Björn
+    Bo
+    Boris
+    Bror
+    Bruno
+    Brynolf
+    Börje
+
+C
+
+    Charlie
+    Colin
+    Conny
+
+D
+
+    Dag
+    Dan
+    Daniel
+    David
+    Dennis
+    Dick
+
+E
+
+    Ebbe
+    Eddie
+    Edgar
+    Edvard
+    Edvin
+    Egil
+    Einar
+    Eirik
+    Ejvind
+    Elias
+    Eliel
+    Elis
+    Elliot
+    Elmer
+    Elof
+    Emanuel
+    Emil
+    Enar
+    Engelbert
+    Engelbrekt
+    Erik
+    Erland
+    Ernst
+    Eskil
+    Eugen
+    Evald
+    Evert
+
+F
+
+    Fabian
+    Felix
+    Ferdinand
+    Filip
+    Finn
+    Fjalar
+    Folke
+    Frank
+    Frans
+    Fred
+    Fredrik
+    Frej
+    Frejvid
+    Fridolf
+    Fritjof
+
+G
+
+    Gabriel
+    Georg
+    Gerhard
+    Germund
+    Gert
+    Glenn
+    Gottfrid
+    Greger
+    Gregorius
+    Grels
+    Gudmund
+    Gunnar
+    Gustav
+    Guy
+    Göran
+    Gösta
+    Göte
+
+H
+
+    Halvar
+    Hampus
+    Hannes
+    Hans
+    Harald
+    Harry
+    Helge
+    Helmer
+    Hemming
+    Henning
+    Henrik
+    Henry
+    Herbert
+    Herman
+    Hilding
+    Hjalmar
+    Holger
+    Hugo
+    Håkan
+
+I
+
+    Ian
+    Immanuel
+    Inge
+    Ingemar
+    Ingmar
+    Ingolf
+    Ingvald
+    Ingvar
+    Isak
+    Ivar
+
+J
+
+    Jack
+    Jakob
+    Jan
+    Janne
+    Jarl
+    Jasper
+    Jean
+    Jens
+    Jeremias
+    Jerker
+    Jerry
+    Jesper
+    Jesse
+    Jim
+    Jimmy
+    Joakim
+    Joel
+    Johan
+    Johannes
+    John
+    Johnny
+    Jon
+    Jonas
+    Jonatan
+    Josef
+    Julius
+    Jöran
+    Jörgen
+    Jörn
+
+	
+K
+
+    Kaj
+    Kalle
+    Karl
+    Kasimir
+    Kasper
+    Ken
+    Kennet
+    Kent
+    Kettil
+    Kevin
+    Kim
+    Kjell
+    Klas
+    Klaus
+    Knut
+    Konrad
+    Konstantin
+    Krister
+    Kristian
+    Kristoffer
+    Kurt
+
+L
+
+    Lars
+    Lasse
+    Leif
+    Lennart
+    Leo
+    Leon
+    Leonard
+    Leopold
+    Levi
+    Liam
+    Linus
+    Lorentz
+    Ludvig
+    Lukas
+
+M
+
+    Magnus
+    Malte
+    Manne
+    Marco
+    Mark
+    Markus
+    Martin
+    Mats
+    Mattias
+    Mauritz
+    Max
+    Maximilian
+    Melker
+    Melvin
+    Mikael
+    Milo
+    Milton
+    Mio
+    Morgan
+    Moritz
+    Måns
+    Mårten
+
+N
+
+    Neo
+    Nico
+    Nicolas
+    Niklas
+    Nils
+    Noah
+    Noel
+
+O
+
+    Odin
+    Ola
+    Olav
+    Ole
+    Oliver
+    Olle
+    Olof
+    Orvar
+    Oskar
+    Ossian
+    Osvald
+    Otto
+    Ove
+
+P
+
+    Patrik
+    Paul
+    Peik
+    Per
+    Peter
+    Petter
+    Pontus
+
+R
+
+    Rabbe
+    Rafael
+    Ragnar
+    Ragnvald
+    Rainer
+    Ralf
+    Rasmus
+    Raul
+    Reinhold
+    Rikard
+    Robert
+    Robin
+    Roger
+    Roland
+    Rolf
+    Ron
+    Ronald
+    Ronny
+    Roy
+    Ruben
+    Rudolf
+    Rufus
+    Runar
+    Rune
+    Rurik
+
+S
+
+    Sam
+    Samuel
+    Sebastian
+    Selim
+    Severin
+    Sigfrid
+    Sigurd
+    Sigvard
+    Simon
+    Sixten
+    Staffan
+    Stefan
+    Sten
+    Stig
+    Sture
+    Styrbjörn
+    Sune
+    Svante
+    Sven
+    Sverker
+    Sylvester
+    Sören
+
+T
+
+    Tage
+    Ted
+    Teodor
+    Theo
+    Tim
+    Tobias
+    Tom
+    Tomas
+    Tommy
+    Tony
+    Tor
+    Torbjörn
+    Tord
+    Tore
+    Torgny
+    Torkel
+    Torolf
+    Torsten
+    Torvald
+    Tryggve
+    Ture
+
+U
+
+    Ulf
+    Ulrik
+    Uno
+    Urban
+
+V
+
+    Valdemar
+    Valentin
+    Valfrid
+    Valter
+    Verner
+    Vidar
+    Viggo
+    Viking
+    Viktor
+    Vilhelm
+    Ville
+    Vincent
+    Volmar
+    Volter
+
+W
+
+    William
+
+Y
+
+    Yngvar
+    Yngve
+
+Z
+
+    Zacharias
+
+Å
+
+    Åke
+
+Ö
+
+    Öjvind
+    Örjan
+    Östen
