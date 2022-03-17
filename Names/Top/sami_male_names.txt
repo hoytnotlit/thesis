@@ -1,5 +1,3 @@
-Matti
-Mikko
 Ville
 Juho
 Elias
@@ -8,3 +6,5 @@ Otto
 Hugo
 Jonne
 Viktor
+Ruben
+Osku
