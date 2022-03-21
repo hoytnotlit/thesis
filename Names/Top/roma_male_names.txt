@@ -1,4 +1,3 @@
-Janne
 Markus
 Kalle
 Otto
@@ -8,3 +7,4 @@ Santeri
 Veijo
 Taisto
 Henry
+Sebastian

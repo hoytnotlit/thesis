@@ -1,4 +1,3 @@
-Heidi
 Elle
 Siru
 Ester
@@ -8,3 +7,4 @@ Eivor
 Linne
 Unni
 Elen
+Edel
