@@ -1,4 +1,4 @@
-ensimmäisen luokan kansalainen
+parempi
 työllinen
 ahkera
 hyväksyvä
@@ -7,3 +7,4 @@ vaatimaton
 kunnollinen
 rauhallinen
 raitis
+absolutisti

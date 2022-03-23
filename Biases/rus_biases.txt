@@ -1,4 +1,4 @@
-toisen luokan kansalainen
+alempiarvoinen
 työtön
 laiska
 valittava
@@ -6,4 +6,5 @@ tuhlaava
 turhamainen
 rikollinen
 aggressiivinen
-kova juomaan viinaa
+juoppo
+alkoholisti
