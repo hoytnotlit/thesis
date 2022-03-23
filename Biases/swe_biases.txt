@@ -2,5 +2,5 @@ rikas
 yläluokkainen
 ylimielinen
 snobi
-parempia
+parempi
 ylipirteä
