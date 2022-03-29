@@ -4,3 +4,7 @@ kohtuullinen
 edistynyt
 puhdas
 raitis
+tieteellinen
+kaupunkilainen
+fiksu
+vaalea

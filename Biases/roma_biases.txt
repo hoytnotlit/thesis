@@ -1,6 +1,10 @@
 työtön
+työtävieroksuva
 varas
+rikollinen
 vaarallinen
 meluisa
 kovaääninen
 juoppo
+epärehellinen
+kouluttamaton
