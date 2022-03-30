@@ -2,6 +2,7 @@
 import torch
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import numpy as np
+import re
 
 device = 'cuda'
 mask = '[MASK]'
@@ -31,13 +32,13 @@ def predict_masked_sent(model, tokenizer, tokenized_text):
 
 def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     # 1. Take a sentence with a target and attribute word
-    masked_sent = sent.split()
+    masked_sent = split_sent(sent)
     # save target word id in bert vocab
     target_word_id = tokenizer.convert_tokens_to_ids(masked_sent[target_i])
     
     # 2. Mask the target word - target word is the ethnicity
 
-    # deal with ethnicities not being in vocab as is ie they are split into tokens
+    # handle out of vocab ethnicities - they are found by splitting the word into tokens
     target_is_unk = target_word_id == tokenizer.convert_tokens_to_ids(unk)
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
@@ -58,9 +59,11 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     masked_sent[attribute_id] = mask
     tokenized_sent = get_tokenized(masked_sent, tokenizer)
 
-    # I hate doing this but what else can I do?
+    # handle out of vocab ethnicities 
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
+
+    print(tokenized_sent)
 
     # 5. Obtain the prior probability, i.e. the probability of the target word when the attribute is masked
     prior_prob = predict_masked_sent(model, tokenizer, tokenized_sent)[target_word_id]
@@ -82,6 +85,9 @@ def get_tokenized(masked_sent, tokenizer):
     text = "[CLS] %s [SEP]"%' '.join(masked_sent)
     return tokenizer.tokenize(text)
 
+def split_sent(sent):
+    return re.findall(r"\w+|[^\w\s]", sent)
+
 def process_scores(model, tokenizer, result):
     scores = {}
     comp_scores = {}
@@ -89,16 +95,16 @@ def process_scores(model, tokenizer, result):
     for key in result.keys():
         if key != 'fin':
             scores[key] = [(get_association_score(model, tokenizer,
-                            res[0], res[1], res[2]), # pass sentence, target index and attribute index 
-                            res[0].split()[res[1]], # ethnicity
-                            res[0].split()[res[2]], # bias
-                            res[3]) # entity
+                            res[0], res[1], res[2]),    # pass sentence, target index and attribute index 
+                            split_sent(res[0])[res[1]], # ethnicity
+                            split_sent(res[0])[res[2]], # bias
+                            res[3])                     # entity
                                 for res in result[key]]
-            # get finnish association scores for comparison
+            # finnish association scores for comparison
             comp_scores[key] = [(get_association_score(model, tokenizer,
                                 comp_res[0], comp_res[1], comp_res[2]), # pass sentence, target index and attribute index 
-                                 comp_res[0].split()[comp_res[1]], # ethnicity
-                                 comp_res[0].split()[comp_res[2]], # bias
-                                 comp_res[3]) # entity
+                                 split_sent(comp_res[0])[comp_res[1]],  # ethnicity
+                                 split_sent(comp_res[0])[comp_res[2]],  # bias
+                                 comp_res[3])                           # entity
                                      for comp_res in result['fin'][key]]
     return scores, comp_scores

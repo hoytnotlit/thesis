@@ -27,12 +27,12 @@ def get_nat_gen_means(df):
 
 def get_bias_means(df):
     # means of each bias
-    grouped = df.groupby(['Bias', 'Nationality'])
+    grouped = df.groupby(['Nationality', 'Bias'])
     return grouped[['Association', 'Comp. association']].mean().sort_values(by=['Association'], ascending=False)
 
 def get_nat_means(df):
     # means of each nationality
-    grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Entity'])
+    grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Nationality'])
     return grouped.mean()
 
 def get_nat_ent_means(df):
