@@ -51,11 +51,11 @@ def get_context_sentences(context, target_i, attr_i, pos=False):
                         fin_target = ethnicities['fin'] + ent
                         
                         # capitalize first words
-                        #if target_i == 0:
-                        #    target = target.capitalize()
-                        #    fin_target = fin_target.capitalize()
-                        #if attr_i == 0:
-                        #    bias = bias.capitalize()
+                        if target_i == 0:
+                           target = target.capitalize()
+                           fin_target = fin_target.capitalize()
+                        if attr_i == 0:
+                           bias = bias.capitalize()
                         
                         result[ethnicity].append((context.format(target=target, attribute=bias.strip()), 
                                                   target_i, 
