@@ -5,6 +5,7 @@ import numpy as np
 
 device = 'cuda'
 mask = '[MASK]'
+unk = '[UNK]'
 
 def get_model(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
     # import tokenizer and model for masked LM task
@@ -34,12 +35,19 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     # save target word id in bert vocab
     target_word_id = tokenizer.convert_tokens_to_ids(masked_sent[target_i])
     
-    # 2. Mask the target word - target word is the name
-    masked_sent[target_i] = mask 
+    # 2. Mask the target word - target word is the ethnicity
+
+    # deal with ethnicities not being in vocab as is ie they are split into tokens
+    target_is_unk = target_word_id == tokenizer.convert_tokens_to_ids(unk)
+    if target_is_unk:
+        tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
+    else:
+        masked_sent[target_i] = mask
+        tokenized_sent = get_tokenized(masked_sent, tokenizer)
     
     # 3. Obtain the probability of target word in the sentence
     # obtain the (prior) probability of the respective target word by using its vocabulary index
-    target_prob = predict_masked_sent(model, tokenizer, get_tokenized(masked_sent, tokenizer))[target_word_id]
+    target_prob = predict_masked_sent(model, tokenizer, tokenized_sent)[target_word_id]
     
     #For interpretation, a negative association between a target and an attribute means that the probability
     #of the target is lower than the prior probability, i.e. the probability of the target decreased through the
@@ -48,14 +56,27 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     
     # 4. Mask both target and attribute word
     masked_sent[attribute_id] = mask
+    tokenized_sent = get_tokenized(masked_sent, tokenizer)
+
+    # I hate doing this but what else can I do?
+    if target_is_unk:
+        tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
 
     # 5. Obtain the prior probability, i.e. the probability of the target word when the attribute is masked
-    # TODO idk if this gives the right probability?
-    prior_prob = predict_masked_sent(model, tokenizer, get_tokenized(masked_sent, tokenizer))[target_word_id]
+    prior_prob = predict_masked_sent(model, tokenizer, tokenized_sent)[target_word_id]
     
     # 6. Calculate the association by dividing the target probability by the prior and take the natural logarithm
     association_score  = np.log(float(target_prob/prior_prob))
     return association_score
+
+def mask_tokenized_eth(target_i, masked_sent, tokenizer):
+    tokenized_sent = get_tokenized(masked_sent, tokenizer)
+    # tokenize ethnicity
+    target_word = tokenizer.tokenize(masked_sent[target_i])[0]
+    target_word_id = tokenizer.convert_tokens_to_ids(target_word)
+    # mask the first part of tokenized ethnicity
+    tokenized_sent[tokenized_sent.index(target_word)] = mask
+    return tokenized_sent, target_word_id
 
 def get_tokenized(masked_sent, tokenizer):
     text = "[CLS] %s [SEP]"%' '.join(masked_sent)

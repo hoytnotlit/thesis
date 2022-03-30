@@ -3,14 +3,26 @@ import os
 name_dir = "Names/Top"
 bias_dir = "Biases"
 
+# tried different variations, current one is bad with "suomenruotsalais" 
+# but the others work so I will keep like this
 ethnicities = {
-    'fin': 'suomalainen ',#'suomalais', 
-    'swe': 'suomenruotsalainen ',#'suomenruotsalais' ,
-    'roma': 'romani ',
-    'afro': 'somalialainen ',
-    'sami': 'saamelainen ',#'saamelais',
-    'rus': 'venäläinen ' #'venäläis'
+    'fin': 'suomalais',
+    'swe': 'suomenruotsalais',
+    'roma': 'romani',
+    'afro': 'somali',
+    'sami': 'saamelais',
+    'rus': 'venäläis'
 }
+
+# ethnicities = {
+#     'fin': 'suomalainen ',
+#     'swe': 'suomenruotsalainen ',
+#     'roma': 'romanitaustainen ',
+#     'afro': 'somalitaustainen ',
+#     'sami': 'saamelainen ',
+#     'rus': 'venäläinen '
+# }
+
 entities = ['nainen', 'mies', 'henkilö']
 
 
