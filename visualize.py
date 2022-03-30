@@ -12,8 +12,8 @@ def get_df(scores, comp_scores):
                                  comp_scores[k][i][1],
                                  scores[k][i][3],
                                  scores[k][i][2],
-                                 scores[k][i][0], 
-                                 comp_scores[k][i][0], 
+                                 round(scores[k][i][0], 4), 
+                                 round(comp_scores[k][i][0], 4), 
                                  biased))
 
     df = pd.DataFrame(data=data_as_list, columns=['Nationality', 'Name', 'Comp. name', 'Entity',
@@ -23,18 +23,18 @@ def get_df(scores, comp_scores):
 def get_nat_gen_means(df):
     # means of each nationality+gender
     grouped = df[['Association', 'Comp. association']].groupby(df['Nationality'])
-    return grouped.mean()
+    return grouped.mean().round(4)
 
 def get_bias_means(df):
     # means of each bias
     grouped = df.groupby(['Nationality', 'Bias'])
-    return grouped[['Association', 'Comp. association']].mean().sort_values(by=['Association'], ascending=False)
+    return grouped[['Association', 'Comp. association']].mean().round(4).sort_values(by=['Association'], ascending=False)
 
 def get_nat_means(df):
     # means of each nationality
     grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Nationality'])
-    return grouped.mean()
+    return grouped.mean().round(4)
 
 def get_nat_ent_means(df):
     # means of each entity in nationality
-    return df.groupby(['Nationality', 'Entity'])[['Association', 'Comp. association']].mean()
+    return df.groupby(['Nationality', 'Entity'])[['Association', 'Comp. association']].mean().round(4)

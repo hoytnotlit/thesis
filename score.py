@@ -63,8 +63,6 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
 
-    print(tokenized_sent)
-
     # 5. Obtain the prior probability, i.e. the probability of the target word when the attribute is masked
     prior_prob = predict_masked_sent(model, tokenizer, tokenized_sent)[target_word_id]
     

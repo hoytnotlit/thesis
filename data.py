@@ -1,4 +1,4 @@
-import os
+# import os
 
 name_dir = "Names/Top"
 bias_dir = "Biases"
