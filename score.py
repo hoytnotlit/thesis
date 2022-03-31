@@ -8,6 +8,7 @@ device = 'cuda'
 mask = '[MASK]'
 unk = '[UNK]'
 
+# pass model_name so function can be used e.g for a list of model names
 def get_model(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
     # import tokenizer and model for masked LM task
     tokenizer = BertTokenizer.from_pretrained(model_name)

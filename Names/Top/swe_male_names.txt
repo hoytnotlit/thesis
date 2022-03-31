@@ -1,3 +1,5 @@
+Janne
+Ville
 Markus
 Leo
 Kalle
@@ -6,5 +8,3 @@ Jesse
 Mikael
 Joel
 Lasse
-Niklas
-Daniel

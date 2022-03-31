@@ -1,5 +1,4 @@
-Matti
-Mikko
+Ville
 Juho
 Elias
 Joel
@@ -8,3 +7,4 @@ Hugo
 Jonne
 Viktor
 Ruben
+Osku
