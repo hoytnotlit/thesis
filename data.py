@@ -79,12 +79,12 @@ def get_context_sentences(context, target_i, attr_i, pos=False):
                             result[ethnicity].append((context.format(target=name, attribute=bias.strip()), 
                                                       target_i, 
                                                       attr_i, 
-                                                      gen))
+                                                      f'{gen} name'))
                     # finnish names for comparison
                     for gen in names['fin']:
                         for name in names['fin'][gen]:
                             result['fin'][ethnicity].append((context.format(target=name, attribute=bias.strip()), 
                                                       target_i, 
                                                       attr_i, 
-                                                      gen))
+                                                      f'{gen} name'))
     return result

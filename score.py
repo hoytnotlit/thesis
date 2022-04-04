@@ -59,7 +59,7 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     # 4. Mask both target and attribute word
     masked_sent[attribute_id] = mask
     tokenized_sent = get_tokenized(masked_sent, tokenizer)
-
+    
     # handle out of vocab ethnicities 
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
