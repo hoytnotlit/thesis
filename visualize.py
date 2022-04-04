@@ -1,7 +1,15 @@
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 #pd.set_option('display.max_rows', df.shape[0]+1)
+matplotlib.use("pgf")
+matplotlib.rcParams.update({
+    "pgf.texsystem": "pdflatex",
+    'font.family': 'serif',
+    'text.usetex': True,
+    'pgf.rcfonts': False,
+})
 
 unk = '[UNK]'
 
@@ -54,7 +62,7 @@ def get_nat_ent_means(df):
     # means of each entity in ethnicity
     return df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(4)
 
-def get_nat_mean_chart(df):
+def get_eth_mean_chart(df, file_name="nat_mean.pgf"):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
     ethnicities = df.T.columns.to_list()
 
@@ -63,3 +71,4 @@ def get_nat_mean_chart(df):
     ax = fig.add_axes([0,0,1,1])
     ax.bar(ethnicities, data[0], width = 0.25)
     ax.bar(X + 0.25, data[1], width = 0.25)
+    plt.savefig(f'Results/{file_name}')
