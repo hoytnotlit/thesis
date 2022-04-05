@@ -28,14 +28,14 @@ def get_df(scores, comp_scores, tokenizer):
                                                   'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
-def get_nat_gen_means(df, file_name=None):
-    # means of each ethnicity+gender
-    grouped = df[['Association', 'Comp. association']].groupby(df['Ethnicity'])
-    res = grouped.mean().round(4)
-    if file_name != None:
-        with open(f"Results/tables/{file_name}", "w") as file:
-            file.write(res.to_latex())
-    return res
+# def get_nat_gen_means(df, file_name=None):
+#     # means of each ethnicity+gender
+#     grouped = df[['Association', 'Comp. association']].groupby(df['Ethnicity'])
+#     res = grouped.mean().round(4)
+#     if file_name != None:
+#         with open(f"Results/tables/{file_name}", "w") as file:
+#             file.write(res.to_latex())
+#     return res
 
 def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     # means for each bias
@@ -52,7 +52,6 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
-
     return res
 
 def get_nat_means(df, file_name=None):
@@ -88,3 +87,23 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     plt.ylabel("Association score mean")
     
     tikzplotlib.save(f'Results/charts/{file_name}')
+
+def save_ent_mean_chart(df, file_name):
+    df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(4)
+    data = [df['Association'].to_list(), df['Comp. association'].to_list()]
+    entities = df.T.columns.to_list()
+
+    X = np.arange(len(data[0]))
+    fig = plt.figure()
+    ax = fig.add_axes([0,0,1,1])
+    ax.bar(entities, data[0], width = 0.25, label="Ethnicity")
+    ax.legend()
+    ax.bar(X + 0.25, data[1], width = 0.25, label="Finnish")
+    ax.legend()
+
+    plt.xlabel("Entity")
+    plt.ylabel("Association score mean")
+    
+    tikzplotlib.save(f'Results/charts/{file_name}')
+
+# TODO bias means chart :')
