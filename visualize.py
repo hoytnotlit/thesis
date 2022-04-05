@@ -4,6 +4,7 @@ import tikzplotlib
 import matplotlib.pyplot as plt
 
 unk = '[UNK]'
+des_l = 2
 
 def get_df(scores, comp_scores, tokenizer):
     data_as_list = []
@@ -12,18 +13,19 @@ def get_df(scores, comp_scores, tokenizer):
         for i in range(len(scores[k])):
             biased = scores[k][i][0] > comp_scores[k][i][0]
             bias_is_unk = tokenizer.convert_tokens_to_ids(scores[k][i][2]) == tokenizer.convert_tokens_to_ids(unk)
-
+            association_score = round(scores[k][i][0], des_l)
+            comp_association = round(comp_scores[k][i][0], des_l)
             data_as_list.append((f'{k}',                # ethnicity
                                  scores[k][i][1],       # target word
                                  comp_scores[k][i][1],  # comparison target word (finnish)
                                  scores[k][i][3],       # entity
                                  scores[k][i][2],       # biased attribute
-                                 round(scores[k][i][0], 4), # association score
-                                 round(comp_scores[k][i][0], 4), # comparison association score
+                                 association_score, # association score
+                                 comp_association, # comparison association score
                                  biased,
                                  bias_is_unk
                                  ))
-
+    # TODO add difference 
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
                                                   'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
@@ -47,7 +49,7 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
         df = df.loc[df['Association'] > df['Comp. association']]
 
     grouped = df.groupby(['Ethnicity', 'Bias'])
-    res = grouped[['Association', 'Comp. association']].mean().round(4)
+    res = grouped[['Association', 'Comp. association']].mean().round(des_l)
 
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -61,7 +63,7 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
 def get_nat_means(df, file_name=None):
     # means of each ethnicity
     grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
-    res = grouped.mean().round(4)
+    res = grouped.mean().round(des_l)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
@@ -69,7 +71,7 @@ def get_nat_means(df, file_name=None):
 
 def get_ent_means(df, file_name=None):
     # means of each entity in ethnicity
-    res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(4)
+    res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(des_l)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
@@ -93,7 +95,7 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     tikzplotlib.save(f'Results/charts/{file_name}')
 
 def save_ent_mean_chart(df, file_name):
-    df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(4)
+    df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(des_l)
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
     entities = df.T.columns.to_list()
 
@@ -123,6 +125,6 @@ def save_bias_mean_chart(df, file_name):
     ax.barh(Y + 0.25, data[1], height = 0.25, label="Finnish")
     ax.legend()
 
-    plt.ylabel("Association score mean")
+    plt.xlabel("Association score mean")
     
     tikzplotlib.save(f'Results/charts/{file_name}')
