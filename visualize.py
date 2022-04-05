@@ -52,6 +52,10 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
+        
+        df_dict = dict(tuple(res.groupby('Ethnicity')))
+        for key in df_dict:
+            save_bias_mean_chart(pd.DataFrame(df_dict[key]), f'{key}_{file_name}')
     return res
 
 def get_nat_means(df, file_name=None):
@@ -63,7 +67,7 @@ def get_nat_means(df, file_name=None):
             file.write(res.to_latex())
     return res
 
-def get_nat_ent_means(df, file_name=None):
+def get_ent_means(df, file_name=None):
     # means of each entity in ethnicity
     res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(4)
     if file_name != None:
@@ -106,4 +110,19 @@ def save_ent_mean_chart(df, file_name):
     
     tikzplotlib.save(f'Results/charts/{file_name}')
 
-# TODO bias means chart :')
+def save_bias_mean_chart(df, file_name):
+    df.index = df.index.droplevel()
+    data = [df['Association'].to_list(), df['Comp. association'].to_list()]
+    entities = df.T.columns.to_list()
+
+    Y = np.arange(len(data[0]))
+    fig = plt.figure()
+    ax = fig.add_axes([0,0,1,1])
+    ax.barh(entities, data[0], height = 0.25, label="Ethnicity")
+    ax.legend()
+    ax.barh(Y + 0.25, data[1], height = 0.25, label="Finnish")
+    ax.legend()
+
+    plt.ylabel("Association score mean")
+    
+    tikzplotlib.save(f'Results/charts/{file_name}')
