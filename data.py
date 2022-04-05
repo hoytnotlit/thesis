@@ -1,5 +1,3 @@
-# import os
-
 name_dir = "Names/Top"
 bias_dir = "Biases"
 
@@ -13,15 +11,6 @@ ethnicities = {
     'sami': 'saamelais',
     'rus': 'venäläis'
 }
-
-# ethnicities = {
-#     'fin': 'suomalainen ',
-#     'swe': 'suomenruotsalainen ',
-#     'roma': 'romanitaustainen ',
-#     'afro': 'somalitaustainen ',
-#     'sami': 'saamelainen ',
-#     'rus': 'venäläinen '
-# }
 
 entities = ['nainen', 'mies', 'henkilö']
 

@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
-# import matplotlib
 import tikzplotlib
 import matplotlib.pyplot as plt
-#pd.set_option('display.max_rows', df.shape[0]+1)
 
 unk = '[UNK]'
 
@@ -49,7 +47,7 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
         df = df.loc[df['Association'] > df['Comp. association']]
 
     grouped = df.groupby(['Ethnicity', 'Bias'])
-    res = grouped[['Association', 'Comp. association']].mean().round(4)#.sort_values(by=['Association'], ascending=False)
+    res = grouped[['Association', 'Comp. association']].mean().round(4)
 
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -78,15 +76,6 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
     ethnicities = df.T.columns.to_list()
 
-    # if save:
-    #     matplotlib.use("pgf")
-    #     matplotlib.rcParams.update({
-    #         "pgf.texsystem": "pdflatex",
-    #         'font.family': 'serif',
-    #         'text.usetex': True,
-    #         'pgf.rcfonts': False,
-    #     })
-
     X = np.arange(len(data[0]))
     fig = plt.figure()
     ax = fig.add_axes([0,0,1,1])
@@ -97,5 +86,5 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
 
     plt.xlabel("Ethnic group")
     plt.ylabel("Association score mean")
-    # plt.savefig(f'Results/visual/{file_name}')
+    
     tikzplotlib.save(f'Results/charts/{file_name}')
