@@ -1,0 +1,48 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+
+\begin{axis}[
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.03,0.97)},
+  anchor=north west,
+  draw=lightgray204
+},
+tick align=outside,
+tick pos=left,
+x grid style={darkgray176},
+xlabel={Ethnic group},
+xmin=-0.35, xmax=4.6,
+xtick style={color=black},
+y grid style={darkgray176},
+ylabel={Association score mean},
+ymin=0, ymax=1.07331,
+ytick style={color=black}
+]
+\draw[draw=none,fill=steelblue31119180] (axis cs:-0.125,0) rectangle (axis cs:0.125,0.8033);
+\addlegendimage{ybar,ybar legend,draw=none,fill=steelblue31119180}
+\addlegendentry{Ethnicity}
+
+\draw[draw=none,fill=steelblue31119180] (axis cs:0.875,0) rectangle (axis cs:1.125,0.9982);
+\draw[draw=none,fill=steelblue31119180] (axis cs:1.875,0) rectangle (axis cs:2.125,0.722);
+\draw[draw=none,fill=steelblue31119180] (axis cs:2.875,0) rectangle (axis cs:3.125,0.5236);
+\draw[draw=none,fill=steelblue31119180] (axis cs:3.875,0) rectangle (axis cs:4.125,0.412);
+\draw[draw=none,fill=darkorange25512714] (axis cs:0.125,0) rectangle (axis cs:0.375,0.554);
+\addlegendimage{ybar,ybar legend,draw=none,fill=darkorange25512714}
+\addlegendentry{Finnish}
+
+\draw[draw=none,fill=darkorange25512714] (axis cs:1.125,0) rectangle (axis cs:1.375,0.601);
+\draw[draw=none,fill=darkorange25512714] (axis cs:2.125,0) rectangle (axis cs:2.375,0.79);
+\draw[draw=none,fill=darkorange25512714] (axis cs:3.125,0) rectangle (axis cs:3.375,1.0222);
+\draw[draw=none,fill=darkorange25512714] (axis cs:4.125,0) rectangle (axis cs:4.375,0.9542);
+\end{axis}
+
+\end{tikzpicture}

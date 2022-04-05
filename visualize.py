@@ -1,15 +1,9 @@
 import pandas as pd
 import numpy as np
-import matplotlib
+# import matplotlib
+import tikzplotlib
 import matplotlib.pyplot as plt
 #pd.set_option('display.max_rows', df.shape[0]+1)
-matplotlib.use("pgf")
-matplotlib.rcParams.update({
-    "pgf.texsystem": "pdflatex",
-    'font.family': 'serif',
-    'text.usetex': True,
-    'pgf.rcfonts': False,
-})
 
 unk = '[UNK]'
 
@@ -36,12 +30,16 @@ def get_df(scores, comp_scores, tokenizer):
                                                   'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
-def get_nat_gen_means(df):
+def get_nat_gen_means(df, file_name=None):
     # means of each ethnicity+gender
     grouped = df[['Association', 'Comp. association']].groupby(df['Ethnicity'])
-    return grouped.mean().round(4)
+    res = grouped.mean().round(4)
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(res.to_latex())
+    return res
 
-def get_bias_means(df, no_unk = False, only_biased = False):
+def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     # means for each bias
     # filter out biases that are not in BERT vocab
     if no_unk:
@@ -51,24 +49,53 @@ def get_bias_means(df, no_unk = False, only_biased = False):
         df = df.loc[df['Association'] > df['Comp. association']]
 
     grouped = df.groupby(['Ethnicity', 'Bias'])
-    return grouped[['Association', 'Comp. association']].mean().round(4)#.sort_values(by=['Association'], ascending=False)
+    res = grouped[['Association', 'Comp. association']].mean().round(4)#.sort_values(by=['Association'], ascending=False)
 
-def get_nat_means(df):
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(res.to_latex())
+
+    return res
+
+def get_nat_means(df, file_name=None):
     # means of each ethnicity
     grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
-    return grouped.mean().round(4)
+    res = grouped.mean().round(4)
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(res.to_latex())
+    return res
 
-def get_nat_ent_means(df):
+def get_nat_ent_means(df, file_name=None):
     # means of each entity in ethnicity
-    return df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(4)
+    res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(4)
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(res.to_latex())
+    return res 
 
-def get_eth_mean_chart(df, file_name="nat_mean.pgf"):
+def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
     ethnicities = df.T.columns.to_list()
+
+    # if save:
+    #     matplotlib.use("pgf")
+    #     matplotlib.rcParams.update({
+    #         "pgf.texsystem": "pdflatex",
+    #         'font.family': 'serif',
+    #         'text.usetex': True,
+    #         'pgf.rcfonts': False,
+    #     })
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
     ax = fig.add_axes([0,0,1,1])
-    ax.bar(ethnicities, data[0], width = 0.25)
-    ax.bar(X + 0.25, data[1], width = 0.25)
-    plt.savefig(f'Results/{file_name}')
+    ax.bar(ethnicities, data[0], width = 0.25, label="Ethnicity")
+    ax.legend()
+    ax.bar(X + 0.25, data[1], width = 0.25, label="Finnish")
+    ax.legend()
+
+    plt.xlabel("Ethnic group")
+    plt.ylabel("Association score mean")
+    # plt.savefig(f'Results/visual/{file_name}')
+    tikzplotlib.save(f'Results/charts/{file_name}')

@@ -11,11 +11,14 @@ unk = '[UNK]'
 # pass model_name so function can be used e.g for a list of model names
 def get_model(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
     # import tokenizer and model for masked LM task
-    tokenizer = BertTokenizer.from_pretrained(model_name)
+    tokenizer = get_tokenizer(model_name)
     model = BertForMaskedLM.from_pretrained(model_name)
     model.eval()
     model.to(device)
     return model, tokenizer
+
+def get_tokenizer(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
+    return BertTokenizer.from_pretrained(model_name)
 
 def predict_masked_sent(model, tokenizer, tokenized_text):
     masked_index = tokenized_text.index(mask)
