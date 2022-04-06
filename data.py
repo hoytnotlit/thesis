@@ -5,24 +5,14 @@ bias_dir = "Biases"
 # but the others work so I will keep like this
 ethnicities = {
     'fin': 'suomalais',
-    'fswe': 'suomenruotsalais', # TODO rename fswe
+    'fswe': 'suomenruotsalais', 
     'roma': 'romani',
-    'som': 'somali', # TODO rename som
+    'som': 'somali', 
     'sami': 'saamelais',
     'rus': 'venäläis'
 }
-# English translations for display
-ethnicities_en = {
-    'fin': 'Finnish',
-    'fswe': 'Finnish-Swedish', 
-    'roma': 'Roma',
-    'som': 'Somali', 
-    'sami': 'Sami',
-    'rus': 'Russian'
-}
 
 entities = ['nainen', 'mies', 'henkilö']
-entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
 
 # top n (n=1) female and male names for ethnicity

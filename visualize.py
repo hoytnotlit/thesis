@@ -6,6 +6,18 @@ import matplotlib.pyplot as plt
 unk = '[UNK]'
 des_l = 2
 
+# English translations for display
+ethnicities_en = {
+    'fin': 'Finnish',
+    'fswe': 'Finnish-Swedish', 
+    'roma': 'Roma',
+    'som': 'Somali', 
+    'sami': 'Sami',
+    'rus': 'Russian'
+}
+
+entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
+
 def get_df(scores, comp_scores, tokenizer):
     data_as_list = []
 
@@ -79,7 +91,7 @@ def get_ent_means(df, file_name=None):
 
 def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
-    ethnicities = df.T.columns.to_list()
+    ethnicities = [ethnicities_en[c] for c in df.T.columns.to_list()]
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
@@ -97,7 +109,7 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
 def save_ent_mean_chart(df, file_name):
     df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(des_l)
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
-    entities = df.T.columns.to_list()
+    entities = [entities_en[c] if c in entities_en else c for c in df.T.columns.to_list()]
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
