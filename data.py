@@ -5,24 +5,34 @@ bias_dir = "Biases"
 # but the others work so I will keep like this
 ethnicities = {
     'fin': 'suomalais',
-    'swe': 'suomenruotsalais', # TODO rename fswe
+    'fswe': 'suomenruotsalais', # TODO rename fswe
     'roma': 'romani',
-    'afro': 'somali', # TODO rename som
+    'som': 'somali', # TODO rename som
     'sami': 'saamelais',
     'rus': 'venäläis'
 }
+# English translations for display
+ethnicities_en = {
+    'fin': 'Finnish',
+    'fswe': 'Finnish-Swedish', 
+    'roma': 'Roma',
+    'som': 'Somali', 
+    'sami': 'Sami',
+    'rus': 'Russian'
+}
 
 entities = ['nainen', 'mies', 'henkilö']
+entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
 
 # top n (n=1) female and male names for ethnicity
 names = {
     'fin': {'female': ['Päivi'], 'male': ['Mikko']},
-    'swe': {'female': ['Laura'], 'male': ['Joel']},
+    'fswe': {'female': ['Laura'], 'male': ['Joel']},
     'sami': {'female': ['Elen'], 'male': ['Hugo']},
     'rus': {'female': ['Irina'], 'male': ['Nikolai']},
     'roma': {'female': ['Anneli'],'male': ['Veijo']},
-    'afro': {'female': ['Isra'], 'male': ['Mohamed']}
+    'som': {'female': ['Isra'], 'male': ['Mohamed']}
  }
 
 def get_context_sentences(context, target_i, attr_i, pos=False):
@@ -56,7 +66,7 @@ def get_context_sentences(context, target_i, attr_i, pos=False):
                         result[ethnicity].append((context.format(target=target, attribute=bias.strip()), 
                                                   target_i, 
                                                   attr_i, 
-                                                  ent))
+                                                  ent)) # TODO change to entities_en[ent]
                         # add finnish groups for comparisons
                         result['fin'][ethnicity].append((context.format(target=fin_target, attribute=bias.strip()), 
                                                   target_i, 
