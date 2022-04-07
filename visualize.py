@@ -1,4 +1,4 @@
-from turtle import pos
+# from turtle import pos
 import pandas as pd
 import numpy as np
 import tikzplotlib
@@ -16,7 +16,6 @@ ethnicities_en = {
     'sami': 'Sami',
     'rus': 'Russian'
 }
-
 entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
 def get_df(scores, comp_scores, tokenizer):
@@ -28,29 +27,21 @@ def get_df(scores, comp_scores, tokenizer):
             bias_is_unk = tokenizer.convert_tokens_to_ids(scores[k][i][2]) == tokenizer.convert_tokens_to_ids(unk)
             association_score = round(scores[k][i][0], des_l)
             comp_association = round(comp_scores[k][i][0], des_l)
-            data_as_list.append((f'{k}',                # ethnicity
+            ent = entities_en[scores[k][i][3]] if scores[k][i][3] in entities_en else scores[k][i][3]
+            data_as_list.append((ethnicities_en[k],     # ethnicity
                                  scores[k][i][1],       # target word
                                  comp_scores[k][i][1],  # comparison target word (finnish)
-                                 scores[k][i][3],       # entity
+                                 ent,                   # entity
                                  scores[k][i][2],       # biased attribute
-                                 association_score, # association score
-                                 comp_association, # comparison association score
-                                 biased,
-                                 bias_is_unk
+                                 association_score,     # association score
+                                 comp_association,      # comparison association score
+                                 biased,                # association score > comparison score
+                                 bias_is_unk            # term not in vocab
                                  ))
-    # TODO add difference 
+    # TODO add difference ?
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
                                                   'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
-
-# def get_nat_gen_means(df, file_name=None):
-#     # means of each ethnicity+gender
-#     grouped = df[['Association', 'Comp. association']].groupby(df['Ethnicity'])
-#     res = grouped.mean().round(4)
-#     if file_name != None:
-#         with open(f"Results/tables/{file_name}", "w") as file:
-#             file.write(res.to_latex())
-#     return res
 
 def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     # means for each bias
@@ -67,10 +58,11 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
-        
-        df_dict = dict(tuple(res.groupby('Ethnicity')))
-        for key in df_dict:
-            save_bias_mean_chart(pd.DataFrame(df_dict[key]), f'{key}_{file_name}')
+        # TODO dont do this graphs rn
+        if False:
+            df_dict = dict(tuple(res.groupby('Ethnicity')))
+            for key in df_dict:
+                save_bias_mean_chart(pd.DataFrame(df_dict[key]), f'{key}_{file_name}')
     return res
 
 def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = False):
@@ -111,9 +103,9 @@ def get_ent_means(df, file_name=None):
             file.write(res.to_latex())
     return res 
 
-def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
+def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True, title=""):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
-    ethnicities = [ethnicities_en[c] for c in df.T.columns.to_list()]
+    ethnicities = df.T.columns.to_list() 
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
@@ -126,14 +118,15 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
     plt.xlabel("Ethnic group")
     plt.ylabel("Association score mean")
 
-    #TODO label the graph
+    ax.set_xticklabels(ethnicities)
+    plt.title(title)
     
     tikzplotlib.save(f'Results/charts/{file_name}')
 
 def save_ent_mean_chart(df, file_name):
     df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(des_l)
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
-    entities = [entities_en[c] if c in entities_en else c for c in df.T.columns.to_list()]
+    entities = df.T.columns.to_list() 
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
@@ -145,6 +138,7 @@ def save_ent_mean_chart(df, file_name):
 
     plt.xlabel("Entity")
     plt.ylabel("Association score mean")
+    ax.set_xticklabels(entities)
     
     tikzplotlib.save(f'Results/charts/{file_name}')
 
@@ -162,7 +156,8 @@ def save_bias_mean_chart(df, file_name):
     ax.legend()
 
     plt.xlabel("Association score mean")
-    
+    ax.set_xticklabels(entities)
+
     tikzplotlib.save(f'Results/charts/{file_name}')
 
 def get_word_pair_comparison(df, pos_df, file_name):
