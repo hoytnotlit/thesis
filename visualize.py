@@ -73,6 +73,27 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
             save_bias_mean_chart(pd.DataFrame(df_dict[key]), f'{key}_{file_name}')
     return res
 
+def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = False):
+    # combination bias means
+    if no_unk:
+        df = df.loc[df['Bias UNK'] == False]
+
+    df = df.copy()
+    long_df = long_df.copy()
+
+    # rename long columns
+    long_df = long_df[['Association', 'Comp. association']].rename({"Association": "Long association", "Comp. association":"Long comp. association"}, 
+                axis="columns")
+    df = df[['Ethnicity', 'Bias', 'Association', 'Comp. association']]
+    result = pd.concat([df, long_df], axis=1, join="inner")
+    result = result.groupby(['Ethnicity', 'Bias'])
+    result = result.mean().round(des_l)
+
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(result.to_latex())
+    return result
+
 def get_nat_means(df, file_name=None):
     # means of each ethnicity
     grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
