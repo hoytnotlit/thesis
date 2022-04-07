@@ -56,7 +56,7 @@ def get_context_sentences(context, target_i, attr_i, pos=False):
                         result[ethnicity].append((context.format(target=target, attribute=bias.strip()), 
                                                   target_i, 
                                                   attr_i, 
-                                                  ent)) # TODO change to entities_en[ent]
+                                                  ent)) 
                         # add finnish groups for comparisons
                         result['fin'][ethnicity].append((context.format(target=fin_target, attribute=bias.strip()), 
                                                   target_i, 

@@ -1,0 +1,3 @@
+Open questions:
+
+- Not sure how to talk about FinBERT set up? How in detail should I be going into what I did e.g. virtual environment stuff etc?

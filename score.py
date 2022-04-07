@@ -42,7 +42,7 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     
     # 2. Mask the target word - target word is the ethnicity
 
-    # handle out of vocab ethnicities - they are found by splitting the word into tokens
+    # handle out of vocab ethnicities - they are masked by splitting the word into tokens
     target_is_unk = target_word_id == tokenizer.convert_tokens_to_ids(unk)
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)

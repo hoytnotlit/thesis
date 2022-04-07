@@ -1,3 +1,4 @@
+from turtle import pos
 import pandas as pd
 import numpy as np
 import tikzplotlib
@@ -103,6 +104,8 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True):
 
     plt.xlabel("Ethnic group")
     plt.ylabel("Association score mean")
+
+    #TODO label the graph
     
     tikzplotlib.save(f'Results/charts/{file_name}')
 
@@ -140,3 +143,33 @@ def save_bias_mean_chart(df, file_name):
     plt.xlabel("Association score mean")
     
     tikzplotlib.save(f'Results/charts/{file_name}')
+
+def get_word_pair_comparison(df, pos_df, file_name):
+    df = df.copy()
+    pos_df = pos_df.copy()
+
+    # get the words that are biased
+    biased_i = np.where(df['Bias UNK']==False)[0]
+
+    # get opposite pairs for biased terms
+    df = df.loc[df['Bias UNK'] == False]
+    pos_df = pos_df.iloc[biased_i]
+
+    # check if opposite pairs in vocab and remove
+    for i in pos_df.index.to_list():
+        if pos_df.loc[[i]]['Bias UNK'].values[0] == True:
+            pos_df.drop(pos_df.loc[[i]].index, inplace=True)
+            df.drop(df.loc[[i]].index, inplace=True)
+
+    # rename pos columns
+    pos_df = pos_df[['Bias', 'Association', 'Comp. association']].rename({"Bias": "Neut. bias", "Association": "Neut. association", "Comp. association":"Neut. comp. association"}, 
+                axis="columns")
+    df = df[['Ethnicity', 'Bias', 'Association', 'Comp. association']]
+    result = pd.concat([df, pos_df], axis=1, join="inner")
+    result = result.groupby(['Ethnicity', 'Bias', 'Neut. bias'])
+    result = result.mean().round(des_l)
+
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(result.to_latex())
+    return result
