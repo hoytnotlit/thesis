@@ -5,13 +5,30 @@ wikiextractor -> process data
 
 -> get/create txt file
 -> sklearn to split data
+-> download finnish bert (from transformers) locally on server
 TODO
--> download finnish bert
--> modify the config (dropout values, like in that one paper)
+-> modify the config (increase dropout values, like in that one paper)
+-> train 
+
+https://github.com/huggingface/transformers/tree/main/examples/pytorch/language-modeling
 
 run in deb-env:
-python ~/transformers/examples/pytorch/language-modeling/run_mlm.py     --model_name_or_path TurkuNLP/bert-base-finnish-cased-v1     --train_file ~/thesis/wikidata_train.txt     --validation_file ~/thesis/wikidata_test.txt     --per_device_train_batch_size 8     --per_device_eval_batch_size 8     --do_train     --do_eval     --output_dir tmp/test-mlm     --save_total_limit=3
+python ~/transformers/examples/pytorch/language-modeling/run_mlm.py     --model_name_or_path ~/bert-base-finnish-cased-v1     --train_file ~/thesis/Wiki/wikidata_train.txt     --validation_file ~/thesis/Wiki/wikidata_test.txt     --per_device_train_batch_size 8     --per_device_eval_batch_size 8     --do_train     --do_eval     --output_dir tmp/test-mlm     --save_total_limit=3
 
+
+
+BERT has two dropout parameters which
+may be configured, one for attention weights (a)
+and another for hidden activations (h), both set to
+.10 by default. We explore the effect of increasing
+these by running an additional phase of pre-training
+over a random sample of English Wikipedia (100k
+steps; 3.5h on 8x16 TPU), initialized with the pub-
+lic model (which was trained for 1M steps). Table 4
+shows the best results (lowest correlation metrics)
+seen for a grid search over the values .10, .15 and
+.20, for a = .15 and h = .20
+https://arxiv.org/pdf/2010.06032.pdf
 
 OLD
 -> run through create_pretraining_data.py
@@ -23,3 +40,4 @@ OLD
 Virtual environments:
 venv for running tests
 deb-venv for training/debiasing model
+TODO specify the transformers versions in thesis?
