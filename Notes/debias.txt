@@ -1,0 +1,25 @@
+For Wikipedia, the recommended pre-processing is to download the latest dump, extract the text with WikiExtractor.py, and then apply any necessary cleanup to convert it into plain text.
+
+dumps.wikipedia -> get data 
+wikiextractor -> process data
+
+-> get/create txt file
+-> sklearn to split data
+TODO
+-> download finnish bert
+-> modify the config (dropout values, like in that one paper)
+
+run in deb-env:
+python ~/transformers/examples/pytorch/language-modeling/run_mlm.py     --model_name_or_path TurkuNLP/bert-base-finnish-cased-v1     --train_file ~/thesis/wikidata_train.txt     --validation_file ~/thesis/wikidata_test.txt     --per_device_train_batch_size 8     --per_device_eval_batch_size 8     --do_train     --do_eval     --output_dir tmp/test-mlm     --save_total_limit=3
+
+
+OLD
+-> run through create_pretraining_data.py
+-> run_pretraining.py
+
+
+
+
+Virtual environments:
+venv for running tests
+deb-venv for training/debiasing model
