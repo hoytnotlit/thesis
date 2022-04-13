@@ -1,3 +1,23 @@
+"In summary, the working definition of bias is ...."
+
+Explain more about language models/BERT (how its trained) to non-computational linguists/reader
+
+(Dropout regularization - write about it)
+
+Explain association score, what do the numbers mean etc, formulas+numbered steps and refer to numbers in text
+
+Fix latex tables (resizebox) p()
+
+arxiv references are not peer reviewed, if possible use real paper (use google scholar to find all references)
+
+Next meeting 4.5. 10:30
+
+- get gold labels/ association scores from another model (multilingual)
+- run self diagnosis/debias
+
+
+
+-- DROPOUT REGULARIZATION --
 For Wikipedia, the recommended pre-processing is to download the latest dump, extract the text with WikiExtractor.py, and then apply any necessary cleanup to convert it into plain text.
 
 dumps.wikipedia -> get data 
@@ -13,8 +33,7 @@ TODO
 https://github.com/huggingface/transformers/tree/main/examples/pytorch/language-modeling
 
 run in deb-env:
-python ~/transformers/examples/pytorch/language-modeling/run_mlm.py     --model_name_or_path ~/bert-base-finnish-cased-v1     --train_file ~/thesis/Wiki/wikidata_train.txt     --validation_file ~/thesis/Wiki/wikidata_test.txt     --per_device_train_batch_size 8     --per_device_eval_batch_size 8     --do_train     --do_eval     --output_dir tmp/test-mlm     --save_total_limit=3
-
+python ~/transformers/examples/pytorch/language-modeling/run_mlm.py     --model_name_or_path ~/bert-base-finnish-cased-v1     --train_file ~/thesis/Wiki/wikidata_train.txt     --validation_file ~/thesis/Wiki/wikidata_test.txt     --per_device_train_batch_size 8     --per_device_eval_batch_size 8     --do_train     --do_eval     --output_dir tmp/test-mlm     --save_total_limit=3  --max_seq_length=256
 
 
 BERT has two dropout parameters which
