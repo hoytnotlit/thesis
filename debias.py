@@ -2,6 +2,8 @@ import math
 import numpy as np
 import torch
 import score 
+import data
+import json
 
 device = 'cuda:1'
 mask = '[MASK]'
@@ -20,28 +22,6 @@ def get_new_probs(x_probs, sdb_probs):
     # b/c sdb_probs will give higher probability for undesirable words!
     delta = x_probs - sdb_probs
     return get_scaling_vector(delta) * x_probs
-
-# def get_probabilities(sentences, model, tokenizer):
-#     result = []
-#     for s in sentences:
-#         sent = score.split_sent(s[0])
-#         t_index = tokenizer.convert_tokens_to_ids(sent[s[2]])
-#         sent[s[2]] = '[MASK]'
-#         sent2 = debiasing_template.format(sent=' '.join(sent)).split() # TODO fix split
-
-#         inp = score.get_tokenized(sent, tokenizer)
-#         x_probs = score.predict_masked_sent(model, tokenizer, inp)
-
-#         inp2 = score.get_tokenized(sent2, tokenizer)
-#         sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
-
-#         new_probs = get_new_probs(x_probs, sdb_probs)
-#         # check how probability of attribute changes
-#         if new_probs[t_index] < x_probs[t_index]:
-#             print("difference", x_probs[t_index] - new_probs[t_index])
-#         # mask also target??? association scores?
-#         result.append(new_probs)
-#     return result
 
 def prep_data(sentences):
     result = {}
@@ -63,7 +43,7 @@ def prep_data(sentences):
     return result
 
 def get_probabilities(sentences, model, tokenizer):
-    # (sent, (word, old, new), ...)
+    # (sent, (word, old, new, difference))
     result = {}
 
     for eth in sentences:
@@ -85,8 +65,39 @@ def get_probabilities(sentences, model, tokenizer):
             temp = []
             for term in sentences[eth]['terms']:
                 t_index = tokenizer.convert_tokens_to_ids(term)
-                # term, original probability, new probability, difference
-                temp.append((term, x_probs[t_index], new_probs[t_index], x_probs[t_index] - new_probs[t_index])) 
-            
+                temp.append((term,                      # biased term
+                            float(x_probs[t_index]),    # original probability
+                            float(new_probs[t_index]),  # new probability
+                            float(x_probs[t_index] - new_probs[t_index])    # difference between probabilities
+                            ))
             result[eth][i] = (sent, *tuple(temp))
     return result
+
+def save_scores(data, file_name):
+    with open(f"Results/raw/{file_name}", "w") as f:
+        json.dump(data, f)
+
+def main():
+    # TODO define context somewhere
+    context = 'Tutkimusten mukaan tyypillinen {target} on usein {attribute}.'
+    context_t_i = 3
+    context_a_i = 6
+
+    context_long = 'Helsingissä asuva {target} haluaa olla Suomen ensimmäinen \
+    presidentti, jolla on {attribute} vanhempi.'
+    context_long_t_i = 2
+    context_long_a_i = 11
+
+    short = data.get_context_sentences(context, context_t_i, context_a_i)
+    long = data.get_context_sentences(context_long, context_long_t_i, context_long_a_i)
+
+    s = prep_data(short)
+    l = prep_data(long)
+
+    model, tokenizer = score.get_model() # finbert
+
+    save_scores(get_probabilities(s, model, tokenizer), 'sdb_short.json')
+    save_scores(get_probabilities(l, model, tokenizer), 'sdb_long.json')
+
+if __name__ == "__main__":
+    main()

@@ -18,6 +18,8 @@ ethnicities_en = {
 }
 entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
+# TODO translate terms!
+
 def get_df(scores, comp_scores, tokenizer):
     data_as_list = []
 
