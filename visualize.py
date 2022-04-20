@@ -5,7 +5,7 @@ import tikzplotlib
 import matplotlib.pyplot as plt
 
 unk = '[UNK]'
-des_l = 2
+des_l = 2 # decimal points to keep
 
 # English translations for display
 ethnicities_en = {
@@ -19,12 +19,19 @@ ethnicities_en = {
 entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
 # TODO translate terms!
-# in corresponsing en_*.txt files
+def get_term_translations(file, lang='en'):
+    bias_dir = f"Biases/{lang}"
+    with open(f'{bias_dir}/{file}') as translations:
+        res = [line.strip() for line in translations]
+    return res
 
+#region RAW DATAFRAMES
 def get_df(scores, comp_scores, tokenizer):
     data_as_list = []
 
     for k in scores.keys():
+        translations = get_term_translations(f'{k}_biases.txt')
+
         for i in range(len(scores[k])):
             biased = scores[k][i][0] > comp_scores[k][i][0]
             bias_is_unk = tokenizer.convert_tokens_to_ids(scores[k][i][2]) == tokenizer.convert_tokens_to_ids(unk)
@@ -36,6 +43,7 @@ def get_df(scores, comp_scores, tokenizer):
                                  comp_scores[k][i][1],  # comparison target word (finnish)
                                  ent,                   # entity
                                  scores[k][i][2],       # biased attribute
+                                 translations[i//10],   # translation (divide i by ten to get correct index, this is probably the hackiest solution ever)
                                  association_score,     # association score
                                  comp_association,      # comparison association score
                                  biased,                # association score > comparison score
@@ -43,21 +51,25 @@ def get_df(scores, comp_scores, tokenizer):
                                  ))
     # TODO add difference ?
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
-                                                  'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
+                                                  'Bias', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
 def get_sdb_df(debiased_data):
     data_as_list = []
 
     for k, v in debiased_data.items():
+        translations = get_term_translations(f'{k}_biases.txt')
+
         for i in v:
             sent = v[i][0]
-            for term in v[i][1:]:
-                data_as_list.append((k, sent, *term))
+            for j, term in enumerate(v[i][1:]):
+                data_as_list.append((k, sent, translations[j], *term))
 
-    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Sentence', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Sentence', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
     return df
+#endregion
 
+#region ASSOCIATION SCORES
 def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     # means for each bias
     # filter out biases that are not in BERT vocab
@@ -204,3 +216,8 @@ def get_word_pair_comparison(df, pos_df, file_name):
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(result.to_latex())
     return result
+#endregion
+
+#region DEBIAS SCORES
+
+#endregion
