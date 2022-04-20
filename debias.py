@@ -21,28 +21,27 @@ def get_new_probs(x_probs, sdb_probs):
     delta = x_probs - sdb_probs
     return get_scaling_vector(delta) * x_probs
 
-def get_probabilities(sentences, model, tokenizer):
-    result = []
-    for s in sentences:
-        sent = score.split_sent(s[0])
-        t_index = tokenizer.convert_tokens_to_ids(sent[s[2]])
-        sent[s[2]] = '[MASK]'
-        sent2 = debiasing_template.format(sent=' '.join(sent)).split() # TODO fix split
+# def get_probabilities(sentences, model, tokenizer):
+#     result = []
+#     for s in sentences:
+#         sent = score.split_sent(s[0])
+#         t_index = tokenizer.convert_tokens_to_ids(sent[s[2]])
+#         sent[s[2]] = '[MASK]'
+#         sent2 = debiasing_template.format(sent=' '.join(sent)).split() # TODO fix split
 
-        inp = score.get_tokenized(sent, tokenizer)
-        x_probs = score.predict_masked_sent(model, tokenizer, inp)
+#         inp = score.get_tokenized(sent, tokenizer)
+#         x_probs = score.predict_masked_sent(model, tokenizer, inp)
 
-        inp2 = score.get_tokenized(sent2, tokenizer)
-        sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
+#         inp2 = score.get_tokenized(sent2, tokenizer)
+#         sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
 
-        new_probs = get_new_probs(x_probs, sdb_probs)
-        # TODO check how probability of attribute changes
-        if new_probs[t_index] < x_probs[t_index]:
-            print("difference", x_probs[t_index] - new_probs[t_index])
-        # TODO mask also target??? association scores?
-        # if im doing this I could just pass the masked sentence once and check for probabilities of all attribute words?
-        result.append(new_probs)
-    return result # TODO
+#         new_probs = get_new_probs(x_probs, sdb_probs)
+#         # check how probability of attribute changes
+#         if new_probs[t_index] < x_probs[t_index]:
+#             print("difference", x_probs[t_index] - new_probs[t_index])
+#         # mask also target??? association scores?
+#         result.append(new_probs)
+#     return result
 
 def prep_data(sentences):
     result = {}
@@ -61,4 +60,33 @@ def prep_data(sentences):
                     result[eth]['sents'].append(sent)
                 if bias_term not in result[eth]['terms']:
                     result[eth]['terms'].append(bias_term)
+    return result
+
+def get_probabilities(sentences, model, tokenizer):
+    # (sent, (word, old, new), ...)
+    result = {}
+
+    for eth in sentences:
+        result[eth] = {}
+        
+        for i, sent in enumerate(sentences[eth]['sents']):
+            # TODO mask target also/instead? association scores?
+            sent2 = debiasing_template.format(sent=' '.join(sent)).split()
+            
+            inp = score.get_tokenized(sent, tokenizer)
+            x_probs = score.predict_masked_sent(model, tokenizer, inp)
+
+            inp2 = score.get_tokenized(sent2, tokenizer)
+            sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
+
+            new_probs = get_new_probs(x_probs, sdb_probs)
+            
+            # track changes of probability on term level
+            temp = []
+            for term in sentences[eth]['terms']:
+                t_index = tokenizer.convert_tokens_to_ids(term)
+                # term, original probability, new probability, difference
+                temp.append((term, x_probs[t_index], new_probs[t_index], x_probs[t_index] - new_probs[t_index])) 
+            
+            result[eth][i] = (sent, *tuple(temp))
     return result
