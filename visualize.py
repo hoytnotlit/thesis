@@ -45,6 +45,18 @@ def get_df(scores, comp_scores, tokenizer):
                                                   'Bias', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
+def get_sdb_df(debiased_data):
+    data_as_list = []
+
+    for k, v in debiased_data.items():
+        for i in v:
+            sent = v[i][0]
+            for term in v[i][1:]:
+                data_as_list.append((k, sent, *term))
+
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Sentence', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+    return df
+
 def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     # means for each bias
     # filter out biases that are not in BERT vocab
