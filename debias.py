@@ -1,26 +1,25 @@
 import math
+import numpy as np
 import torch
 import score 
 
-device = 'cuda'
+device = 'cuda:1'
 mask = '[MASK]'
 debiasing_template = 'Seuraava lause sisältää ennakkoluuloja: {sent}' # TODO more than 1 template?
 
-# TODO idk if this is correct
-def alpha(probs, decay_cons=25):
-    new = torch.zeros_like(probs)
-    for i, x in enumerate(probs):
-        if x >= 0:
-            new[i] = 1
-        else:
-            new[i] = math.e**(decay_cons * x)
-    return new
+def get_scaling_vector(probs, decay_cons=25):
+    # apply scaling function
+    # keep unbiased words the same (1*probability stays the same)
+    # for biased words, scale probability down (e^decay_const*x)
+    alpha = lambda x: torch.tensor(1) if x >=0 else math.e**(decay_cons * x)
+    result = torch.tensor(list(map(alpha, probs))).to(device)
+    return result
     
 def get_new_probs(x_probs, sdb_probs):
-    # the difference between both distributions will be less than zero for such undesirable words
+    # the difference between both distributions will be less than zero for undesirable words
     # b/c sdb_probs will give higher probability for undesirable words!
     delta = x_probs - sdb_probs
-    return alpha(delta) * x_probs
+    return get_scaling_vector(delta) * x_probs
 
 def get_probabilities(sentences, model, tokenizer):
     result = []
@@ -43,4 +42,4 @@ def get_probabilities(sentences, model, tokenizer):
         # TODO mask also target??? association scores?
         # if im doing this I could just pass the masked sentence once and check for probabilities of all attribute words?
         result.append(new_probs)
-    return result
+    return result # TODO

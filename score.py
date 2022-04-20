@@ -4,7 +4,7 @@ from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import numpy as np
 import re
 
-device = 'cuda'
+device = 'cuda:1'
 mask = '[MASK]'
 unk = '[UNK]'
 
