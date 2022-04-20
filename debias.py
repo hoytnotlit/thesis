@@ -43,3 +43,22 @@ def get_probabilities(sentences, model, tokenizer):
         # if im doing this I could just pass the masked sentence once and check for probabilities of all attribute words?
         result.append(new_probs)
     return result # TODO
+
+def prep_data(sentences):
+    result = {}
+
+    for eth in sentences:
+        if eth != 'fin':
+            result[eth] = {'sents':[], 'terms':[]}
+
+            for i, r in enumerate(sentences[eth]):
+                sent = score.split_sent(r[0])
+                bias_term_i = r[2]
+                bias_term = sent[bias_term_i]
+                sent[bias_term_i] = mask
+
+                if sent not in result[eth]['sents']:
+                    result[eth]['sents'].append(sent)
+                if bias_term not in result[eth]['terms']:
+                    result[eth]['terms'].append(bias_term)
+    return result
