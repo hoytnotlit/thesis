@@ -19,6 +19,7 @@ ethnicities_en = {
 entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
 # TODO translate terms!
+# in corresponsing en_*.txt files
 
 def get_df(scores, comp_scores, tokenizer):
     data_as_list = []

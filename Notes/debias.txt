@@ -26,7 +26,6 @@ wikiextractor -> process data
 -> get/create txt file
 -> sklearn to split data
 -> download finnish bert (from transformers) locally on server
-TODO
 -> modify the config (increase dropout values, like in that one paper)
 -> train 
 

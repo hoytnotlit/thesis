@@ -2,12 +2,11 @@ import math
 import numpy as np
 import torch
 import score 
-import data
+import data, context as c, config
 import json
 
-device = 'cuda:1'
+device = config.device
 mask = '[MASK]'
-debiasing_template = 'Seuraava lause sisältää ennakkoluuloja: {sent}' # TODO more than 1 template?
 
 def get_scaling_vector(probs, decay_cons=25):
     # apply scaling function
@@ -51,7 +50,7 @@ def get_probabilities(sentences, model, tokenizer):
         
         for i, sent in enumerate(sentences[eth]['sents']):
             # TODO mask target also/instead? association scores?
-            sent2 = debiasing_template.format(sent=' '.join(sent)).split()
+            sent2 = c.debiasing_template.format(sent=' '.join(sent)).split()
             
             inp = score.get_tokenized(sent, tokenizer)
             x_probs = score.predict_masked_sent(model, tokenizer, inp)
@@ -78,18 +77,8 @@ def save_scores(data, file_name):
         json.dump(data, f)
 
 def main():
-    # TODO define context somewhere
-    context = 'Tutkimusten mukaan tyypillinen {target} on usein {attribute}.'
-    context_t_i = 3
-    context_a_i = 6
-
-    context_long = 'Helsingissä asuva {target} haluaa olla Suomen ensimmäinen \
-    presidentti, jolla on {attribute} vanhempi.'
-    context_long_t_i = 2
-    context_long_a_i = 11
-
-    short = data.get_context_sentences(context, context_t_i, context_a_i)
-    long = data.get_context_sentences(context_long, context_long_t_i, context_long_a_i)
+    short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
+    long = data.get_context_sentences(c.context_long, c.context_long_t_i, c.context_long_a_i)
 
     s = prep_data(short)
     l = prep_data(long)

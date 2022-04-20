@@ -3,8 +3,9 @@ import torch
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import numpy as np
 import re
+import config
 
-device = 'cuda:1'
+device = config.device
 mask = '[MASK]'
 unk = '[UNK]'
 
