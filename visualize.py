@@ -54,7 +54,7 @@ def get_df(scores, comp_scores, tokenizer):
                                                   'Bias', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
-def get_sdb_df(debiased_data):
+def get_sdb_df(debiased_data, t_i):
     data_as_list = []
 
     for k, v in debiased_data.items():
@@ -63,8 +63,8 @@ def get_sdb_df(debiased_data):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
-                data_as_list.append((k, sent, translations[j], *term))
-
+                data_as_list.append((k, sent[t_i], translations[j], *term))
+    # TODO Entity instead of Sentence
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Sentence', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
     return df
 #endregion
