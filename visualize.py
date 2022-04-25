@@ -214,7 +214,7 @@ def get_word_pair_comparison(df, pos_df, file_name):
                 axis="columns")
     df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Comp. association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Opposite term', 'Opposite translation'])
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation']) #, 'Opposite term', 'Opposite translation'
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
