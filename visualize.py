@@ -38,20 +38,23 @@ def get_df(scores, comp_scores, tokenizer):
             association_score = round(scores[k][i][0], des_l)
             comp_association = round(comp_scores[k][i][0], des_l)
             ent = entities_en[scores[k][i][3]] if scores[k][i][3] in entities_en else scores[k][i][3]
-            data_as_list.append((ethnicities_en[k],     # ethnicity
-                                 scores[k][i][1],       # target word
-                                 comp_scores[k][i][1],  # comparison target word (finnish)
-                                 ent,                   # entity
-                                 scores[k][i][2],       # biased attribute
-                                 translations[i//10],   # translation (divide i by ten to get correct index, this is probably the hackiest solution ever)
-                                 association_score,     # association score
-                                 comp_association,      # comparison association score
-                                 biased,                # association score > comparison score
-                                 bias_is_unk            # term not in vocab
-                                 ))
+            attr_en = translations[i//5] # each attribute has 5 sentences, use to get translation
+            
+            data_as_list.append((ethnicities_en[k],    # ethnicity
+                                scores[k][i][1],       # target word
+                                comp_scores[k][i][1],  # comparison target word (finnish)
+                                ent,                   # entity
+                                scores[k][i][2],       # biased attribute
+                                attr_en,               # translation
+                                association_score,     # association score
+                                comp_association,      # comparison association score
+                                biased,                # association score > comparison score
+                                bias_is_unk            # term not in vocab
+                                ))
     # TODO add difference ?
+    # TODO fix pos translations
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
-                                                  'Bias', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
+                                                  'Biased term', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
 
 def get_sdb_df(debiased_data, t_i):
@@ -79,9 +82,9 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     if only_biased:
         df = df.loc[df['Association'] > df['Comp. association']]
 
-    grouped = df.groupby(['Ethnicity', 'Bias'])
-    res = grouped[['Association', 'Comp. association']].mean().round(des_l)
-
+    grouped = df.groupby(['Ethnicity', 'Biased term', 'Translation'])
+    res = grouped[['Association', 'Comp. association']].mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])#, ascending=False)
+    # TODO how can I sort so that group with largest association score is first??
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
@@ -100,13 +103,15 @@ def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = Fa
     df = df.copy()
     long_df = long_df.copy()
 
+    # TODO add translations
+
     # rename long columns
     long_df = long_df[['Association', 'Comp. association']].rename({"Association": "Long association", "Comp. association":"Long comp. association"}, 
                 axis="columns")
-    df = df[['Ethnicity', 'Bias', 'Association', 'Comp. association']]
+    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Comp. association']]
     result = pd.concat([df, long_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Bias'])
-    result = result.mean().round(des_l)
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation'])
+    result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -115,11 +120,11 @@ def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = Fa
 
 def get_nat_means(df, file_name=None):
     # means of each ethnicity
-    grouped = df[['Bias', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
-    res = grouped.mean().round(des_l)
+    grouped = df[['Biased term', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
+    res = grouped.mean().round(des_l).reset_index()
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
-            file.write(res.to_latex())
+            file.write(res.to_latex(index=False))
     return res
 
 def get_ent_means(df, file_name=None):
@@ -205,12 +210,12 @@ def get_word_pair_comparison(df, pos_df, file_name):
             df.drop(df.loc[[i]].index, inplace=True)
 
     # rename pos columns
-    pos_df = pos_df[['Bias', 'Association', 'Comp. association']].rename({"Bias": "Neut. bias", "Association": "Neut. association", "Comp. association":"Neut. comp. association"}, 
+    pos_df = pos_df[['Biased term', 'Translation', 'Association', 'Comp. association']].rename({"Biased term": "Opposite term", "Association": "Opposite association", "Comp. association":"Opposite comp. association", "Translation":"Opposite translation"}, 
                 axis="columns")
-    df = df[['Ethnicity', 'Bias', 'Association', 'Comp. association']]
+    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Comp. association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Bias', 'Neut. bias'])
-    result = result.mean().round(des_l)
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Opposite term', 'Opposite translation'])
+    result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -221,10 +226,10 @@ def get_word_pair_comparison(df, pos_df, file_name):
 #region DEBIAS SCORES
 def get_sdb_means(df, file_name=None):
     # means of each ethnicity
-    res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False)
+    res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False).reset_index()
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
-            file.write(res.to_latex())
+            file.write(res.to_latex(index=False))
     return res
 
 #endregion

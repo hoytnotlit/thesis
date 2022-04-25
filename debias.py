@@ -41,6 +41,8 @@ def prep_data(sentences):
                     result[eth]['terms'].append(bias_term)
     return result
 
+# TODO try masking target as well
+
 def get_probabilities(sentences, model, tokenizer):
     # (sent, (word, old, new, difference))
     result = {}
@@ -49,7 +51,6 @@ def get_probabilities(sentences, model, tokenizer):
         result[eth] = {}
         
         for i, sent in enumerate(sentences[eth]['sents']):
-            # TODO mask target also/instead? association scores?
             sent2 = c.debiasing_template.format(sent=' '.join(sent)).split()
             
             inp = score.get_tokenized(sent, tokenizer)
