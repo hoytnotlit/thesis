@@ -63,9 +63,9 @@ def get_sdb_df(debiased_data, t_i):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
-                data_as_list.append((k, sent[t_i], translations[j], *term))
-    # TODO Entity instead of Sentence
-    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Sentence', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+                ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
+                data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
     return df
 #endregion
 
@@ -219,5 +219,12 @@ def get_word_pair_comparison(df, pos_df, file_name):
 #endregion
 
 #region DEBIAS SCORES
+def get_sdb_means(df, file_name=None):
+    # means of each ethnicity
+    res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False)
+    if file_name != None:
+        with open(f"Results/tables/{file_name}", "w") as file:
+            file.write(res.to_latex())
+    return res
 
 #endregion
