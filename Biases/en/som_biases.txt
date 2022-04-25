@@ -1,10 +1,10 @@
-varas
-aggressiivinen
-väkivaltainen
-kielitaidoton
-tyhmä
-yksinkertainen
-rikollinen
-uhri
-ryöstäjä
-uhka
+thief
+aggressive
+violent
+no language skills
+stupid
+simple
+criminal
+victim
+mugger
+threat
