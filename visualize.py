@@ -18,7 +18,6 @@ ethnicities_en = {
 }
 entities_en = {'nainen':'woman', 'mies':'man', 'henkilö':'person'}
 
-# TODO translate terms!
 def get_term_translations(file, lang='en'):
     bias_dir = f"Biases/{lang}"
     with open(f'{bias_dir}/{file}') as translations:

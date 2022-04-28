@@ -8,6 +8,7 @@ import re
 
 device = config.device
 mask = '[MASK]'
+unk = '[UNK]'
 
 def get_scaling_vector(probs, decay_cons=25):
     # apply scaling function
@@ -23,7 +24,7 @@ def get_new_probs(x_probs, sdb_probs):
     delta = x_probs - sdb_probs
     return get_scaling_vector(delta) * x_probs
 
-def prep_data(sentences):
+def mask_attributes(sentences):
     result = {}
 
     for eth in sentences:
@@ -42,7 +43,31 @@ def prep_data(sentences):
                     result[eth]['terms'].append(bias_term)
     return result
 
-# TODO try masking target as well
+# TODO try masking target/ethnicity as well
+def mask_targets(sentences, tokenizer):
+    result = {}
+
+    for eth in sentences:
+        if eth != 'fin':
+            result[eth] = {'sents':[], 'terms':[]}
+
+            for i, r in enumerate(sentences[eth]):
+                sent = score.split_sent(r[0])
+                ent_i = r[1]
+                entity = sent[ent_i]
+                entity_bert_i = tokenizer.convert_tokens_to_ids(entity)
+                ent_is_unk = entity_bert_i == tokenizer.convert_tokens_to_ids(unk)
+                
+                if ent_is_unk:
+                    sent, _ = score.mask_tokenized_eth(ent_i, sent, tokenizer)
+                else:
+                    sent[ent_i] = mask
+
+                if sent not in result[eth]['sents']:
+                    result[eth]['sents'].append(sent)
+                if entity not in result[eth]['terms']:
+                    result[eth]['terms'].append(entity)
+    return result
 
 # custom split to maintain [MASK] as individual token
 def split_masked_sent(sent):
@@ -95,8 +120,8 @@ def main():
     short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
     long = data.get_context_sentences(c.context_long, c.context_long_t_i, c.context_long_a_i)
 
-    s = prep_data(short)
-    l = prep_data(long)
+    s = mask_attributes(short)
+    l = mask_attributes(long)
 
     model, tokenizer = score.get_model() # finbert
 
