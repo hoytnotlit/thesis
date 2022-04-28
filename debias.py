@@ -4,6 +4,7 @@ import torch
 import score 
 import data, context as c, config
 import json
+import re
 
 device = config.device
 mask = '[MASK]'
@@ -43,6 +44,19 @@ def prep_data(sentences):
 
 # TODO try masking target as well
 
+# custom split to maintain [MASK] as individual token
+def split_masked_sent(sent):
+    # replace masked token with a single character
+    sent = sent.split()
+    mask_i = sent.index(mask)
+    sent[mask_i] = "@"
+    # split the sentence into tokens
+    sent = ' '.join(sent)
+    res = re.findall(r"\w+|[^\w\s]", sent)
+    # add mask token back
+    res[res.index('@')] = mask
+    return res
+
 def get_probabilities(sentences, model, tokenizer):
     # (sent, (word, old, new, difference))
     result = {}
@@ -51,7 +65,7 @@ def get_probabilities(sentences, model, tokenizer):
         result[eth] = {}
         
         for i, sent in enumerate(sentences[eth]['sents']):
-            sent2 = c.debiasing_template.format(sent=' '.join(sent)).split()
+            sent2 = split_masked_sent(c.debiasing_template.format(sent=' '.join(sent)))
             
             inp = score.get_tokenized(sent, tokenizer)
             x_probs = score.predict_masked_sent(model, tokenizer, inp)
