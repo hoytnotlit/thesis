@@ -1,4 +1,3 @@
-# from turtle import pos
 import pandas as pd
 import numpy as np
 import tikzplotlib
@@ -6,6 +5,8 @@ import matplotlib.pyplot as plt
 
 unk = '[UNK]'
 des_l = 2 # decimal points to keep
+tables_dir = "Results/tables/"
+charts_dir = "Results/charts/"
 
 # English translations for display
 ethnicities_en = {
@@ -24,12 +25,18 @@ def get_term_translations(file, lang='en'):
         res = [line.strip() for line in translations]
     return res
 
+def save(path, result):
+    with open(path, "w") as file:
+        file.write(result.to_latex())
+
 #region RAW DATAFRAMES
-def get_df(scores, comp_scores, tokenizer):
+def get_df(scores, comp_scores, tokenizer, is_pos=False):
     data_as_list = []
 
     for k in scores.keys():
-        translations = get_term_translations(f'{k}_biases.txt')
+        eth_file = k if not is_pos else k + '_pos'
+        translations = get_term_translations(f'{eth_file}_biases.txt')
+        # TODO fix pos translations
 
         for i in range(len(scores[k])):
             biased = scores[k][i][0] > comp_scores[k][i][0]
@@ -51,7 +58,6 @@ def get_df(scores, comp_scores, tokenizer):
                                 bias_is_unk            # term not in vocab
                                 ))
     # TODO add difference ?
-    # TODO fix pos translations
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
                                                   'Biased term', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
     return df
@@ -73,7 +79,8 @@ def get_sdb_df(debiased_data, t_i):
 
 #region ASSOCIATION SCORES
 def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
-    # means for each bias
+    """Retrieve DataFrame combining association score means grouped by biased terms"""
+
     # filter out biases that are not in BERT vocab
     if no_unk:
         df = df.loc[df['Bias UNK'] == False]
@@ -95,14 +102,13 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
     return res
 
 def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = False):
-    # combination bias means
+    """Retrieve DataFrame combining association score means for short and long sentence"""
+
     if no_unk:
         df = df.loc[df['Bias UNK'] == False]
 
     df = df.copy()
     long_df = long_df.copy()
-
-    # TODO add translations
 
     # rename long columns
     long_df = long_df[['Association', 'Comp. association']].rename({"Association": "Long association", "Comp. association":"Long comp. association"}, 
@@ -118,7 +124,8 @@ def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = Fa
     return result
 
 def get_nat_means(df, file_name=None):
-    # means of each ethnicity
+    """Retrieve DataFrame with association score means grouped by ethnic groups"""
+
     grouped = df[['Biased term', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
     res = grouped.mean().round(des_l).reset_index()
     if file_name != None:
@@ -127,12 +134,13 @@ def get_nat_means(df, file_name=None):
     return res
 
 def get_ent_means(df, file_name=None):
-    # means of each entity in ethnicity
+    """Retrieve DataFrame with association score means grouped by entities and ethnic groups"""
+
     res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(des_l)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
-    return res 
+    return res
 
 def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True, title=""):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
@@ -195,19 +203,21 @@ def get_word_pair_comparison(df, pos_df, file_name):
     df = df.copy()
     pos_df = pos_df.copy()
 
-    # get the words that are biased
-    biased_i = np.where(df['Bias UNK']==False)[0]
-
-    # get opposite pairs for biased terms
+    # filter biased terms to contain only in-vocab words
     df = df.loc[df['Bias UNK'] == False]
+
+    # filter out antonyms that have an out-of-vocab word pair
+    biased_i = np.where(df['Bias UNK']==False)[0]
     pos_df = pos_df.iloc[biased_i]
 
-    # check if opposite pairs in vocab and remove
+    # TODO refactor
+    # filter out out-of-vocab antonyms and their biased term pair 
     for i in pos_df.index.to_list():
         if pos_df.loc[[i]]['Bias UNK'].values[0] == True:
             pos_df.drop(pos_df.loc[[i]].index, inplace=True)
             df.drop(df.loc[[i]].index, inplace=True)
 
+    # TODO add opposite term + translation back, remove comp scores
     # rename pos columns
     pos_df = pos_df[['Biased term', 'Translation', 'Association', 'Comp. association']].rename({"Biased term": "Opposite term", "Association": "Opposite association", "Comp. association":"Opposite comp. association", "Translation":"Opposite translation"}, 
                 axis="columns")
@@ -217,8 +227,9 @@ def get_word_pair_comparison(df, pos_df, file_name):
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
-        with open(f"Results/tables/{file_name}", "w") as file:
-            file.write(result.to_latex())
+        save(f"{tables_dir}{file_name}")
+        # with open(f"Results/tables/{file_name}", "w") as file:
+        #     file.write(result.to_latex())
     return result
 #endregion
 
