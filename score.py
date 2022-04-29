@@ -91,12 +91,11 @@ def mask_tokenized_word(word_i, sent, tokenizer):
     will be masked as ['[MASK],'##lais', '##mies']
     """
     tokenized_sent = get_tokenized_sentence(sent, tokenizer)
-    # retrieve word stem; tokenize the word and select it's first segment
-    # TODO is it possible to have a word tokenized like word## stem?
-    word_stem = tokenizer.tokenize(sent[word_i])[0]
-    word_id = tokenizer.convert_tokens_to_ids(word_stem) # word index in finbert vocab
-    # mask the stem of the word
-    tokenized_sent[tokenized_sent.index(word_stem)] = cn.mask
+    # retrieve word root/stem; tokenize the word and select it's first segment
+    word_root = tokenizer.tokenize(sent[word_i])[0]
+    word_id = tokenizer.convert_tokens_to_ids(word_root) # word index in finbert vocab
+    # mask the root of the word
+    tokenized_sent[tokenized_sent.index(word_root)] = cn.mask
     return tokenized_sent, word_id
 
 def split_sent(sent):

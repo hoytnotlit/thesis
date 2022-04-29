@@ -204,12 +204,13 @@ def get_word_pair_comparison(df, pos_df, file_name):
     df = df.copy()
     pos_df = pos_df.copy()
 
-    # filter biased terms to contain only in-vocab words
-    df = df.loc[df['Bias UNK'] == False]
 
     # filter out antonyms that have an out-of-vocab word pair
     biased_i = np.where(df['Bias UNK']==False)[0]
     pos_df = pos_df.iloc[biased_i]
+
+    # filter biased terms to contain only in-vocab words
+    df = df.loc[df['Bias UNK'] == False]
 
     # TODO refactor
     # filter out out-of-vocab antonyms and their biased term pair 
@@ -218,17 +219,17 @@ def get_word_pair_comparison(df, pos_df, file_name):
             pos_df.drop(pos_df.loc[[i]].index, inplace=True)
             df.drop(df.loc[[i]].index, inplace=True)
 
-    # TODO add opposite term + translation back, remove comp scores
     # rename pos columns
-    pos_df = pos_df[['Biased term', 'Translation', 'Association', 'Comp. association']].rename({"Biased term": "Opposite term", "Association": "Opposite association", "Comp. association":"Opposite comp. association", "Translation":"Opposite translation"}, 
+    #, 'Comp. association'"Comp. association":"Opposite comp. association",
+    pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Opposite term", "Association": "Opposite association", "Translation":"Opposite translation"}, 
                 axis="columns")
-    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Comp. association']]
+    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association']]#, 'Comp. association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Biased term', 'Translation']) #, 'Opposite term', 'Opposite translation'
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Opposite term', 'Opposite translation'])
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
-        save(f"{tables_dir}{file_name}")
+        save(f"{tables_dir}{file_name}", result)
         # with open(f"Results/tables/{file_name}", "w") as file:
         #     file.write(result.to_latex())
     return result
