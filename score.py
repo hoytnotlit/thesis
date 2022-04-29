@@ -3,11 +3,11 @@ import torch
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import numpy as np
 import re
-import config
+import config as conf, consts as cn
 
-device = config.device
-mask = '[MASK]'
-unk = '[UNK]'
+device = conf.device
+#mask = '[MASK]'
+#unk = '[UNK]'
 
 # pass model_name so function can be used e.g for a list of model names
 def get_model(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
@@ -22,7 +22,7 @@ def get_tokenizer(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
     return BertTokenizer.from_pretrained(model_name)
 
 def predict_masked_sent(model, tokenizer, tokenized_text):
-    masked_index = tokenized_text.index(mask)
+    masked_index = tokenized_text.index(cn.mask)
     indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_text)
     tokens_tensor = torch.tensor([indexed_tokens])
     tokens_tensor = tokens_tensor.to(device)
@@ -44,11 +44,11 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     # 2. Mask the target word - target word is the ethnicity
 
     # handle out of vocab ethnicities - they are masked by splitting the word into tokens
-    target_is_unk = target_word_id == tokenizer.convert_tokens_to_ids(unk)
+    target_is_unk = target_word_id == tokenizer.convert_tokens_to_ids(cn.unk)
     if target_is_unk:
         tokenized_sent, target_word_id = mask_tokenized_eth(target_i, masked_sent, tokenizer)
     else:
-        masked_sent[target_i] = mask
+        masked_sent[target_i] = cn.mask
         tokenized_sent = get_tokenized(masked_sent, tokenizer)
     
     # 3. Obtain the probability of target word in the sentence
@@ -61,7 +61,7 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     #creased through the combination with the attribute, with respect to the prior probability
     
     # 4. Mask both target and attribute word
-    masked_sent[attribute_id] = mask
+    masked_sent[attribute_id] = cn.mask
     tokenized_sent = get_tokenized(masked_sent, tokenizer)
     
     # handle out of vocab ethnicities 
@@ -81,7 +81,7 @@ def mask_tokenized_eth(target_i, masked_sent, tokenizer):
     target_word = tokenizer.tokenize(masked_sent[target_i])[0]
     target_word_id = tokenizer.convert_tokens_to_ids(target_word)
     # mask the first part of tokenized ethnicity
-    tokenized_sent[tokenized_sent.index(target_word)] = mask
+    tokenized_sent[tokenized_sent.index(target_word)] = cn.mask
     return tokenized_sent, target_word_id
 
 def get_tokenized(masked_sent, tokenizer):

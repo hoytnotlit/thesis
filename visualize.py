@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 import tikzplotlib
 import matplotlib.pyplot as plt
+import consts as cn
 
-unk = '[UNK]'
+#unk = '[UNK]'
 des_l = 2 # decimal points to keep
 tables_dir = "Results/tables/"
 charts_dir = "Results/charts/"
@@ -40,7 +41,7 @@ def get_df(scores, comp_scores, tokenizer, is_pos=False):
 
         for i in range(len(scores[k])):
             biased = scores[k][i][0] > comp_scores[k][i][0]
-            bias_is_unk = tokenizer.convert_tokens_to_ids(scores[k][i][2]) == tokenizer.convert_tokens_to_ids(unk)
+            bias_is_unk = tokenizer.convert_tokens_to_ids(scores[k][i][2]) == tokenizer.convert_tokens_to_ids(cn.unk)
             association_score = round(scores[k][i][0], des_l)
             comp_association = round(comp_scores[k][i][0], des_l)
             ent = entities_en[scores[k][i][3]] if scores[k][i][3] in entities_en else scores[k][i][3]
