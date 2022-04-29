@@ -1,8 +1,12 @@
-"In summary, the working definition of bias is ...."
+NOTEs 29.4
+Discuss the reliability of the collected biases, consider maybe using a questionnaire to gather data tms to replicate the experiments
+Write about masked language modeling
+--
+ADD: "In summary, the working definition of bias is ...."
 
 Explain more about language models/BERT (how its trained) to non-computational linguists/reader
 
-(Dropout regularization - write about it)
+(Dropout regularization - write about it?)
 
 Explain association score, what do the numbers mean etc, formulas+numbered steps and refer to numbers in text
 

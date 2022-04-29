@@ -59,7 +59,7 @@ def mask_targets(sentences, tokenizer):
                 ent_is_unk = entity_bert_i == tokenizer.convert_tokens_to_ids(unk)
                 
                 if ent_is_unk:
-                    sent, _ = score.mask_tokenized_eth(ent_i, sent, tokenizer)
+                    sent, _ = score.mask_tokenized_word(ent_i, sent, tokenizer)
                 else:
                     sent[ent_i] = mask
 
@@ -92,10 +92,10 @@ def get_probabilities(sentences, model, tokenizer):
         for i, sent in enumerate(sentences[eth]['sents']):
             sent2 = split_masked_sent(c.debiasing_template.format(sent=' '.join(sent)))
             
-            inp = score.get_tokenized(sent, tokenizer)
+            inp = score.get_tokenized_sentence(sent, tokenizer)
             x_probs = score.predict_masked_sent(model, tokenizer, inp)
 
-            inp2 = score.get_tokenized(sent2, tokenizer)
+            inp2 = score.get_tokenized_sentence(sent2, tokenizer)
             sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
 
             new_probs = get_new_probs(x_probs, sdb_probs)
