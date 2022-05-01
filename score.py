@@ -6,8 +6,6 @@ import re
 import config as conf, consts as cn
 
 device = conf.device
-#mask = '[MASK]'
-#unk = '[UNK]'
 
 # TODO extract model specific functions to own module
 #region MODEL
@@ -45,6 +43,7 @@ def get_tokenized_sentence(sent, tokenizer):
 
 #region EVALUATE EXTENT OF BIAS
 def get_association_score(model, tokenizer, sent, target_i, attribute_id):
+    """TODO explain!"""
     # 1. Take a sentence with a target and attribute word
     masked_sent = split_sent(sent)
     # save target word id in bert vocab

@@ -1,6 +1,8 @@
 NOTEs 29.4
 Discuss the reliability of the collected biases, consider maybe using a questionnaire to gather data tms to replicate the experiments
 Write about masked language modeling
+1.5.
+Write about benefits of more context in predicting masked word - maybe results would be more realistic if the sentences have a hint on what the word could be.
 --
 ADD: "In summary, the working definition of bias is ...."
 

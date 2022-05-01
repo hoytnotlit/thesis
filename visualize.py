@@ -4,7 +4,6 @@ import tikzplotlib
 import matplotlib.pyplot as plt
 import consts as cn
 
-#unk = '[UNK]'
 des_l = 2 # decimal points to keep
 tables_dir = "Results/tables/"
 charts_dir = "Results/charts/"

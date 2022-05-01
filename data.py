@@ -31,7 +31,7 @@ def get_context_sentences(context, target_i, attr_i, pos=False):
     # handle opening correct bias files
     bias_file_base = "_biases.txt"
     if pos:
-        bias_file_base = "_pos" + bias_file_base
+        bias_file_base = "_pos" + bias_file_base # TODO refactor to take filename instead
 
     # iterate over each ethnicity
     for ethnicity in ethnicities:
