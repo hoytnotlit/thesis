@@ -1,3 +1,4 @@
+from turtle import pos
 import pandas as pd
 import numpy as np
 import tikzplotlib
@@ -74,6 +75,20 @@ def get_sdb_df(debiased_data, t_i):
                 ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+    return df
+
+def get_ant_prob_df(data, t_i):
+    data_as_list = []
+
+    for k, v in data.items():
+        translations = get_term_translations(f'{k}_pos_biases.txt')
+
+        for i in v:
+            sent = v[i][0]
+            for j, term in enumerate(v[i][1:]):
+                ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
+                data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.'])
     return df
 #endregion
 
