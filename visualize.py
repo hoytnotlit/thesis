@@ -258,4 +258,16 @@ def get_sdb_means(df, file_name=None):
             file.write(res.to_latex(index=False))
     return res
 
+def percentage_change(col1, col2):
+    return ((col1 - col2) / col1) * 100
+
+def get_sdb_ant_df(raw, ant_raw, file_name=None):
+    res = pd.concat([raw, ant_raw[['Antonym', 'Antonym translation', 'Antonym probability']]], axis=1, join="inner")
+    res.groupby(['Ethnicity', 'Biased term']).mean().sort_values(by=['Ethnicity', 'Difference'])
+    # add percentage change as column
+    res = res.assign(Change=percentage_change(res['Original prob.'], res['New prob']).values).sort_values(by="Change", ascending=False)
+
+    if file_name != None:
+        save(f"{tables_dir}{file_name}", res)
+    return res
 #endregion
