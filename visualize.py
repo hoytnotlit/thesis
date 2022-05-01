@@ -88,7 +88,7 @@ def get_ant_prob_df(data, t_i):
             for j, term in enumerate(v[i][1:]):
                 ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
-    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.'])
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Antonym translation', 'Antonym', 'Antonym probability'])
     return df
 #endregion
 
