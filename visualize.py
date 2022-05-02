@@ -79,7 +79,6 @@ def get_sdb_df(debiased_data, t_i):
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
     # add percentage change as column
     df = df.assign(Change=percentage_change(df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
-    df['Change'] = df['Change'].map('{0:.2f} %'.format)
     # rearrange columns
     cols = list(df.columns.values)
     cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
@@ -262,6 +261,7 @@ def get_sdb_means(df, file_name=None):
     # means of each ethnicity
     res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False).reset_index()
     del res['Antonym probability'] # no need for this column
+    res['Change'] = res['Change'].map('{0:.2f} %'.format)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex(index=False))
@@ -269,6 +269,7 @@ def get_sdb_means(df, file_name=None):
 
 def get_top_n_changes(ant_comb, n=10, file_name=None):
     res = ant_comb.head(n)
+    res['Change'] = res['Change'].map('{0:.2f} %'.format)
     if file_name != None:
         save(f'{tables_dir}{file_name}', res, index=False)
     return res
@@ -279,8 +280,7 @@ def percentage_change(col1, col2):
 def get_sdb_ant_df(raw, ant_raw, file_name=None):
     res = pd.concat([raw, ant_raw[['Antonym', 'Antonym translation', 'Antonym probability']]], axis=1, join="inner")
     res.groupby(['Ethnicity', 'Biased term']).mean().sort_values(by=['Ethnicity', 'Difference'])
-    # # add percentage change as column
-    # res = res.assign(Change=percentage_change(res['Original prob.'], res['New prob']).values).sort_values(by="Change", ascending=False)
+    #res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
     if file_name != None:
         save(f"{tables_dir}{file_name}", res)
@@ -288,9 +288,10 @@ def get_sdb_ant_df(raw, ant_raw, file_name=None):
 
 def get_sdb_ant_diff(comb_df, file_name=None):
     # assess whether new probs are less/more than antonym probs
-    res = comb_df.groupby(['Ethnicity']).mean()[['New prob', 'Antonym probability']]
+    res = comb_df.groupby(['Ethnicity']).mean()[['Original prob.', 'New prob', 'Antonym probability']]
     # add difference as column
-    res['Difference'] = res['New prob'] - res['Antonym probability']
+    res['Original difference'] = res['Original prob.'] - res['Antonym probability']
+    res['New difference'] = res['New prob'] - res['Antonym probability']
     res.reset_index()
     if file_name != None:
         save(f"{tables_dir}{file_name}", res)
