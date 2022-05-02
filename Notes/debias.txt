@@ -4,6 +4,8 @@ Write about masked language modeling
 1.5.
 Write about benefits of more context in predicting masked word - maybe results would be more realistic if the sentences have a hint on what the word could be.
 Discussion: do we want to minimize the probability of biased words to 0 or to balance them with the antonyms?
+2.5.
+Idea for readjusting biases: Use FinBERT to get biases! Eg. poro, juntti, pakana
 --
 ADD: "In summary, the working definition of bias is ...."
 
