@@ -71,8 +71,8 @@ def mask_targets(sentences, tokenizer):
                     result[eth]['terms'].append(entity)
     return result
 
-# custom split to maintain [MASK] as individual token
 def split_masked_sent(sent):
+    """Custom sentence splitter to contain [MASK] as an individual token."""
     # replace masked token with a single character
     sent = sent.split()
     sent[sent.index(mask)] = "@"
@@ -82,7 +82,7 @@ def split_masked_sent(sent):
     res[res.index('@')] = mask
     return res
 
-def get_probabilities(sentences, model, tokenizer):
+def get_bert_and_new_probs(sentences, model, tokenizer):
     # (sent, (word, old, new, difference))
     result = {}
 
@@ -112,8 +112,7 @@ def get_probabilities(sentences, model, tokenizer):
             result[eth][i] = (sent, *tuple(temp))
     return result
 
-# TODO rename
-def get_only_probabilities(sentences, model, tokenizer):
+def get_bert_probs(sentences, model, tokenizer):
     # (sent, (word, old, new, difference))
     result = {}
 
@@ -138,16 +137,16 @@ def save_scores(data, file_name):
     with open(f"Results/raw/{file_name}", "w") as f:
         json.dump(data, f)
 
-# TODO get antonym probabilities
-def load_antonym_probabilities(model, tokenizer):
+def save_antonym_probabilities(model, tokenizer):
+    """Save raw probabilities of bias antonyms masked in sentence."""
+
     short_ant = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i, pos=True)
     long_ant = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i, pos=True)
     s_a = mask_attributes(short_ant)
     l_a = mask_attributes(long_ant)
-    save_scores(get_only_probabilities(s_a, model, tokenizer), 'ant_short_probs.json')
-    save_scores(get_only_probabilities(l_a, model, tokenizer), 'ant_long_probs.json')
+    save_scores(get_bert_probs(s_a, model, tokenizer), 'ant_short_probs.json')
+    save_scores(get_bert_probs(l_a, model, tokenizer), 'ant_long_probs.json')
 
-    # make dict like {eth:[sent_tokenized, [masked_word, probability]]}
     # cant use Results/raw/short or long because it saves only the association score, no probabilities
 
 def main():
@@ -159,9 +158,9 @@ def main():
 
     model, tokenizer = score.get_model() # finbert
 
-    save_scores(get_probabilities(s, model, tokenizer), 'sdb_short.json')
-    save_scores(get_probabilities(l, model, tokenizer), 'sdb_long.json')
-    load_antonym_probabilities(model, tokenizer)
+    save_scores(get_bert_and_new_probs(s, model, tokenizer), 'sdb_short.json')
+    save_scores(get_bert_and_new_probs(l, model, tokenizer), 'sdb_long.json')
+    save_antonym_probabilities(model, tokenizer)
 
 if __name__ == "__main__":
     main()

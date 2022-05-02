@@ -26,9 +26,9 @@ def get_term_translations(file, lang='en'):
         res = [line.strip() for line in translations]
     return res
 
-def save(path, result):
+def save(path, result, index=True):
     with open(path, "w") as file:
-        file.write(result.to_latex())
+        file.write(result.to_latex(index=index))
 
 #region RAW DATAFRAMES
 def get_df(scores, comp_scores, tokenizer, is_pos=False):
@@ -72,9 +72,18 @@ def get_sdb_df(debiased_data, t_i):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
-                ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
+                # get english translation for entity (I truly hate doing it like this ᕦ(ò_óˇ)ᕤ)
+                ent_en = [substring for substring in entities_en if substring in sent[t_i]]
+                ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+    # add percentage change as column
+    df = df.assign(Change=percentage_change(df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
+    df['Change'] = df['Change'].map('{0:.2f} %'.format)
+    # rearrange columns
+    cols = list(df.columns.values)
+    cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
+    df = df[cols]
     return df
 
 def get_ant_prob_df(data, t_i):
@@ -86,6 +95,7 @@ def get_ant_prob_df(data, t_i):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
+                target = entities_en # TODO
                 ent = entities_en[sent[t_i]] if sent[t_i] in entities_en else sent[t_i]
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Antonym translation', 'Antonym', 'Antonym probability'])
@@ -235,17 +245,15 @@ def get_word_pair_comparison(df, pos_df, file_name):
 
     # rename pos columns
     #, 'Comp. association'"Comp. association":"Opposite comp. association",
-    pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Opposite term", "Association": "Opposite association", "Translation":"Opposite translation"}, 
+    pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Antonym", "Association": "Antonym association", "Translation":"Opposite translation"}, 
                 axis="columns")
     df = df[['Ethnicity', 'Biased term', 'Translation', 'Association']]#, 'Comp. association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Opposite term', 'Opposite translation'])
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Antonym', 'Opposite translation'])
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
         save(f"{tables_dir}{file_name}", result)
-        # with open(f"Results/tables/{file_name}", "w") as file:
-        #     file.write(result.to_latex())
     return result
 #endregion
 
@@ -253,9 +261,16 @@ def get_word_pair_comparison(df, pos_df, file_name):
 def get_sdb_means(df, file_name=None):
     # means of each ethnicity
     res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False).reset_index()
+    del res['Antonym probability'] # no need for this column
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex(index=False))
+    return res
+
+def get_top_n_changes(ant_comb, n=10, file_name=None):
+    res = ant_comb.head(n)
+    if file_name != None:
+        save(f'{tables_dir}{file_name}', res, index=False)
     return res
 
 def percentage_change(col1, col2):
@@ -264,9 +279,19 @@ def percentage_change(col1, col2):
 def get_sdb_ant_df(raw, ant_raw, file_name=None):
     res = pd.concat([raw, ant_raw[['Antonym', 'Antonym translation', 'Antonym probability']]], axis=1, join="inner")
     res.groupby(['Ethnicity', 'Biased term']).mean().sort_values(by=['Ethnicity', 'Difference'])
-    # add percentage change as column
-    res = res.assign(Change=percentage_change(res['Original prob.'], res['New prob']).values).sort_values(by="Change", ascending=False)
+    # # add percentage change as column
+    # res = res.assign(Change=percentage_change(res['Original prob.'], res['New prob']).values).sort_values(by="Change", ascending=False)
 
+    if file_name != None:
+        save(f"{tables_dir}{file_name}", res)
+    return res
+
+def get_sdb_ant_diff(comb_df, file_name=None):
+    # assess whether new probs are less/more than antonym probs
+    res = comb_df.groupby(['Ethnicity']).mean()[['New prob', 'Antonym probability']]
+    # add difference as column
+    res['Difference'] = res['New prob'] - res['Antonym probability']
+    res.reset_index()
     if file_name != None:
         save(f"{tables_dir}{file_name}", res)
     return res

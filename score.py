@@ -85,8 +85,8 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
 
 def mask_tokenized_word(word_i, sent, tokenizer):
     """
-    Mask a tokenized word (TODO word pieces?) in a sentence
-    e.g. suomenruotsalaismies ['suomenruotsa', '##lais', '##mies']
+    Mask a tokenized word (TODO word pieces?) in a sentence.
+    E.g. suomenruotsalaismies ['suomenruotsa', '##lais', '##mies']
     will be masked as ['[MASK],'##lais', '##mies']
     """
     tokenized_sent = get_tokenized_sentence(sent, tokenizer)
