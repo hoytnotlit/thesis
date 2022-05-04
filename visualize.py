@@ -300,12 +300,16 @@ def get_sdb_ant_diff(comb_df, file_name=None):
 #endregion
 
 def get_top_k_words(file, tokenizer, top_k=10):
+    data_as_list = []
     probs = torch.load(f"Results/raw/dists/{file}")
-    # top k
     top_k_weights, top_k_indices = torch.topk(probs, top_k, sorted=True)
 
-    # convert to natural language
+    # get words
     for i, pred_idx in enumerate(top_k_indices):
-        predicted_token = tokenizer.convert_ids_to_tokens([pred_idx])[0]
-        token_weight = top_k_weights[i]
-        print("[MASK]: '%s'"%predicted_token, " | weights:", float(token_weight))
+        word = tokenizer.convert_ids_to_tokens([pred_idx])[0]
+        print("[MASK]: '%s'"%word, " | weights:", float(top_k_weights[i]))
+        data_as_list.append((word, float(top_k_weights[i])))
+
+    df = pd.DataFrame(data=data_as_list, columns=['Word', 'Probability'])
+    return df
+
