@@ -1,23 +1,71 @@
-NOTEs 29.4
+NOTES 4.5.
+- Show the original distribution vs new one; do the top words change?
+- Do the new probabilities reflect a change in the outcome?
+- Evaluation? Do we observe a qualitative difference?
+- Significance test? Qualitative Analysis?
+- Discussion: changes from exporting technique from one domain/lanuage to another
+- Comparing dropout vs self-debiasing (techniques not requiring annotated resources)
+- Discussion about Template based approach (Caliskan et al 2017) Measuring individual differences in implicit cognition: implicit association test (Greenwald et al)
+- Add Sharid to github
+Next meeting: 7.6. klo 10:30
+
+- Add section about ethical considerations!
+
+Example of changed distribution:
+Tutkimusten mukaan tyypillinen somalimies on usein [MASK] .
+ORIGINAL
+[MASK]: 'väkivaltainen'  | weights: 0.12073605507612228
+[MASK]: 'ylipainoinen'  | weights: 0.09360470622777939
+[MASK]: 'työtön'  | weights: 0.06796379387378693
+[MASK]: 'naimisissa'  | weights: 0.05373149737715721
+[MASK]: 'yksinhuoltaja'  | weights: 0.03227105364203453
+NEW
+[MASK]: 'työtön'  | weights: 0.06796379387378693
+[MASK]: 'naimisissa'  | weights: 0.05373149737715721
+[MASK]: 'väkivaltainen'  | weights: 0.05224063992500305
+[MASK]: 'ylipainoinen'  | weights: 0.04804792255163193
+[MASK]: 'yksinhuoltaja'  | weights: 0.03227105364203453
+
+
+In some cases, the probabilities of biased term does go down but the word is higher up in the new distribution.
+e.g.
+Tutkimusten mukaan tyypillinen Veijo on usein [MASK] .
+ORIGINAL
+[MASK]: 'ylipainoinen'  | weights: 0.12629452347755432
+[MASK]: 'masentunut'  | weights: 0.08804544806480408
+[MASK]: 'nainen'  | weights: 0.05944819748401642
+[MASK]: 'alkoholisti'  | weights: 0.046890534460544586
+[MASK]: 'lihava'  | weights: 0.04385320842266083
+NEW
+[MASK]: 'ylipainoinen'  | weights: 0.12629452347755432
+[MASK]: 'masentunut'  | weights: 0.08804544806480408
+[MASK]: 'alkoholisti'  | weights: 0.04464154317975044
+[MASK]: 'lihava'  | weights: 0.04385320842266083
+[MASK]: 'nainen'  | weights: 0.03524604067206383
+
+
+NOTES 29.4
 Discuss the reliability of the collected biases, consider maybe using a questionnaire to gather data tms to replicate the experiments
 Write about masked language modeling
-1.5.
+NOTES 1.5.
 Write about benefits of more context in predicting masked word - maybe results would be more realistic if the sentences have a hint on what the word could be.
 Discussion: do we want to minimize the probability of biased words to 0 or to balance them with the antonyms?
-2.5.
-Idea for readjusting biases: Use FinBERT to get biases! Eg. poro, juntti, pakana
+NOTES 2.5.
+Idea for readjusting biases: Use FinBERT to get biases! 
+Saamelais:
+poro, juntti, pakana
 --
 ADD: "In summary, the working definition of bias is ...."
 
 Explain more about language models/BERT (how its trained) to non-computational linguists/reader
-
-(Dropout regularization - write about it?)
 
 Explain association score, what do the numbers mean etc, formulas+numbered steps and refer to numbers in text
 
 Fix latex tables (resizebox) p()
 
 arxiv references are not peer reviewed, if possible use real paper (use google scholar to find all references)
+
+(Dropout regularization - write about it?)
 
 Next meeting 4.5. 10:30
 

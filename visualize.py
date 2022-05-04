@@ -4,6 +4,7 @@ import numpy as np
 import tikzplotlib
 import matplotlib.pyplot as plt
 import consts as cn
+import torch 
 
 des_l = 2 # decimal points to keep
 tables_dir = "Results/tables/"
@@ -168,7 +169,7 @@ def get_ent_means(df, file_name=None):
 
 def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True, title=""):
     data = [df['Association'].to_list(), df['Comp. association'].to_list()]
-    ethnicities = df.T.columns.to_list() 
+    ethnicities = df['Ethnicity'].to_list()#df.T.columns.to_list() 
 
     X = np.arange(len(data[0]))
     fig = plt.figure()
@@ -244,11 +245,11 @@ def get_word_pair_comparison(df, pos_df, file_name):
 
     # rename pos columns
     #, 'Comp. association'"Comp. association":"Opposite comp. association",
-    pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Antonym", "Association": "Antonym association", "Translation":"Opposite translation"}, 
+    pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Antonym", "Association": "Antonym association", "Translation":"Antonym translation"}, 
                 axis="columns")
     df = df[['Ethnicity', 'Biased term', 'Translation', 'Association']]#, 'Comp. association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
-    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Antonym', 'Opposite translation'])
+    result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Antonym', 'Antonym translation'])
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
 
     if file_name != None:
@@ -297,3 +298,14 @@ def get_sdb_ant_diff(comb_df, file_name=None):
         save(f"{tables_dir}{file_name}", res)
     return res
 #endregion
+
+def get_top_k_words(file, tokenizer, top_k=10):
+    probs = torch.load(f"Results/raw/dists/{file}")
+    # top k
+    top_k_weights, top_k_indices = torch.topk(probs, top_k, sorted=True)
+
+    # convert to natural language
+    for i, pred_idx in enumerate(top_k_indices):
+        predicted_token = tokenizer.convert_ids_to_tokens([pred_idx])[0]
+        token_weight = top_k_weights[i]
+        print("[MASK]: '%s'"%predicted_token, " | weights:", float(token_weight))

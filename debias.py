@@ -7,8 +7,8 @@ import json
 import re
 
 device = config.device
-mask = consts.mask#'[MASK]'
-unk = consts.unk#'[UNK]'
+mask = consts.mask
+unk = consts.unk
 
 def get_scaling_vector(probs, decay_const=25):
     """
@@ -82,10 +82,9 @@ def split_masked_sent(sent):
     res[res.index('@')] = mask
     return res
 
-def get_bert_and_new_probs(sentences, model, tokenizer):
+def get_bert_and_new_probs(sentences, model, tokenizer, pref=""):
     # (sent, (word, old, new, difference))
     result = {}
-
     for eth in sentences:
         result[eth] = {}
         
@@ -100,6 +99,10 @@ def get_bert_and_new_probs(sentences, model, tokenizer):
 
             new_probs = get_new_probs(x_probs, sdb_probs)
             
+            # save probability distributions
+            torch.save(x_probs, f"Results/raw/dists/{pref}{eth}_{i}_orig")
+            torch.save(new_probs, f"Results/raw/dists/{pref}{eth}_{i}_new")
+
             # track changes of probability on term level
             temp = []
             for term in sentences[eth]['terms']:
@@ -158,8 +161,8 @@ def main():
 
     model, tokenizer = score.get_model() # finbert
 
-    save_scores(get_bert_and_new_probs(s, model, tokenizer), 'sdb_short.json')
-    save_scores(get_bert_and_new_probs(l, model, tokenizer), 'sdb_long.json')
+    save_scores(get_bert_and_new_probs(s, model, tokenizer, pref="s_"), 'sdb_short.json')
+    save_scores(get_bert_and_new_probs(l, model, tokenizer, pref="l_"), 'sdb_long.json')
     save_antonym_probabilities(model, tokenizer)
 
 if __name__ == "__main__":

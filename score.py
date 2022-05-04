@@ -7,9 +7,7 @@ import config as conf, consts as cn
 
 device = conf.device
 
-# TODO extract model specific functions to own module
 #region MODEL
-# pass model_name so function can be used e.g for a list of model names
 def get_model(model_name = 'TurkuNLP/bert-base-finnish-cased-v1'):
     """Import model and tokenizer for masked LM task"""
     tokenizer = get_tokenizer(model_name)
