@@ -50,12 +50,20 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
     # 5. Obtain the prior probability, i.e. the probability of the target word when the attribute is masked
     # 6. Calculate the association by dividing the target probability by the prior and take the natural logarithm
 
-    #For interpretation, a negative association between a target and an attribute means that the probability
-    #of the target is lower than the prior probability, i.e. the probability of the target decreased through the
-    #combination with the attribute. A positive association value means that the probability of the target in
-    #creased through the combination with the attribute, with respect to the prior probability
+    For interpretation, a negative association between a target and an attribute means that the probability
+    of the target is lower than the prior probability, i.e. the probability of the target decreased through the
+    combination with the attribute. A positive association value means that the probability of the target in
+    creased through the combination with the attribute, with respect to the prior probability
     
     """
+    # get target word probability and prior probability
+    target_prob, prior_prob = get_sentence_probabilities(model, tokenizer, sent, target_i, attribute_id)
+    
+    # calculate association score
+    association_score  = np.log(float(target_prob/prior_prob))
+    return association_score
+
+def get_sentence_probabilities(model, tokenizer, sent, target_i, attribute_id):
     masked_sent = split_sent(sent)
     target_word_id = tokenizer.convert_tokens_to_ids(masked_sent[target_i]) # store target word id in bert vocab
     
@@ -81,10 +89,7 @@ def get_association_score(model, tokenizer, sent, target_i, attribute_id):
 
     # retreive prior probability of the target word, select using word id
     prior_prob = predict_masked_sent(model, tokenizer, tokenized_sent)[target_word_id]
-    
-    # calculate association score
-    association_score  = np.log(float(target_prob/prior_prob))
-    return association_score
+    return target_prob, prior_prob
 
 def mask_tokenized_word(word_i, sent, tokenizer):
     """
@@ -107,7 +112,7 @@ def split_sent(sent):
     return re.findall(r"\w+|[^\w\s]", sent)
 
 def process_scores(model, tokenizer, sentence_dict):
-    """Run processing of association scores for a dictionary of sentences."""
+    """Retrieve association scores for a dictionary of sentences."""
     scores = {}
     control_scores = {}
 

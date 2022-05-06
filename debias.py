@@ -76,8 +76,10 @@ def split_masked_sent(sent):
     # replace masked token with a single character
     sent = sent.split()
     sent[sent.index(mask)] = "@"
+
     # split the sentence into tokens
     res = re.findall(r"\w+|[^\w\s]", ' '.join(sent))
+    
     # add mask token back
     res[res.index('@')] = mask
     return res
