@@ -100,6 +100,29 @@ def get_ant_prob_df(data, t_i):
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Antonym translation', 'Antonym', 'Antonym probability'])
     return df
+
+# def get_dro_df(data, t_i):
+#     data_as_list = []
+#     cols = ['Ethnicity', 'Entity', 'Translation', 'Biased term', 'New prob.']
+
+#     for k, v in data.items():
+#         translations = get_term_translations(f'{k}_biases.txt')
+
+#         for i in v:
+#             sent = v[i][0]
+#             for j, term in enumerate(v[i][1:]):
+#                 # get english translation for entity (I truly hate doing it like this ᕦ(ò_óˇ)ᕤ)
+#                 ent_en = [substring for substring in entities_en if substring in sent[t_i]]
+#                 ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
+#                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
+#     df = pd.DataFrame(data=data_as_list, columns=cols)
+#     # add percentage change as column
+#     #df = df.assign(Change=percentage_change(df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
+#     # rearrange columns
+#     cols = list(df.columns.values)
+#     cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
+#     df = df[cols]
+#     return df
 #endregion
 
 #region ASSOCIATION SCORES
@@ -261,7 +284,8 @@ def get_word_pair_comparison(df, pos_df, file_name):
 def get_sdb_means(df, file_name=None):
     # means of each ethnicity
     res = df.groupby(df['Ethnicity']).mean().sort_values("Difference", ascending=False).reset_index()
-    del res['Antonym probability'] # no need for this column
+    if 'Antonym probability' in res.columns:
+        del res['Antonym probability'] # no need for this column
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
