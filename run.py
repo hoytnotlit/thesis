@@ -3,8 +3,8 @@ import data, score, context as ctx
 
 def run_bias_analysis():
     # short sentences
-    #short_result = data.get_context_sentences(ctx.context, ctx.context_t_i, ctx.context_a_i)
-    #short_pos_result = data.get_context_sentences(ctx.context, ctx.context_t_i, ctx.context_a_i, pos=True)
+    short_result = data.get_context_sentences(ctx.context, ctx.context_t_i, ctx.context_a_i)
+    short_pos_result = data.get_context_sentences(ctx.context, ctx.context_t_i, ctx.context_a_i, pos=True)
 
     # long sentences
     long_result = data.get_context_sentences(ctx.context_long, ctx.context_long_t_i, ctx.context_long_a_i)
@@ -14,8 +14,8 @@ def run_bias_analysis():
     # TODO try multilingual bert in comparison
     # model, tokenizer = score.get_model("bert-base-multilingual-cased")
 
-    #save_scores(score.process_scores(model, tokenizer, short_result), "short.json")
-    #save_scores(score.process_scores(model, tokenizer, short_pos_result), "pos_short.json")
+    save_scores(score.process_scores(model, tokenizer, short_result), "short.json")
+    save_scores(score.process_scores(model, tokenizer, short_pos_result), "pos_short.json")
     save_scores(score.process_scores(model, tokenizer, long_result), "long.json")
     save_scores(score.process_scores(model, tokenizer, long_pos_result), "pos_long.json")
 
