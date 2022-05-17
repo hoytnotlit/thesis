@@ -60,8 +60,8 @@ def get_df(scores, comp_scores, tokenizer, is_pos=False):
                                 bias_is_unk            # term not in vocab
                                 ))
     # TODO add difference ?
-    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Comp. target', 'Entity',
-                                                  'Biased term', 'Translation', 'Association', 'Comp. association', 'Biased', 'Bias UNK'])
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Target', 'Control target', 'Entity',
+                                                  'Biased term', 'Translation', 'Association', 'Control association', 'Biased', 'Bias UNK'])
     return df
 
 def get_sdb_df(debiased_data, t_i):
@@ -134,10 +134,10 @@ def get_bias_means(df, no_unk = False, only_biased = False, file_name=None):
         df = df.loc[df['Bias UNK'] == False]
     # getting the biases which have a higher association in ethnic group
     if only_biased:
-        df = df.loc[df['Association'] > df['Comp. association']]
+        df = df.loc[df['Association'] > df['Control association']]
 
     grouped = df.groupby(['Ethnicity', 'Biased term', 'Translation'])
-    res = grouped[['Association', 'Comp. association']].mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])#, ascending=False)
+    res = grouped[['Association', 'Control association']].mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])#, ascending=False)
     # TODO how can I sort so that group with largest association score is first??
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -159,9 +159,9 @@ def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = Fa
     long_df = long_df.copy()
 
     # rename long columns
-    long_df = long_df[['Association', 'Comp. association']].rename({"Association": "Long association", "Comp. association":"Long comp. association"}, 
+    long_df = long_df[['Association', 'Control association']].rename({"Association": "Long association", "Control association":"Long Control association"}, 
                 axis="columns")
-    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Comp. association']]
+    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association', 'Control association']]
     result = pd.concat([df, long_df], axis=1, join="inner")
     result = result.groupby(['Ethnicity', 'Biased term', 'Translation'])
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
@@ -174,7 +174,7 @@ def get_comb_bias_means(df, long_df, file_name, no_unk = False, only_biased = Fa
 def get_nat_means(df, file_name=None):
     """Retrieve DataFrame with association score means grouped by ethnic groups"""
 
-    grouped = df[['Biased term', 'Association', 'Comp. association']].groupby(df['Ethnicity'])
+    grouped = df[['Biased term', 'Association', 'Control association']].groupby(df['Ethnicity'])
     res = grouped.mean().round(des_l).reset_index()
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
@@ -184,14 +184,14 @@ def get_nat_means(df, file_name=None):
 def get_ent_means(df, file_name=None):
     """Retrieve DataFrame with association score means grouped by entities and ethnic groups"""
 
-    res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Comp. association']].mean().round(des_l)
+    res = df.groupby(['Ethnicity', 'Entity'])[['Association', 'Control association']].mean().round(des_l)
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex())
     return res
 
 def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True, title=""):
-    data = [df['Association'].to_list(), df['Comp. association'].to_list()]
+    data = [df['Association'].to_list(), df['Control association'].to_list()]
     ethnicities = df['Ethnicity'].to_list()#df.T.columns.to_list() 
 
     X = np.arange(len(data[0]))
@@ -211,8 +211,8 @@ def get_eth_mean_chart(df, file_name="nat_mean.tex", save=True, title=""):
     tikzplotlib.save(f'Results/charts/{file_name}')
 
 def save_ent_mean_chart(df, file_name):
-    df = df.groupby(['Entity'])[['Association', 'Comp. association']].mean().round(des_l)
-    data = [df['Association'].to_list(), df['Comp. association'].to_list()]
+    df = df.groupby(['Entity'])[['Association', 'Control association']].mean().round(des_l)
+    data = [df['Association'].to_list(), df['Control association'].to_list()]
     entities = df.T.columns.to_list() 
 
     X = np.arange(len(data[0]))
@@ -231,7 +231,7 @@ def save_ent_mean_chart(df, file_name):
 
 def save_bias_mean_chart(df, file_name):
     df.index = df.index.droplevel()
-    data = [df['Association'].to_list(), df['Comp. association'].to_list()]
+    data = [df['Association'].to_list(), df['Control association'].to_list()]
     entities = df.T.columns.to_list()
 
     Y = np.arange(len(data[0]))
@@ -267,10 +267,10 @@ def get_word_pair_comparison(df, pos_df, file_name):
             df.drop(df.loc[[i]].index, inplace=True)
 
     # rename pos columns
-    #, 'Comp. association'"Comp. association":"Opposite comp. association",
+    #, 'Control association'"Control association":"Opposite Control association",
     pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Antonym", "Association": "Antonym association", "Translation":"Antonym translation"}, 
                 axis="columns")
-    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association']]#, 'Comp. association']]
+    df = df[['Ethnicity', 'Biased term', 'Translation', 'Association']]#, 'Control association']]
     result = pd.concat([df, pos_df], axis=1, join="inner")
     result = result.groupby(['Ethnicity', 'Biased term', 'Translation', 'Antonym', 'Antonym translation'])
     result = result.mean().round(des_l).sort_values(by=['Ethnicity', 'Association'])
