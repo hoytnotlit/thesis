@@ -1,25 +1,16 @@
-import data, score, self_debias as sdb
+import data, score, self_debias as sdb, context as c
 import json
 import torch
 
 model_path = 'test-mlm/'
 
-context = 'Tutkimusten mukaan tyypillinen {target} on usein {attribute}.'
-context_t_i = 3
-context_a_i = 6
-
-context_long = 'Helsingissä asuva {target} haluaa olla Suomen ensimmäinen \
-presidentti, jolla on {attribute} vanhempi.'
-context_long_t_i = 2
-context_long_a_i = 11
-
 def run_bias_analysis():
     # short sentences
-    short = data.get_context_sentences(context, context_t_i, context_a_i)
+    short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
     #pos_result = data.get_context_sentences(context, context_t_i, context_a_i, pos=True)
 
     # long sentences
-    long = data.get_context_sentences(context_long, context_long_t_i, context_long_a_i)
+    long = data.get_context_sentences(c.context_long, c.context_long_t_i, c.context_long_a_i)
     #long_pos_result = data.get_context_sentences(context_long, context_long_t_i, context_long_a_i, pos=True)
 
     s = sdb.mask_attributes(short)
@@ -73,3 +64,4 @@ def save_scores(jscores, file_name):
 
 if __name__ == "__main__":
     run_bias_analysis()
+    # TODO run antonym probabilities
