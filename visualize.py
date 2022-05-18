@@ -1,4 +1,4 @@
-from turtle import pos
+# from turtle import pos
 import pandas as pd
 import numpy as np
 import tikzplotlib
@@ -365,21 +365,31 @@ def get_sdb_ant_diff(comb_df, file_name=None):
     if file_name != None:
         save(f"{tables_dir}{file_name}", res)
     return res
-# endregion
 
-# region GENERAL
 
+def get_top_k_df(debiased, tokenizer, t_i, label, k=5):
+    # top_k_data: suomenruotsalaismies, old top n, old top n probability, new top n, new top n probability
+    # t_i is passed as an arguement to get the entity names since they were not saved separately when saving the values
+    top_k_data = []
+    for eth in debiased:
+        for i, sent in debiased[eth].items():
+            orig = get_top_k_words(f"s_{eth}_{i}_orig", tokenizer, k)
+            new = get_top_k_words(f"s_{eth}_{i}_{label}", tokenizer, k)
+            for j in range(k):
+                top_k_data.append((ethnicities_en[eth], sent[0][t_i], *orig[j], *new[j]))
+    df = pd.DataFrame(data=top_k_data)
+    return df
 
 def get_top_k_words(file, tokenizer, top_k=10):
     """
-    Get the top k words from probability distribution saved in a file.
+    Get the top k words as a list of tuples from probability distribution saved in a file.
     """
     probs = torch.load(f"{dists_dir}{file}") # load torch tensor file
     # get top k probabilities and vocabulary indices
     top_probs, top_indices = torch.topk(probs, top_k, sorted=True)
-    # convert to list of tuples for dataframe
+    # convert to list of tuples
     data = [(tokenizer.convert_ids_to_tokens([word_i])[0], float(
         top_probs[i])) for i, word_i in enumerate(top_indices)]
-    df = pd.DataFrame(data=data, columns=['Word', 'Probability'])
-    return df
-    # endregion
+    #df = pd.DataFrame(data=data, columns=['Word', 'Probability'])
+    return data
+# endregion
