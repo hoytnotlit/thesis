@@ -92,6 +92,7 @@ def get_sdb_df(debiased_data, t_i, tokenizer):
                     (ethnicities_en[k], ent, translations[j], *term, bias_is_unk))
     df = pd.DataFrame(data=data_as_list, columns=[
                       'Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference', 'Bias UNK'])
+    # TODO the percentage changes are wrong when averaged
     # add percentage change as column
     df = df.assign(Change=percentage_change(
         df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
@@ -111,7 +112,12 @@ def get_ant_prob_df(data, t_i):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
-                target = entities_en  # TODO
+                # TODO temp solution, add old probability to self-debias as well!
+                # dropout scores save 3 values, new probability, old probability and difference
+                # self-debias saves only 1 value, new probability
+                if len(term) > 2:
+                    term = term[:2]
+
                 ent = entities_en[sent[t_i]
                                   ] if sent[t_i] in entities_en else sent[t_i]
                 data_as_list.append(
