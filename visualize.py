@@ -372,19 +372,32 @@ def get_top_k_df(debiased, tokenizer, t_i, label, k=5):
     # t_i is passed as an arguement to get the entity names since they were not saved separately when saving the values
     top_k_data = []
     for eth in debiased:
+        translations = {} # TODO think about making a dictionary #get_term_translations(f'{eth}_biases.txt')
+
         for i, sent in debiased[eth].items():
             orig = get_top_k_words(f"s_{eth}_{i}_orig", tokenizer, k)
             new = get_top_k_words(f"s_{eth}_{i}_{label}", tokenizer, k)
+
             for j in range(k):
-                top_k_data.append((ethnicities_en[eth], sent[0][t_i], *orig[j], *new[j]))
+                # hacky way of getting english translations
+                ent_en = [
+                    substring for substring in entities_en if substring in sent[0][t_i]]
+                ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[0][t_i] # this is truly the worst
+
+                orig_en = f"{orig[j][0]} ({translations[orig[j][0]]})" if orig[j][0] in translations else orig[j][0]
+                new_en = f"{new[j][0]} ({translations[new[j][0]]})" if new[j][0] in translations else new[j][0]
+
+                top_k_data.append(
+                    (ethnicities_en[eth], ent, orig_en, orig[j][1], new_en, new[j][1]))
     df = pd.DataFrame(data=top_k_data)
     return df
+
 
 def get_top_k_words(file, tokenizer, top_k=10):
     """
     Get the top k words as a list of tuples from probability distribution saved in a file.
     """
-    probs = torch.load(f"{dists_dir}{file}") # load torch tensor file
+    probs = torch.load(f"{dists_dir}{file}")  # load torch tensor file
     # get top k probabilities and vocabulary indices
     top_probs, top_indices = torch.topk(probs, top_k, sorted=True)
     # convert to list of tuples
@@ -392,4 +405,14 @@ def get_top_k_words(file, tokenizer, top_k=10):
         top_probs[i])) for i, word_i in enumerate(top_indices)]
     #df = pd.DataFrame(data=data, columns=['Word', 'Probability'])
     return data
+
+
+def combine_top_k(sdb_top_k, dro_top_k):
+    top_k_s = sdb_top_k.copy()
+    top_k_s['Dropout top k word'] = dro_top_k[4]
+    top_k_s['Dropout top k word probability'] = dro_top_k[5]
+    top_k_s = top_k_s.rename(columns={0: "Ethnicity", 1: "Entity", 2: "Original top k word",
+                             3: "Original top k word probability", 4: "Self-debias top k word", 5: "Self-debias top k word probabilitity"})
+    return top_k_s
+
 # endregion

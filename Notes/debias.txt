@@ -1,3 +1,5 @@
+"Debiasing or rebiasing? How debiasing techniques apply to mitigating ethnic biases in FinBERT"
+
 NOTES 4.5.
 - Show the original distribution vs new one; do the top words change?
 - Do the new probabilities reflect a change in the outcome?
