@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import consts as cn
 import torch
 
-des_l = 2  # decimal points to keep
+des_l = 2  # decimal points to keep for display
 tables_dir = "Results/tables/"
 charts_dir = "Results/charts/"
+dists_dir = "Results/raw/dists/"
 
 # English translations for display
 ethnicities_en = {
@@ -310,7 +311,7 @@ def get_sdb_means(df, file_name=None):
 
     # recalculate percentage changes (we dont want the average change)
     res['Change'] = percentage_change(
-        res['Original prob.'], res['New prob']).values    
+        res['Original prob.'], res['New prob']).values
     res = res.sort_values(by="Change", ascending=False)
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
@@ -366,17 +367,19 @@ def get_sdb_ant_diff(comb_df, file_name=None):
     return res
 # endregion
 
+# region GENERAL
+
 
 def get_top_k_words(file, tokenizer, top_k=10):
-    data_as_list = []
-    probs = torch.load(f"Results/raw/dists/{file}")
-    top_k_weights, top_k_indices = torch.topk(probs, top_k, sorted=True)
-
-    # get words
-    for i, pred_idx in enumerate(top_k_indices):
-        word = tokenizer.convert_ids_to_tokens([pred_idx])[0]
-        print("[MASK]: '%s'" % word, " | weights:", float(top_k_weights[i]))
-        data_as_list.append((word, float(top_k_weights[i])))
-
-    df = pd.DataFrame(data=data_as_list, columns=['Word', 'Probability'])
+    """
+    Get the top k words from probability distribution saved in a file.
+    """
+    probs = torch.load(f"{dists_dir}{file}") # load torch tensor file
+    # get top k probabilities and vocabulary indices
+    top_probs, top_indices = torch.topk(probs, top_k, sorted=True)
+    # convert to list of tuples for dataframe
+    data = [(tokenizer.convert_ids_to_tokens([word_i])[0], float(
+        top_probs[i])) for i, word_i in enumerate(top_indices)]
+    df = pd.DataFrame(data=data, columns=['Word', 'Probability'])
     return df
+    # endregion
