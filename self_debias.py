@@ -159,15 +159,9 @@ def save_scores(data, file_name):
         json.dump(data, f)
 
 
-def save_antonym_probabilities(model, tokenizer):
+def save_antonym_probabilities(s_a, l_a, model, tokenizer):
     """Save raw probabilities of bias antonyms masked in sentence."""
 
-    short_ant = data.get_context_sentences(
-        c.context, c.context_t_i, c.context_a_i, pos=True)
-    long_ant = data.get_context_sentences(
-        c.context, c.context_t_i, c.context_a_i, pos=True)
-    s_a = mask_attributes(short_ant)
-    l_a = mask_attributes(long_ant)
     save_scores(get_bert_probs(s_a, model, tokenizer), 'ant_short_probs.json')
     save_scores(get_bert_probs(l_a, model, tokenizer), 'ant_long_probs.json')
 
@@ -178,10 +172,16 @@ def main():
     short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
     long = data.get_context_sentences(
         c.context_long, c.context_long_t_i, c.context_long_a_i)
+    short_ant = data.get_context_sentences(
+        c.context, c.context_t_i, c.context_a_i, pos=True)
+    long_ant = data.get_context_sentences(
+        c.context, c.context_t_i, c.context_a_i, pos=True)
 
     s = mask_attributes(short)
     l = mask_attributes(long)
-
+    s_a = mask_attributes(short_ant)
+    l_a = mask_attributes(long_ant)
+    
     model, tokenizer = score.get_model()  # finbert
 
     save_scores(get_bert_and_new_probs(
@@ -189,8 +189,12 @@ def main():
     save_scores(get_bert_and_new_probs(
         l, model, tokenizer, pref="l_"), 'sdb_long.json')
 
-    # TODO these should be debiased too
-    save_antonym_probabilities(model, tokenizer)
+    # save_antonym_probabilities(s_a, l_a, model, tokenizer)
+    save_scores(get_bert_and_new_probs(
+        s_a, model, tokenizer, pref="s_"), 'ant_short_probs.json')
+    save_scores(get_bert_and_new_probs(
+        l_a, model, tokenizer, pref="s_"), 'ant_long_probs.json')
+
 
 
 if __name__ == "__main__":
