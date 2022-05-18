@@ -92,7 +92,6 @@ def get_sdb_df(debiased_data, t_i, tokenizer):
                     (ethnicities_en[k], ent, translations[j], *term, bias_is_unk))
     df = pd.DataFrame(data=data_as_list, columns=[
                       'Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference', 'Bias UNK'])
-    # TODO the percentage changes are wrong when averaged
     # add percentage change as column
     df = df.assign(Change=percentage_change(
         df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
@@ -284,7 +283,6 @@ def get_word_pair_comparison(df, pos_df, file_name):
             df.drop(df.loc[[i]].index, inplace=True)
 
     # rename pos columns
-    # , 'Control association'"Control association":"Opposite Control association",
     pos_df = pos_df[['Biased term', 'Translation', 'Association']].rename({"Biased term": "Antonym", "Association": "Antonym association", "Translation": "Antonym translation"},
                                                                           axis="columns")
     # , 'Control association']]
@@ -309,7 +307,15 @@ def get_sdb_means(df, file_name=None):
         "Difference", ascending=False).reset_index()
     if 'Antonym probability' in res.columns:
         del res['Antonym probability']  # no need for this column
+
+    # recalculate percentage changes (we dont want the average change)
+    res['Change'] = percentage_change(
+        res['Original prob.'], res['New prob']).values    
+    res = res.sort_values(by="Change", ascending=False)
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
+
+    del res['Bias UNK']
+
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
             file.write(res.to_latex(index=False))
@@ -322,6 +328,9 @@ def get_top_n_changes(ant_comb, n=10, file_name=None, no_unk=False):
 
     res = ant_comb.head(n)
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
+
+    del res['Bias UNK']
+
     if file_name != None:
         save(f'{tables_dir}{file_name}', res, index=False)
     return res
