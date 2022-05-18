@@ -165,6 +165,8 @@ def main():
 
     save_scores(get_bert_and_new_probs(s, model, tokenizer, pref="s_"), 'sdb_short.json')
     save_scores(get_bert_and_new_probs(l, model, tokenizer, pref="l_"), 'sdb_long.json')
+
+    # TODO these should be debiased too
     save_antonym_probabilities(model, tokenizer)
 
 if __name__ == "__main__":

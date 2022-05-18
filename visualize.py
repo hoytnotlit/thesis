@@ -64,7 +64,7 @@ def get_df(scores, comp_scores, tokenizer, is_pos=False):
                                                   'Biased term', 'Translation', 'Association', 'Control association', 'Biased', 'Bias UNK'])
     return df
 
-def get_sdb_df(debiased_data, t_i):
+def get_sdb_df(debiased_data, t_i, tokenizer):
     data_as_list = []
 
     for k, v in debiased_data.items():
@@ -73,11 +73,12 @@ def get_sdb_df(debiased_data, t_i):
         for i in v:
             sent = v[i][0]
             for j, term in enumerate(v[i][1:]):
+                bias_is_unk = tokenizer.convert_tokens_to_ids(term[0]) == tokenizer.convert_tokens_to_ids(cn.unk)
                 # get english translation for entity (I truly hate doing it like this ᕦ(ò_óˇ)ᕤ)
                 ent_en = [substring for substring in entities_en if substring in sent[t_i]]
                 ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
-                data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
-    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference'])
+                data_as_list.append((ethnicities_en[k], ent, translations[j], *term, bias_is_unk))
+    df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference', 'Bias UNK'])
     # add percentage change as column
     df = df.assign(Change=percentage_change(df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
     # rearrange columns
@@ -100,29 +101,6 @@ def get_ant_prob_df(data, t_i):
                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
     df = pd.DataFrame(data=data_as_list, columns=['Ethnicity', 'Entity', 'Antonym translation', 'Antonym', 'Antonym probability'])
     return df
-
-# def get_dro_df(data, t_i):
-#     data_as_list = []
-#     cols = ['Ethnicity', 'Entity', 'Translation', 'Biased term', 'New prob.']
-
-#     for k, v in data.items():
-#         translations = get_term_translations(f'{k}_biases.txt')
-
-#         for i in v:
-#             sent = v[i][0]
-#             for j, term in enumerate(v[i][1:]):
-#                 # get english translation for entity (I truly hate doing it like this ᕦ(ò_óˇ)ᕤ)
-#                 ent_en = [substring for substring in entities_en if substring in sent[t_i]]
-#                 ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
-#                 data_as_list.append((ethnicities_en[k], ent, translations[j], *term))
-#     df = pd.DataFrame(data=data_as_list, columns=cols)
-#     # add percentage change as column
-#     #df = df.assign(Change=percentage_change(df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
-#     # rearrange columns
-#     cols = list(df.columns.values)
-#     cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
-#     df = df[cols]
-#     return df
 #endregion
 
 #region ASSOCIATION SCORES
@@ -292,7 +270,10 @@ def get_sdb_means(df, file_name=None):
             file.write(res.to_latex(index=False))
     return res
 
-def get_top_n_changes(ant_comb, n=10, file_name=None):
+def get_top_n_changes(ant_comb, n=10, file_name=None, no_unk = False):
+    if no_unk:
+        ant_comb = ant_comb.loc[ant_comb['Bias UNK'] == False]
+
     res = ant_comb.head(n)
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
     if file_name != None:
