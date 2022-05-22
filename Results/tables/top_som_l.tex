@@ -1,31 +1,31 @@
 \begin{tabular}{llrlrlr}
 \toprule
- Entity &           Original top k word &  Original top k word probability &        Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
+ Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &        Dropout top k word &  Dropout top k word probability \\
 \midrule
-  woman &    ylipainoinen (over-weight) &                         0.143955 &          naimisissa (married) &                              0.098319 &       naimisissa (married) &                        0.119620 \\
-  woman &          naimisissa (married) &                         0.098319 & yksinhuoltaja (single parent) &                              0.095665 &                      lesbo &                        0.080000 \\
-  woman & yksinhuoltaja (single parent) &                         0.095665 &           raskaana (pregnant) &                              0.074589 &             nainen (woman) &                        0.073869 \\
-  woman &           raskaana (pregnant) &                         0.074589 &           työtön (unemployed) &                              0.053301 &                 mies (man) &                        0.071221 \\
-  woman &           työtön (unemployed) &                         0.053301 &    ylipainoinen (over-weight) &                              0.050087 & ylipainoinen (over-weight) &                        0.027699 \\
-    man &       väkivaltainen (violent) &                         0.120736 &           työtön (unemployed) &                              0.067964 &       naimisissa (married) &                        0.113890 \\
-    man &    ylipainoinen (over-weight) &                         0.093605 &          naimisissa (married) &                              0.053732 &             nainen (woman) &                        0.082817 \\
-    man &           työtön (unemployed) &                         0.067964 &       väkivaltainen (violent) &                              0.052242 &                 mies (man) &                        0.073008 \\
-    man &          naimisissa (married) &                         0.053732 &    ylipainoinen (over-weight) &                              0.048048 &      suomalainen (Finnish) &                        0.053840 \\
-    man & yksinhuoltaja (single parent) &                         0.032271 & yksinhuoltaja (single parent) &                              0.032271 &            somali (Somali) &                        0.053024 \\
- person &           työtön (unemployed) &                         0.064923 &           työtön (unemployed) &                              0.064923 &            somali (Somali) &                        0.227155 \\
- person &    ylipainoinen (over-weight) &                         0.063376 &        masentunut (depressed) &                              0.053884 &             nainen (woman) &                        0.130315 \\
- person &        masentunut (depressed) &                         0.053884 &    ylipainoinen (over-weight) &                              0.048777 &                 mies (man) &                        0.083905 \\
- person & yksinhuoltaja (single parent) &                         0.041805 & yksinhuoltaja (single parent) &                              0.041805 &      suomalainen (Finnish) &                        0.048846 \\
- person &                nainen (woman) &                         0.039231 &                nainen (woman) &                              0.032456 &  ulkomaalainen (foreigner) &                        0.019038 \\
-   Isra &         masennus (depression) &                         0.105128 &         masennus (depression) &                              0.105128 &       juutalainen (Jewish) &                        0.089410 \\
-   Isra &                nainen (woman) &                         0.040442 &        masentunut (depressed) &                              0.021851 &             nainen (woman) &                        0.063062 \\
-   Isra &                    mies (man) &                         0.023317 &   aggressiivinen (aggressive) &                              0.014524 &           muslimi (Muslim) &                        0.055196 \\
-   Isra &        masentunut (depressed) &                         0.022655 &                  pitkä (tall) &                              0.013443 &                 mies (man) &                        0.054610 \\
-   Isra &    ylipainoinen (over-weight) &                         0.022023 &            vaikea (difficult) &                              0.012166 &       naimisissa (married) &                        0.049701 \\
-Mohamed &                nainen (woman) &                         0.075508 &                nainen (woman) &                              0.075508 &       naimisissa (married) &                        0.212432 \\
-Mohamed &                    mies (man) &                         0.059815 &                    mies (man) &                              0.059815 &    väkivaltainen (violent) &                        0.033437 \\
-Mohamed &        masentunut (depressed) &                         0.058322 &        masentunut (depressed) &                              0.058322 &                 mies (man) &                        0.031954 \\
-Mohamed &    ylipainoinen (over-weight) &                         0.041710 &    ylipainoinen (over-weight) &                              0.041710 &             nainen (woman) &                        0.023874 \\
-Mohamed &       alkoholisti (alcoholic) &                         0.031900 &       alkoholisti (alcoholic) &                              0.028423 &    alkoholisti (alcoholic) &                        0.023551 \\
+  woman &     suomalainen (Finnish) &                         0.445914 &                    somali &                              0.303213 &     suomalainen (Finnish) &                        0.402298 \\
+  woman &                    somali &                         0.303213 &     suomalainen (Finnish) &                              0.125895 &                    somali &                        0.215149 \\
+  woman &          muslimi (Muslim) &                         0.033976 &          muslimi (Muslim) &                              0.033976 &                  vanhempi &                        0.055949 \\
+  woman &            nainen (woman) &                         0.025761 &            nainen (woman) &                              0.025761 &                     lapsi &                        0.041745 \\
+  woman & ulkomaalainen (foreigner) &                         0.020626 & ulkomaalainen (foreigner) &                              0.020626 &            nainen (woman) &                        0.018834 \\
+    man &     suomalainen (Finnish) &                         0.403806 &                    somali &                              0.340640 &                    somali &                        0.379323 \\
+    man &                    somali &                         0.340640 &     suomalainen (Finnish) &                              0.092076 &     suomalainen (Finnish) &                        0.359736 \\
+    man &          muslimi (Muslim) &                         0.038423 &          muslimi (Muslim) &                              0.038423 &                  vanhempi &                        0.044489 \\
+    man &            nainen (woman) &                         0.024982 &            nainen (woman) &                              0.024982 & ulkomaalainen (foreigner) &                        0.016707 \\
+    man &            suomenkielinen &                         0.018007 &            suomenkielinen &                              0.018007 &                     lapsi &                        0.015120 \\
+ person &     suomalainen (Finnish) &                         0.402627 &                    somali &                              0.356085 &                    somali &                        0.390352 \\
+ person &                    somali &                         0.356085 &     suomalainen (Finnish) &                              0.216890 &     suomalainen (Finnish) &                        0.350215 \\
+ person &          muslimi (Muslim) &                         0.032476 &          muslimi (Muslim) &                              0.032476 &                  vanhempi &                        0.032428 \\
+ person &            suomenkielinen &                         0.020848 &            suomenkielinen &                              0.020848 &                     lapsi &                        0.016382 \\
+ person &            nainen (woman) &                         0.018457 &            nainen (woman) &                              0.018457 & ulkomaalainen (foreigner) &                        0.014987 \\
+   Isra &            nainen (woman) &                         0.344665 &            nainen (woman) &                              0.344665 &                  vanhempi &                        0.116782 \\
+   Isra &     suomalainen (Finnish) &                         0.118554 &     suomalainen (Finnish) &                              0.059197 &                     lapsi &                        0.085882 \\
+   Isra &                     lapsi &                         0.040122 &                     lapsi &                              0.040122 &            nainen (woman) &                        0.059414 \\
+   Isra &                venäläinen &                         0.028933 &                mies (man) &                              0.024668 &     suomalainen (Finnish) &                        0.054204 \\
+   Isra &                mies (man) &                         0.024668 &                venäläinen &                              0.020039 &                       isä &                        0.035720 \\
+Mohamed &     suomalainen (Finnish) &                         0.209630 &          muslimi (Muslim) &                              0.187510 &                  vanhempi &                        0.290122 \\
+Mohamed &          muslimi (Muslim) &                         0.187510 &            nainen (woman) &                              0.155379 &     suomalainen (Finnish) &                        0.221974 \\
+Mohamed &            nainen (woman) &                         0.155379 &     suomalainen (Finnish) &                              0.121214 &                     lapsi &                        0.100076 \\
+Mohamed &                    somali &                         0.041965 &                    somali &                              0.026196 &                   lääkäri &                        0.032267 \\
+Mohamed & ulkomaalainen (foreigner) &                         0.025782 & ulkomaalainen (foreigner) &                              0.024835 &                       isä &                        0.023673 \\
 \bottomrule
 \end{tabular}

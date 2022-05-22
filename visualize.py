@@ -373,7 +373,7 @@ def get_sdb_ant_diff(comb_df, file_name=None):
     return res
 
 
-def get_top_k_df(debiased, tokenizer, t_i, label, k=5):
+def get_top_k_df(debiased, tokenizer, t_i, label, file_lbl, k=5):
     # top_k_data: suomenruotsalaismies, old top n, old top n probability, new top n, new top n probability
     # t_i is passed as an arguement to get the entity names since they were not saved separately when saving the values
     top_k_data = []
@@ -381,8 +381,8 @@ def get_top_k_df(debiased, tokenizer, t_i, label, k=5):
         translations = get_translations()
 
         for i, sent in debiased[eth].items():
-            orig = get_top_k_words(f"s_{eth}_{i}_orig", tokenizer, k)
-            new = get_top_k_words(f"s_{eth}_{i}_{label}", tokenizer, k)
+            orig = get_top_k_words(f"{file_lbl}_{eth}_{i}_orig", tokenizer, k)
+            new = get_top_k_words(f"{file_lbl}_{eth}_{i}_{label}", tokenizer, k)
 
             for j in range(k):
                 # hacky way of getting english translations
