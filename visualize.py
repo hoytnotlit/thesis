@@ -5,6 +5,7 @@ import tikzplotlib
 import matplotlib.pyplot as plt
 import consts as cn
 import torch
+import json
 
 des_l = 2  # decimal points to keep for display
 tables_dir = "Results/tables/"
@@ -29,6 +30,11 @@ def get_term_translations(file, lang='en'):
         res = [line.strip() for line in translations]
     return res
 
+def get_translations(file="en.json", lang='en'):
+    bias_dir = f"Biases/{lang}"
+    with open(f'{bias_dir}/{file}') as f:
+        res = json.load(f)
+    return res
 
 def save(path, result, index=True):
     with open(path, "w") as file:
@@ -372,7 +378,7 @@ def get_top_k_df(debiased, tokenizer, t_i, label, k=5):
     # t_i is passed as an arguement to get the entity names since they were not saved separately when saving the values
     top_k_data = []
     for eth in debiased:
-        translations = {} # TODO think about making a dictionary #get_term_translations(f'{eth}_biases.txt')
+        translations = get_translations()
 
         for i, sent in debiased[eth].items():
             orig = get_top_k_words(f"s_{eth}_{i}_orig", tokenizer, k)

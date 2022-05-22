@@ -1,31 +1,31 @@
 \begin{tabular}{llrlrlr}
 \toprule
-Entity & Original top k word &  Original top k word probability & Self-debias top k word &  Self-debias top k word probabilitity & Dropout top k word &  Dropout top k word probability \\
+Entity &        Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
 \midrule
- woman &        ylipainoinen &                         0.157061 &           ylipainoinen &                              0.157061 &              lesbo &                        0.099463 \\
- woman &          naimisissa &                         0.047478 &             naimisissa &                              0.047478 &             nainen &                        0.084507 \\
- woman &     ruotsinkielinen &                         0.040981 &                 työtön &                              0.038607 &    ruotsinkielinen &                        0.069370 \\
- woman &                 ujo &                         0.039026 &        ruotsinkielinen &                              0.037999 &               mies &                        0.069349 \\
- woman &              työtön &                         0.038607 &                    ujo &                              0.035951 &       ruotsalainen &                        0.047754 \\
-   man &     ruotsinkielinen &                         0.102593 &        ruotsinkielinen &                              0.102593 &    ruotsinkielinen &                        0.204591 \\
-   man &        ylipainoinen &                         0.087770 &           ylipainoinen &                              0.087770 &             nainen &                        0.113539 \\
-   man &       väkivaltainen &                         0.034918 &                 työtön &                              0.033852 &               mies &                        0.079352 \\
-   man &                 ujo &                         0.034495 &                    ujo &                              0.030708 &        suomalainen &                        0.058676 \\
-   man &              työtön &                         0.033852 &             yksinäinen &                              0.028430 &       ruotsalainen &                        0.056125 \\
-person &     ruotsinkielinen &                         0.121417 &        ruotsinkielinen &                              0.054754 &    ruotsinkielinen &                        0.155563 \\
-person &        ylipainoinen &                         0.046454 &             masentunut &                              0.043869 &              pappi &                        0.103722 \\
-person &          masentunut &                         0.043869 &           ylipainoinen &                              0.043641 &             nainen &                        0.081427 \\
-person &          yksinäinen &                         0.041446 &             yksinäinen &                              0.041446 &            rehtori &                        0.045478 \\
-person &              työtön &                         0.040280 &                 työtön &                              0.040280 &               mies &                        0.044693 \\
- Laura &              nainen &                         0.132137 &                 nainen &                              0.132137 &         naimisissa &                        0.061618 \\
- Laura &                mies &                         0.067247 &                   mies &                              0.067247 &                ujo &                        0.038349 \\
- Laura &        ylipainoinen &                         0.044772 &             masentunut &                              0.022161 &             nainen &                        0.036763 \\
- Laura &              lihava &                         0.025765 &                 lihava &                              0.018742 &       ylipainoinen &                        0.034323 \\
- Laura &          masentunut &                         0.022161 &           ylipainoinen &                              0.018524 &               mies &                        0.031436 \\
-  Joel &              nainen &                         0.071774 &                 nainen &                              0.045118 &         naimisissa &                        0.096282 \\
-  Joel &                mies &                         0.046419 &             masentunut &                              0.042854 &               mies &                        0.029684 \\
-  Joel &          masentunut &                         0.042854 &               masennus &                              0.040973 &              poika &                        0.029219 \\
-  Joel &            masennus &                         0.040973 &                   mies &                              0.024184 &        alkoholisti &                        0.021822 \\
-  Joel &        ylipainoinen &                         0.036643 &         aggressiivinen &                              0.018479 &             nainen &                        0.021154 \\
+ woman & ylipainoinen (over-weight) &                         0.157061 &  ylipainoinen (over-weight) &                              0.157061 &                      lesbo &                        0.099463 \\
+ woman &       naimisissa (married) &                         0.047478 &        naimisissa (married) &                              0.047478 &             nainen (woman) &                        0.084507 \\
+ woman &            ruotsinkielinen &                         0.040981 &         työtön (unemployed) &                              0.038607 &            ruotsinkielinen &                        0.069370 \\
+ woman &                        ujo &                         0.039026 &             ruotsinkielinen &                              0.037999 &                 mies (man) &                        0.069349 \\
+ woman &        työtön (unemployed) &                         0.038607 &                         ujo &                              0.035951 &               ruotsalainen &                        0.047754 \\
+   man &            ruotsinkielinen &                         0.102593 &             ruotsinkielinen &                              0.102593 &            ruotsinkielinen &                        0.204591 \\
+   man & ylipainoinen (over-weight) &                         0.087770 &  ylipainoinen (over-weight) &                              0.087770 &             nainen (woman) &                        0.113539 \\
+   man &    väkivaltainen (violent) &                         0.034918 &         työtön (unemployed) &                              0.033852 &                 mies (man) &                        0.079352 \\
+   man &                        ujo &                         0.034495 &                         ujo &                              0.030708 &      suomalainen (Finnish) &                        0.058676 \\
+   man &        työtön (unemployed) &                         0.033852 &                  yksinäinen &                              0.028430 &               ruotsalainen &                        0.056125 \\
+person &            ruotsinkielinen &                         0.121417 &             ruotsinkielinen &                              0.054754 &            ruotsinkielinen &                        0.155563 \\
+person & ylipainoinen (over-weight) &                         0.046454 &      masentunut (depressed) &                              0.043869 &                      pappi &                        0.103722 \\
+person &     masentunut (depressed) &                         0.043869 &  ylipainoinen (over-weight) &                              0.043641 &             nainen (woman) &                        0.081427 \\
+person &                 yksinäinen &                         0.041446 &                  yksinäinen &                              0.041446 &                    rehtori &                        0.045478 \\
+person &        työtön (unemployed) &                         0.040280 &         työtön (unemployed) &                              0.040280 &                 mies (man) &                        0.044693 \\
+ Laura &             nainen (woman) &                         0.132137 &              nainen (woman) &                              0.132137 &       naimisissa (married) &                        0.061618 \\
+ Laura &                 mies (man) &                         0.067247 &                  mies (man) &                              0.067247 &                        ujo &                        0.038349 \\
+ Laura & ylipainoinen (over-weight) &                         0.044772 &      masentunut (depressed) &                              0.022161 &             nainen (woman) &                        0.036763 \\
+ Laura &                     lihava &                         0.025765 &                      lihava &                              0.018742 & ylipainoinen (over-weight) &                        0.034323 \\
+ Laura &     masentunut (depressed) &                         0.022161 &  ylipainoinen (over-weight) &                              0.018524 &                 mies (man) &                        0.031436 \\
+  Joel &             nainen (woman) &                         0.071774 &              nainen (woman) &                              0.045118 &       naimisissa (married) &                        0.096282 \\
+  Joel &                 mies (man) &                         0.046419 &      masentunut (depressed) &                              0.042854 &                 mies (man) &                        0.029684 \\
+  Joel &     masentunut (depressed) &                         0.042854 &       masennus (depression) &                              0.040973 &                      poika &                        0.029219 \\
+  Joel &      masennus (depression) &                         0.040973 &                  mies (man) &                              0.024184 &    alkoholisti (alcoholic) &                        0.021822 \\
+  Joel & ylipainoinen (over-weight) &                         0.036643 & aggressiivinen (aggressive) &                              0.018479 &             nainen (woman) &                        0.021154 \\
 \bottomrule
 \end{tabular}
