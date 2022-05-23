@@ -1,7 +1,20 @@
-\begin{tabular}{llrlrlr}
+\begin{longtable}{llrlrlr}
 \toprule
 Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
 \midrule
+\endfirsthead
+
+\toprule
+Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
  woman &                    romani &                         0.781099 &                    romani &                              0.781099 &                romani &                        0.618843 \\
  woman &     suomalainen (Finnish) &                         0.085799 &            nainen (woman) &                              0.026482 & suomalainen (Finnish) &                        0.076309 \\
  woman &            nainen (woman) &                         0.026482 &     suomalainen (Finnish) &                              0.013815 &                 lapsi &                        0.063072 \\
@@ -27,5 +40,4 @@ Anneli &               poika (boy) &                         0.022397 &         
  Veijo &                     lapsi &                         0.039206 &                     lapsi &                              0.039206 &              nuorempi &                        0.051306 \\
  Veijo &               poika (boy) &                         0.032612 &               poika (boy) &                              0.032612 &                   isä &                        0.041688 \\
  Veijo &                venäläinen &                         0.028466 &                venäläinen &                              0.027829 & suomalainen (Finnish) &                        0.038275 \\
-\bottomrule
-\end{tabular}
+\end{longtable}

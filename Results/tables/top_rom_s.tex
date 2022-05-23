@@ -1,7 +1,20 @@
-\begin{tabular}{llrlrlr}
+\begin{longtable}{llrlrlr}
 \toprule
 Entity &        Original top k word &  Original top k word probability &     Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
 \midrule
+\endfirsthead
+
+\toprule
+Entity &        Original top k word &  Original top k word probability &     Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
  woman & ylipainoinen (over-weight) &                         0.216174 & ylipainoinen (over-weight) &                              0.216174 &                      lesbo &                        0.079230 \\
  woman &        raskaana (pregnant) &                         0.074161 &        raskaana (pregnant) &                              0.074161 &                 mies (man) &                        0.078420 \\
  woman &               lihava (fat) &                         0.066131 &        työtön (unemployed) &                              0.050929 &       naimisissa (married) &                        0.077201 \\
@@ -27,5 +40,4 @@ Anneli & ylipainoinen (over-weight) &                         0.028260 &        
  Veijo &             nainen (woman) &                         0.059448 &    alkoholisti (alcoholic) &                              0.044641 &    alkoholisti (alcoholic) &                        0.041447 \\
  Veijo &    alkoholisti (alcoholic) &                         0.046890 &               lihava (fat) &                              0.043853 &      suomalainen (Finnish) &                        0.028039 \\
  Veijo &               lihava (fat) &                         0.043853 &             nainen (woman) &                              0.035246 &                 mies (man) &                        0.021683 \\
-\bottomrule
-\end{tabular}
+\end{longtable}

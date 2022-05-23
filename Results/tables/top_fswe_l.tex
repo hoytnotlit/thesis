@@ -1,7 +1,20 @@
-\begin{tabular}{llrlrlr}
+\begin{longtable}{llrlrlr}
 \toprule
 Entity &   Original top k word &  Original top k word probability & Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
 \midrule
+\endfirsthead
+
+\toprule
+Entity &   Original top k word &  Original top k word probability & Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
  woman &       ruotsinkielinen &                         0.490868 &        ruotsinkielinen &                              0.490868 &       ruotsinkielinen &                        0.320028 \\
  woman &        suomenkielinen &                         0.217700 &         suomenkielinen &                              0.217700 & suomalainen (Finnish) &                        0.232165 \\
  woman & suomalainen (Finnish) &                         0.117817 &  suomalainen (Finnish) &                              0.117817 &                 lapsi &                        0.064183 \\
@@ -27,5 +40,4 @@ person &        nainen (woman) &                         0.027876 &         nain
   Joel &      muslimi (Muslim) &                         0.032721 &       muslimi (Muslim) &                              0.032721 & suomalainen (Finnish) &                        0.074978 \\
   Joel &               kuollut &                         0.032135 &                kuollut &                              0.032135 &              nuorempi &                        0.042726 \\
   Joel &        amerikkalainen &                         0.025794 &         amerikkalainen &                              0.025794 &                   isä &                        0.033030 \\
-\bottomrule
-\end{tabular}
+\end{longtable}

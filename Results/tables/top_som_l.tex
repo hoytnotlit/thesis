@@ -1,7 +1,20 @@
-\begin{tabular}{llrlrlr}
+\begin{longtable}{llrlrlr}
 \toprule
  Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &        Dropout top k word &  Dropout top k word probability \\
 \midrule
+\endfirsthead
+
+\toprule
+ Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &        Dropout top k word &  Dropout top k word probability \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
   woman &     suomalainen (Finnish) &                         0.445914 &                    somali &                              0.303213 &     suomalainen (Finnish) &                        0.402298 \\
   woman &                    somali &                         0.303213 &     suomalainen (Finnish) &                              0.125895 &                    somali &                        0.215149 \\
   woman &          muslimi (Muslim) &                         0.033976 &          muslimi (Muslim) &                              0.033976 &                  vanhempi &                        0.055949 \\
@@ -27,5 +40,4 @@ Mohamed &          muslimi (Muslim) &                         0.187510 &        
 Mohamed &            nainen (woman) &                         0.155379 &     suomalainen (Finnish) &                              0.121214 &                     lapsi &                        0.100076 \\
 Mohamed &                    somali &                         0.041965 &                    somali &                              0.026196 &                   lääkäri &                        0.032267 \\
 Mohamed & ulkomaalainen (foreigner) &                         0.025782 & ulkomaalainen (foreigner) &                              0.024835 &                       isä &                        0.023673 \\
-\bottomrule
-\end{tabular}
+\end{longtable}

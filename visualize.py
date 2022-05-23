@@ -36,9 +36,9 @@ def get_translations(file="en.json", lang='en'):
         res = json.load(f)
     return res
 
-def save(path, result, index=True):
+def save(path, result, index=True, longtable=False):
     with open(path, "w") as file:
-        file.write(result.to_latex(index=index))
+        file.write(result.to_latex(index=index, longtable=longtable))
 
 # region RAW DATAFRAMES
 
@@ -352,7 +352,6 @@ def get_sdb_ant_df(raw, ant_raw, file_name=None):
                     'Antonym probability']]], axis=1, join="inner")
     res.groupby(['Ethnicity', 'Biased term']).mean(
     ).sort_values(by=['Ethnicity', 'Difference'])
-    #res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
     if file_name != None:
         save(f"{tables_dir}{file_name}", res)
@@ -409,7 +408,6 @@ def get_top_k_words(file, tokenizer, top_k=10):
     # convert to list of tuples
     data = [(tokenizer.convert_ids_to_tokens([word_i])[0], float(
         top_probs[i])) for i, word_i in enumerate(top_indices)]
-    #df = pd.DataFrame(data=data, columns=['Word', 'Probability'])
     return data
 
 
