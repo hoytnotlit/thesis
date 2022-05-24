@@ -82,9 +82,10 @@ def get_df(scores, comp_scores, tokenizer, is_pos=False):
 
 def get_sdb_df(debiased_data, t_i, tokenizer):
     data_as_list = []
+    translations = get_translations()
 
     for k, v in debiased_data.items():
-        translations = get_term_translations(f'{k}_biases.txt')
+        #translations = get_term_translations(f'{k}_biases.txt')
 
         for i in v:
             sent = v[i][0]
@@ -95,17 +96,18 @@ def get_sdb_df(debiased_data, t_i, tokenizer):
                 ent_en = [
                     substring for substring in entities_en if substring in sent[t_i]]
                 ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
+                term[0] = f"{term[0]} ({translations[term[0]]})" if term[0] in translations else term[0]
                 data_as_list.append(
-                    (ethnicities_en[k], ent, translations[j], *term, bias_is_unk))
+                    (ethnicities_en[k], ent, *term, bias_is_unk))
     df = pd.DataFrame(data=data_as_list, columns=[
-                      'Ethnicity', 'Entity', 'Translation', 'Biased term', 'Original prob.', 'New prob', 'Difference', 'Bias UNK'])
+                      'Ethnicity', 'Entity', 'Biased term', 'Original prob.', 'New prob', 'Difference', 'Bias UNK'])
     # add percentage change as column
     df = df.assign(Change=percentage_change(
         df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
     # rearrange columns
-    cols = list(df.columns.values)
-    cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
-    df = df[cols]
+    #cols = list(df.columns.values)
+    #cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
+    #df = df[cols]
     return df
 
 
