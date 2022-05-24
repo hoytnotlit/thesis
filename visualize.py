@@ -36,9 +36,9 @@ def get_translations(file="en.json", lang='en'):
         res = json.load(f)
     return res
 
-def save(path, result, index=True, longtable=False):
+def save(path, result, index=True, longtable=False, float_format=None):
     with open(path, "w") as file:
-        file.write(result.to_latex(index=index, longtable=longtable))
+        file.write(result.to_latex(index=index, longtable=longtable, float_format=float_format))
 
 # region RAW DATAFRAMES
 
