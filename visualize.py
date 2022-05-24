@@ -324,10 +324,11 @@ def get_sdb_means(df, file_name=None):
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
     del res['Bias UNK']
+    del res['Difference']
 
     if file_name != None:
         with open(f"Results/tables/{file_name}", "w") as file:
-            file.write(res.to_latex(index=False))
+            file.write(res.to_latex(index=False))#TODO, float_format="%.5f"))
     return res
 
 
@@ -339,9 +340,10 @@ def get_top_n_changes(ant_comb, n=10, file_name=None, no_unk=False):
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
     del res['Bias UNK']
+    del res['Difference']
 
     if file_name != None:
-        save(f'{tables_dir}{file_name}', res, index=False)
+        save(f'{tables_dir}{file_name}', res, index=False)#TODO, float_format="%.4f")
     return res
 
 
