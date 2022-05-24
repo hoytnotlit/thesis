@@ -175,7 +175,7 @@ def main():
     short_ant = data.get_context_sentences(
         c.context, c.context_t_i, c.context_a_i, pos=True)
     long_ant = data.get_context_sentences(
-        c.context, c.context_t_i, c.context_a_i, pos=True)
+        c.context_long, c.context_long_t_i, c.context_long_a_i, pos=True)
 
     s = mask_attributes(short)
     l = mask_attributes(long)
@@ -193,7 +193,7 @@ def main():
     save_scores(get_bert_and_new_probs(
         s_a, model, tokenizer, pref="s_"), 'ant_short_probs.json')
     save_scores(get_bert_and_new_probs(
-        l_a, model, tokenizer, pref="s_"), 'ant_long_probs.json')
+        l_a, model, tokenizer, pref="l_"), 'ant_long_probs.json')
 
 
 
