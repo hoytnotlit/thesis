@@ -1,11 +1,11 @@
 \begin{longtable}{llrlrlr}
 \toprule
- Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &        Dropout top k word &  Dropout top k word probability \\
+ Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endfirsthead
 
 \toprule
- Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &        Dropout top k word &  Dropout top k word probability \\
+ Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endhead
 \midrule
@@ -15,29 +15,29 @@
 
 \bottomrule
 \endlastfoot
-  woman &     suomalainen (Finnish) &                            0.446 &                    somali &                                 0.303 &     suomalainen (Finnish) &                           0.402 \\
-  woman &                    somali &                            0.303 &     suomalainen (Finnish) &                                 0.126 &                    somali &                           0.215 \\
-  woman &          muslimi (Muslim) &                            0.034 &          muslimi (Muslim) &                                 0.034 &                  vanhempi &                           0.056 \\
-  woman &            nainen (woman) &                            0.026 &            nainen (woman) &                                 0.026 &                     lapsi &                           0.042 \\
-  woman & ulkomaalainen (foreigner) &                            0.021 & ulkomaalainen (foreigner) &                                 0.021 &            nainen (woman) &                           0.019 \\
-    man &     suomalainen (Finnish) &                            0.404 &                    somali &                                 0.341 &                    somali &                           0.379 \\
-    man &                    somali &                            0.341 &     suomalainen (Finnish) &                                 0.092 &     suomalainen (Finnish) &                           0.360 \\
-    man &          muslimi (Muslim) &                            0.038 &          muslimi (Muslim) &                                 0.038 &                  vanhempi &                           0.044 \\
-    man &            nainen (woman) &                            0.025 &            nainen (woman) &                                 0.025 & ulkomaalainen (foreigner) &                           0.017 \\
-    man &            suomenkielinen &                            0.018 &            suomenkielinen &                                 0.018 &                     lapsi &                           0.015 \\
- person &     suomalainen (Finnish) &                            0.403 &                    somali &                                 0.356 &                    somali &                           0.390 \\
- person &                    somali &                            0.356 &     suomalainen (Finnish) &                                 0.217 &     suomalainen (Finnish) &                           0.350 \\
- person &          muslimi (Muslim) &                            0.032 &          muslimi (Muslim) &                                 0.032 &                  vanhempi &                           0.032 \\
- person &            suomenkielinen &                            0.021 &            suomenkielinen &                                 0.021 &                     lapsi &                           0.016 \\
- person &            nainen (woman) &                            0.018 &            nainen (woman) &                                 0.018 & ulkomaalainen (foreigner) &                           0.015 \\
-   Isra &            nainen (woman) &                            0.345 &            nainen (woman) &                                 0.345 &                  vanhempi &                           0.117 \\
-   Isra &     suomalainen (Finnish) &                            0.119 &     suomalainen (Finnish) &                                 0.059 &                     lapsi &                           0.086 \\
-   Isra &                     lapsi &                            0.040 &                     lapsi &                                 0.040 &            nainen (woman) &                           0.059 \\
-   Isra &                venäläinen &                            0.029 &                mies (man) &                                 0.025 &     suomalainen (Finnish) &                           0.054 \\
-   Isra &                mies (man) &                            0.025 &                venäläinen &                                 0.020 &                       isä &                           0.036 \\
-Mohamed &     suomalainen (Finnish) &                            0.210 &          muslimi (Muslim) &                                 0.188 &                  vanhempi &                           0.290 \\
-Mohamed &          muslimi (Muslim) &                            0.188 &            nainen (woman) &                                 0.155 &     suomalainen (Finnish) &                           0.222 \\
-Mohamed &            nainen (woman) &                            0.155 &     suomalainen (Finnish) &                                 0.121 &                     lapsi &                           0.100 \\
-Mohamed &                    somali &                            0.042 &                    somali &                                 0.026 &                   lääkäri &                           0.032 \\
-Mohamed & ulkomaalainen (foreigner) &                            0.026 & ulkomaalainen (foreigner) &                                 0.025 &                       isä &                           0.024 \\
+  woman & suomalainen (Finnish, adj.) &                            0.446 &    somali (Somali, adj./n.) &                                 0.303 & suomalainen (Finnish, adj.) &                           0.402 \\
+  woman &    somali (Somali, adj./n.) &                            0.303 & suomalainen (Finnish, adj.) &                                 0.126 &    somali (Somali, adj./n.) &                           0.215 \\
+  woman &            muslimi (Muslim) &                            0.034 &            muslimi (Muslim) &                                 0.034 &           vanhempi (parent) &                           0.056 \\
+  woman &              nainen (woman) &                            0.026 &              nainen (woman) &                                 0.026 &               lapsi (child) &                           0.042 \\
+  woman &   ulkomaalainen (foreigner) &                            0.021 &   ulkomaalainen (foreigner) &                                 0.021 &              nainen (woman) &                           0.019 \\
+    man & suomalainen (Finnish, adj.) &                            0.404 &    somali (Somali, adj./n.) &                                 0.341 &    somali (Somali, adj./n.) &                           0.379 \\
+    man &    somali (Somali, adj./n.) &                            0.341 & suomalainen (Finnish, adj.) &                                 0.092 & suomalainen (Finnish, adj.) &                           0.360 \\
+    man &            muslimi (Muslim) &                            0.038 &            muslimi (Muslim) &                                 0.038 &           vanhempi (parent) &                           0.044 \\
+    man &              nainen (woman) &                            0.025 &              nainen (woman) &                                 0.025 &   ulkomaalainen (foreigner) &                           0.017 \\
+    man &              suomenkielinen &                            0.018 &              suomenkielinen &                                 0.018 &               lapsi (child) &                           0.015 \\
+ person & suomalainen (Finnish, adj.) &                            0.403 &    somali (Somali, adj./n.) &                                 0.356 &    somali (Somali, adj./n.) &                           0.390 \\
+ person &    somali (Somali, adj./n.) &                            0.356 & suomalainen (Finnish, adj.) &                                 0.217 & suomalainen (Finnish, adj.) &                           0.350 \\
+ person &            muslimi (Muslim) &                            0.032 &            muslimi (Muslim) &                                 0.032 &           vanhempi (parent) &                           0.032 \\
+ person &              suomenkielinen &                            0.021 &              suomenkielinen &                                 0.021 &               lapsi (child) &                           0.016 \\
+ person &              nainen (woman) &                            0.018 &              nainen (woman) &                                 0.018 &   ulkomaalainen (foreigner) &                           0.015 \\
+   Isra &              nainen (woman) &                            0.345 &              nainen (woman) &                                 0.345 &           vanhempi (parent) &                           0.117 \\
+   Isra & suomalainen (Finnish, adj.) &                            0.119 & suomalainen (Finnish, adj.) &                                 0.059 &               lapsi (child) &                           0.086 \\
+   Isra &               lapsi (child) &                            0.040 &               lapsi (child) &                                 0.040 &              nainen (woman) &                           0.059 \\
+   Isra &                  venäläinen &                            0.029 &                  mies (man) &                                 0.025 & suomalainen (Finnish, adj.) &                           0.054 \\
+   Isra &                  mies (man) &                            0.025 &                  venäläinen &                                 0.020 &                         isä &                           0.036 \\
+Mohamed & suomalainen (Finnish, adj.) &                            0.210 &            muslimi (Muslim) &                                 0.188 &           vanhempi (parent) &                           0.290 \\
+Mohamed &            muslimi (Muslim) &                            0.188 &              nainen (woman) &                                 0.155 & suomalainen (Finnish, adj.) &                           0.222 \\
+Mohamed &              nainen (woman) &                            0.155 & suomalainen (Finnish, adj.) &                                 0.121 &               lapsi (child) &                           0.100 \\
+Mohamed &    somali (Somali, adj./n.) &                            0.042 &    somali (Somali, adj./n.) &                                 0.026 &                     lääkäri &                           0.032 \\
+Mohamed &   ulkomaalainen (foreigner) &                            0.026 &   ulkomaalainen (foreigner) &                                 0.025 &                         isä &                           0.024 \\
 \end{longtable}

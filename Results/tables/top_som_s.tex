@@ -1,11 +1,11 @@
 \begin{longtable}{llrlrlr}
 \toprule
- Entity &           Original top k word &  Original top k word probability &        Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
+ Entity &           Original top k word &  Original top k word probability &        Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endfirsthead
 
 \toprule
- Entity &           Original top k word &  Original top k word probability &        Self-debias top k word &  Self-debias top k word probabilitity &         Dropout top k word &  Dropout top k word probability \\
+ Entity &           Original top k word &  Original top k word probability &        Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endhead
 \midrule
@@ -15,29 +15,29 @@
 
 \bottomrule
 \endlastfoot
-  woman &    ylipainoinen (over-weight) &                            0.144 &          naimisissa (married) &                                 0.098 &       naimisissa (married) &                           0.120 \\
-  woman &          naimisissa (married) &                            0.098 & yksinhuoltaja (single parent) &                                 0.096 &                      lesbo &                           0.080 \\
-  woman & yksinhuoltaja (single parent) &                            0.096 &           raskaana (pregnant) &                                 0.075 &             nainen (woman) &                           0.074 \\
-  woman &           raskaana (pregnant) &                            0.075 &           työtön (unemployed) &                                 0.053 &                 mies (man) &                           0.071 \\
-  woman &           työtön (unemployed) &                            0.053 &    ylipainoinen (over-weight) &                                 0.050 & ylipainoinen (over-weight) &                           0.028 \\
-    man &       väkivaltainen (violent) &                            0.121 &           työtön (unemployed) &                                 0.068 &       naimisissa (married) &                           0.114 \\
-    man &    ylipainoinen (over-weight) &                            0.094 &          naimisissa (married) &                                 0.054 &             nainen (woman) &                           0.083 \\
-    man &           työtön (unemployed) &                            0.068 &       väkivaltainen (violent) &                                 0.052 &                 mies (man) &                           0.073 \\
-    man &          naimisissa (married) &                            0.054 &    ylipainoinen (over-weight) &                                 0.048 &      suomalainen (Finnish) &                           0.054 \\
-    man & yksinhuoltaja (single parent) &                            0.032 & yksinhuoltaja (single parent) &                                 0.032 &                     somali &                           0.053 \\
- person &           työtön (unemployed) &                            0.065 &           työtön (unemployed) &                                 0.065 &                     somali &                           0.227 \\
- person &    ylipainoinen (over-weight) &                            0.063 &        masentunut (depressed) &                                 0.054 &             nainen (woman) &                           0.130 \\
- person &        masentunut (depressed) &                            0.054 &    ylipainoinen (over-weight) &                                 0.049 &                 mies (man) &                           0.084 \\
- person & yksinhuoltaja (single parent) &                            0.042 & yksinhuoltaja (single parent) &                                 0.042 &      suomalainen (Finnish) &                           0.049 \\
- person &                nainen (woman) &                            0.039 &                nainen (woman) &                                 0.032 &  ulkomaalainen (foreigner) &                           0.019 \\
-   Isra &         masennus (depression) &                            0.105 &         masennus (depression) &                                 0.105 &       juutalainen (Jewish) &                           0.089 \\
-   Isra &                nainen (woman) &                            0.040 &        masentunut (depressed) &                                 0.022 &             nainen (woman) &                           0.063 \\
-   Isra &                    mies (man) &                            0.023 &   aggressiivinen (aggressive) &                                 0.015 &           muslimi (Muslim) &                           0.055 \\
-   Isra &        masentunut (depressed) &                            0.023 &                  pitkä (tall) &                                 0.013 &                 mies (man) &                           0.055 \\
-   Isra &    ylipainoinen (over-weight) &                            0.022 &            vaikea (difficult) &                                 0.012 &       naimisissa (married) &                           0.050 \\
-Mohamed &                nainen (woman) &                            0.076 &                nainen (woman) &                                 0.076 &       naimisissa (married) &                           0.212 \\
-Mohamed &                    mies (man) &                            0.060 &                    mies (man) &                                 0.060 &    väkivaltainen (violent) &                           0.033 \\
-Mohamed &        masentunut (depressed) &                            0.058 &        masentunut (depressed) &                                 0.058 &                 mies (man) &                           0.032 \\
-Mohamed &    ylipainoinen (over-weight) &                            0.042 &    ylipainoinen (over-weight) &                                 0.042 &             nainen (woman) &                           0.024 \\
-Mohamed &       alkoholisti (alcoholic) &                            0.032 &       alkoholisti (alcoholic) &                                 0.028 &    alkoholisti (alcoholic) &                           0.024 \\
+  woman &    ylipainoinen (over-weight) &                            0.144 &          naimisissa (married) &                                 0.098 &        naimisissa (married) &                           0.120 \\
+  woman &          naimisissa (married) &                            0.098 & yksinhuoltaja (single parent) &                                 0.096 &             lesbo (lesbian) &                           0.080 \\
+  woman & yksinhuoltaja (single parent) &                            0.096 &           raskaana (pregnant) &                                 0.075 &              nainen (woman) &                           0.074 \\
+  woman &           raskaana (pregnant) &                            0.075 &           työtön (unemployed) &                                 0.053 &                  mies (man) &                           0.071 \\
+  woman &           työtön (unemployed) &                            0.053 &    ylipainoinen (over-weight) &                                 0.050 &  ylipainoinen (over-weight) &                           0.028 \\
+    man &       väkivaltainen (violent) &                            0.121 &           työtön (unemployed) &                                 0.068 &        naimisissa (married) &                           0.114 \\
+    man &    ylipainoinen (over-weight) &                            0.094 &          naimisissa (married) &                                 0.054 &              nainen (woman) &                           0.083 \\
+    man &           työtön (unemployed) &                            0.068 &       väkivaltainen (violent) &                                 0.052 &                  mies (man) &                           0.073 \\
+    man &          naimisissa (married) &                            0.054 &    ylipainoinen (over-weight) &                                 0.048 & suomalainen (Finnish, adj.) &                           0.054 \\
+    man & yksinhuoltaja (single parent) &                            0.032 & yksinhuoltaja (single parent) &                                 0.032 &    somali (Somali, adj./n.) &                           0.053 \\
+ person &           työtön (unemployed) &                            0.065 &           työtön (unemployed) &                                 0.065 &    somali (Somali, adj./n.) &                           0.227 \\
+ person &    ylipainoinen (over-weight) &                            0.063 &        masentunut (depressed) &                                 0.054 &              nainen (woman) &                           0.130 \\
+ person &        masentunut (depressed) &                            0.054 &    ylipainoinen (over-weight) &                                 0.049 &                  mies (man) &                           0.084 \\
+ person & yksinhuoltaja (single parent) &                            0.042 & yksinhuoltaja (single parent) &                                 0.042 & suomalainen (Finnish, adj.) &                           0.049 \\
+ person &                nainen (woman) &                            0.039 &                nainen (woman) &                                 0.032 &   ulkomaalainen (foreigner) &                           0.019 \\
+   Isra &         masennus (depression) &                            0.105 &         masennus (depression) &                                 0.105 &        juutalainen (Jewish) &                           0.089 \\
+   Isra &                nainen (woman) &                            0.040 &        masentunut (depressed) &                                 0.022 &              nainen (woman) &                           0.063 \\
+   Isra &                    mies (man) &                            0.023 &   aggressiivinen (aggressive) &                                 0.015 &            muslimi (Muslim) &                           0.055 \\
+   Isra &        masentunut (depressed) &                            0.023 &                  pitkä (tall) &                                 0.013 &                  mies (man) &                           0.055 \\
+   Isra &    ylipainoinen (over-weight) &                            0.022 &            vaikea (difficult) &                                 0.012 &        naimisissa (married) &                           0.050 \\
+Mohamed &                nainen (woman) &                            0.076 &                nainen (woman) &                                 0.076 &        naimisissa (married) &                           0.212 \\
+Mohamed &                    mies (man) &                            0.060 &                    mies (man) &                                 0.060 &     väkivaltainen (violent) &                           0.033 \\
+Mohamed &        masentunut (depressed) &                            0.058 &        masentunut (depressed) &                                 0.058 &                  mies (man) &                           0.032 \\
+Mohamed &    ylipainoinen (over-weight) &                            0.042 &    ylipainoinen (over-weight) &                                 0.042 &              nainen (woman) &                           0.024 \\
+Mohamed &       alkoholisti (alcoholic) &                            0.032 &       alkoholisti (alcoholic) &                                 0.028 &     alkoholisti (alcoholic) &                           0.024 \\
 \end{longtable}

@@ -1,11 +1,11 @@
 \begin{longtable}{llrlrlr}
 \toprule
-Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endfirsthead
 
 \toprule
-Entity &       Original top k word &  Original top k word probability &    Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endhead
 \midrule
@@ -15,29 +15,29 @@ Entity &       Original top k word &  Original top k word probability &    Self-
 
 \bottomrule
 \endlastfoot
- woman &                    romani &                            0.781 &                    romani &                                 0.781 &                romani &                           0.619 \\
- woman &     suomalainen (Finnish) &                            0.086 &            nainen (woman) &                                 0.026 & suomalainen (Finnish) &                           0.076 \\
- woman &            nainen (woman) &                            0.026 &     suomalainen (Finnish) &                                 0.014 &                 lapsi &                           0.063 \\
- woman & ulkomaalainen (foreigner) &                            0.013 & ulkomaalainen (foreigner) &                                 0.011 &              vanhempi &                           0.032 \\
- woman &                venäläinen &                            0.010 &                venäläinen &                                 0.008 &        nainen (woman) &                           0.021 \\
-   man &                    romani &                            0.756 &                    romani &                                 0.756 &                romani &                           0.708 \\
-   man &     suomalainen (Finnish) &                            0.090 &            nainen (woman) &                                 0.026 & suomalainen (Finnish) &                           0.063 \\
-   man &            nainen (woman) &                            0.031 &     suomalainen (Finnish) &                                 0.011 &              vanhempi &                           0.039 \\
-   man & ulkomaalainen (foreigner) &                            0.012 & ulkomaalainen (foreigner) &                                 0.010 &                 lapsi &                           0.039 \\
-   man &                venäläinen &                            0.012 &                venäläinen &                                 0.008 &            sukulainen &                           0.015 \\
-person &                    romani &                            0.831 &                    romani &                                 0.831 &                romani &                           0.804 \\
-person &     suomalainen (Finnish) &                            0.067 &     suomalainen (Finnish) &                                 0.025 & suomalainen (Finnish) &                           0.035 \\
-person &            nainen (woman) &                            0.013 &            nainen (woman) &                                 0.012 &                 lapsi &                           0.028 \\
-person &                venäläinen &                            0.008 & ulkomaalainen (foreigner) &                                 0.008 &              vanhempi &                           0.011 \\
-person & ulkomaalainen (foreigner) &                            0.008 &                venäläinen &                                 0.007 &            sukulainen &                           0.009 \\
-Anneli &            nainen (woman) &                            0.350 &            nainen (woman) &                                 0.350 &                 lapsi &                           0.283 \\
-Anneli &     suomalainen (Finnish) &                            0.059 &                     lapsi &                                 0.057 &              vanhempi &                           0.218 \\
-Anneli &                     lapsi &                            0.057 &     suomalainen (Finnish) &                                 0.051 &                   isä &                           0.039 \\
-Anneli &                mies (man) &                            0.032 &                mies (man) &                                 0.032 & suomalainen (Finnish) &                           0.037 \\
-Anneli &               poika (boy) &                            0.022 &               poika (boy) &                                 0.022 &        nainen (woman) &                           0.024 \\
- Veijo &            nainen (woman) &                            0.308 &            nainen (woman) &                                 0.308 &              vanhempi &                           0.364 \\
- Veijo &     suomalainen (Finnish) &                            0.088 &     suomalainen (Finnish) &                                 0.088 &                 lapsi &                           0.190 \\
- Veijo &                     lapsi &                            0.039 &                     lapsi &                                 0.039 &              nuorempi &                           0.051 \\
- Veijo &               poika (boy) &                            0.033 &               poika (boy) &                                 0.033 &                   isä &                           0.042 \\
- Veijo &                venäläinen &                            0.028 &                venäläinen &                                 0.028 & suomalainen (Finnish) &                           0.038 \\
+ woman &                      romani &                            0.781 &                      romani &                                 0.781 &                      romani &                           0.619 \\
+ woman & suomalainen (Finnish, adj.) &                            0.086 &              nainen (woman) &                                 0.026 & suomalainen (Finnish, adj.) &                           0.076 \\
+ woman &              nainen (woman) &                            0.026 & suomalainen (Finnish, adj.) &                                 0.014 &               lapsi (child) &                           0.063 \\
+ woman &   ulkomaalainen (foreigner) &                            0.013 &   ulkomaalainen (foreigner) &                                 0.011 &           vanhempi (parent) &                           0.032 \\
+ woman &                  venäläinen &                            0.010 &                  venäläinen &                                 0.008 &              nainen (woman) &                           0.021 \\
+   man &                      romani &                            0.756 &                      romani &                                 0.756 &                      romani &                           0.708 \\
+   man & suomalainen (Finnish, adj.) &                            0.090 &              nainen (woman) &                                 0.026 & suomalainen (Finnish, adj.) &                           0.063 \\
+   man &              nainen (woman) &                            0.031 & suomalainen (Finnish, adj.) &                                 0.011 &           vanhempi (parent) &                           0.039 \\
+   man &   ulkomaalainen (foreigner) &                            0.012 &   ulkomaalainen (foreigner) &                                 0.010 &               lapsi (child) &                           0.039 \\
+   man &                  venäläinen &                            0.012 &                  venäläinen &                                 0.008 &                  sukulainen &                           0.015 \\
+person &                      romani &                            0.831 &                      romani &                                 0.831 &                      romani &                           0.804 \\
+person & suomalainen (Finnish, adj.) &                            0.067 & suomalainen (Finnish, adj.) &                                 0.025 & suomalainen (Finnish, adj.) &                           0.035 \\
+person &              nainen (woman) &                            0.013 &              nainen (woman) &                                 0.012 &               lapsi (child) &                           0.028 \\
+person &                  venäläinen &                            0.008 &   ulkomaalainen (foreigner) &                                 0.008 &           vanhempi (parent) &                           0.011 \\
+person &   ulkomaalainen (foreigner) &                            0.008 &                  venäläinen &                                 0.007 &                  sukulainen &                           0.009 \\
+Anneli &              nainen (woman) &                            0.350 &              nainen (woman) &                                 0.350 &               lapsi (child) &                           0.283 \\
+Anneli & suomalainen (Finnish, adj.) &                            0.059 &               lapsi (child) &                                 0.057 &           vanhempi (parent) &                           0.218 \\
+Anneli &               lapsi (child) &                            0.057 & suomalainen (Finnish, adj.) &                                 0.051 &                         isä &                           0.039 \\
+Anneli &                  mies (man) &                            0.032 &                  mies (man) &                                 0.032 & suomalainen (Finnish, adj.) &                           0.037 \\
+Anneli &                 poika (boy) &                            0.022 &                 poika (boy) &                                 0.022 &              nainen (woman) &                           0.024 \\
+ Veijo &              nainen (woman) &                            0.308 &              nainen (woman) &                                 0.308 &           vanhempi (parent) &                           0.364 \\
+ Veijo & suomalainen (Finnish, adj.) &                            0.088 & suomalainen (Finnish, adj.) &                                 0.088 &               lapsi (child) &                           0.190 \\
+ Veijo &               lapsi (child) &                            0.039 &               lapsi (child) &                                 0.039 &                    nuorempi &                           0.051 \\
+ Veijo &                 poika (boy) &                            0.033 &                 poika (boy) &                                 0.033 &                         isä &                           0.042 \\
+ Veijo &                  venäläinen &                            0.028 &                  venäläinen &                                 0.028 & suomalainen (Finnish, adj.) &                           0.038 \\
 \end{longtable}

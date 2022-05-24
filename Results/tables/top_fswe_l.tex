@@ -1,11 +1,11 @@
 \begin{longtable}{llrlrlr}
 \toprule
-Entity &   Original top k word &  Original top k word probability & Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endfirsthead
 
 \toprule
-Entity &   Original top k word &  Original top k word probability & Self-debias top k word &  Self-debias top k word probabilitity &    Dropout top k word &  Dropout top k word probability \\
+Entity &         Original top k word &  Original top k word probability &      Self-debias top k word &  Self-debias top k word probabilitity &          Dropout top k word &  Dropout top k word probability \\
 \midrule
 \endhead
 \midrule
@@ -15,29 +15,29 @@ Entity &   Original top k word &  Original top k word probability & Self-debias 
 
 \bottomrule
 \endlastfoot
- woman &       ruotsinkielinen &                            0.491 &        ruotsinkielinen &                                 0.491 &       ruotsinkielinen &                           0.320 \\
- woman &        suomenkielinen &                            0.218 &         suomenkielinen &                                 0.218 & suomalainen (Finnish) &                           0.232 \\
- woman & suomalainen (Finnish) &                            0.118 &  suomalainen (Finnish) &                                 0.118 &                 lapsi &                           0.064 \\
- woman &        nainen (woman) &                            0.043 &         nainen (woman) &                                 0.043 &        suomenkielinen &                           0.057 \\
- woman &          ruotsalainen &                            0.035 &           ruotsalainen &                                 0.030 &              vanhempi &                           0.042 \\
-   man &       ruotsinkielinen &                            0.488 &        ruotsinkielinen &                                 0.488 &       ruotsinkielinen &                           0.405 \\
-   man &        suomenkielinen &                            0.188 &         suomenkielinen &                                 0.188 & suomalainen (Finnish) &                           0.219 \\
-   man & suomalainen (Finnish) &                            0.131 &  suomalainen (Finnish) &                                 0.131 &        suomenkielinen &                           0.064 \\
-   man &          ruotsalainen &                            0.041 &         nainen (woman) &                                 0.038 &              vanhempi &                           0.050 \\
-   man &        nainen (woman) &                            0.038 &           ruotsalainen &                                 0.036 &                 lapsi &                           0.033 \\
-person &       ruotsinkielinen &                            0.481 &        ruotsinkielinen &                                 0.401 &       ruotsinkielinen &                           0.399 \\
-person &        suomenkielinen &                            0.216 &         suomenkielinen &                                 0.216 & suomalainen (Finnish) &                           0.208 \\
-person & suomalainen (Finnish) &                            0.123 &  suomalainen (Finnish) &                                 0.123 &        suomenkielinen &                           0.065 \\
-person &          ruotsalainen &                            0.040 &           ruotsalainen &                                 0.036 &              vanhempi &                           0.034 \\
-person &        nainen (woman) &                            0.028 &         nainen (woman) &                                 0.028 &                 lapsi &                           0.033 \\
- Laura &        nainen (woman) &                            0.320 &         nainen (woman) &                                 0.320 &                 lapsi &                           0.281 \\
- Laura & suomalainen (Finnish) &                            0.099 &  suomalainen (Finnish) &                                 0.092 &              vanhempi &                           0.211 \\
- Laura &                 lapsi &                            0.032 &                  lapsi &                                 0.032 & suomalainen (Finnish) &                           0.056 \\
- Laura &        amerikkalainen &                            0.027 &         amerikkalainen &                                 0.027 &               lääkäri &                           0.043 \\
- Laura &               kuollut &                            0.025 &                kuollut &                                 0.025 &                   isä &                           0.035 \\
-  Joel &        nainen (woman) &                            0.242 &         nainen (woman) &                                 0.242 &              vanhempi &                           0.284 \\
-  Joel & suomalainen (Finnish) &                            0.130 &  suomalainen (Finnish) &                                 0.130 &                 lapsi &                           0.151 \\
-  Joel &      muslimi (Muslim) &                            0.033 &       muslimi (Muslim) &                                 0.033 & suomalainen (Finnish) &                           0.075 \\
-  Joel &               kuollut &                            0.032 &                kuollut &                                 0.032 &              nuorempi &                           0.043 \\
-  Joel &        amerikkalainen &                            0.026 &         amerikkalainen &                                 0.026 &                   isä &                           0.033 \\
+ woman &             ruotsinkielinen &                            0.491 &             ruotsinkielinen &                                 0.491 &             ruotsinkielinen &                           0.320 \\
+ woman &              suomenkielinen &                            0.218 &              suomenkielinen &                                 0.218 & suomalainen (Finnish, adj.) &                           0.232 \\
+ woman & suomalainen (Finnish, adj.) &                            0.118 & suomalainen (Finnish, adj.) &                                 0.118 &               lapsi (child) &                           0.064 \\
+ woman &              nainen (woman) &                            0.043 &              nainen (woman) &                                 0.043 &              suomenkielinen &                           0.057 \\
+ woman &                ruotsalainen &                            0.035 &                ruotsalainen &                                 0.030 &           vanhempi (parent) &                           0.042 \\
+   man &             ruotsinkielinen &                            0.488 &             ruotsinkielinen &                                 0.488 &             ruotsinkielinen &                           0.405 \\
+   man &              suomenkielinen &                            0.188 &              suomenkielinen &                                 0.188 & suomalainen (Finnish, adj.) &                           0.219 \\
+   man & suomalainen (Finnish, adj.) &                            0.131 & suomalainen (Finnish, adj.) &                                 0.131 &              suomenkielinen &                           0.064 \\
+   man &                ruotsalainen &                            0.041 &              nainen (woman) &                                 0.038 &           vanhempi (parent) &                           0.050 \\
+   man &              nainen (woman) &                            0.038 &                ruotsalainen &                                 0.036 &               lapsi (child) &                           0.033 \\
+person &             ruotsinkielinen &                            0.481 &             ruotsinkielinen &                                 0.401 &             ruotsinkielinen &                           0.399 \\
+person &              suomenkielinen &                            0.216 &              suomenkielinen &                                 0.216 & suomalainen (Finnish, adj.) &                           0.208 \\
+person & suomalainen (Finnish, adj.) &                            0.123 & suomalainen (Finnish, adj.) &                                 0.123 &              suomenkielinen &                           0.065 \\
+person &                ruotsalainen &                            0.040 &                ruotsalainen &                                 0.036 &           vanhempi (parent) &                           0.034 \\
+person &              nainen (woman) &                            0.028 &              nainen (woman) &                                 0.028 &               lapsi (child) &                           0.033 \\
+ Laura &              nainen (woman) &                            0.320 &              nainen (woman) &                                 0.320 &               lapsi (child) &                           0.281 \\
+ Laura & suomalainen (Finnish, adj.) &                            0.099 & suomalainen (Finnish, adj.) &                                 0.092 &           vanhempi (parent) &                           0.211 \\
+ Laura &               lapsi (child) &                            0.032 &               lapsi (child) &                                 0.032 & suomalainen (Finnish, adj.) &                           0.056 \\
+ Laura &              amerikkalainen &                            0.027 &              amerikkalainen &                                 0.027 &                     lääkäri &                           0.043 \\
+ Laura &                     kuollut &                            0.025 &                     kuollut &                                 0.025 &                         isä &                           0.035 \\
+  Joel &              nainen (woman) &                            0.242 &              nainen (woman) &                                 0.242 &           vanhempi (parent) &                           0.284 \\
+  Joel & suomalainen (Finnish, adj.) &                            0.130 & suomalainen (Finnish, adj.) &                                 0.130 &               lapsi (child) &                           0.151 \\
+  Joel &            muslimi (Muslim) &                            0.033 &            muslimi (Muslim) &                                 0.033 & suomalainen (Finnish, adj.) &                           0.075 \\
+  Joel &                     kuollut &                            0.032 &                     kuollut &                                 0.032 &                    nuorempi &                           0.043 \\
+  Joel &              amerikkalainen &                            0.026 &              amerikkalainen &                                 0.026 &                         isä &                           0.033 \\
 \end{longtable}
