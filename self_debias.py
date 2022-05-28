@@ -52,8 +52,6 @@ def mask_attributes(sentences):
                     result[eth]['terms'].append(bias_term)
     return result
 
-# TODO try masking target/ethnicity as well
-
 
 def mask_targets(sentences, tokenizer):
     result = {}
@@ -63,7 +61,7 @@ def mask_targets(sentences, tokenizer):
             result[eth] = {'sents': [], 'terms': []}
 
             for i, r in enumerate(sentences[eth]):
-                sent = score.split_sent(r[0])
+                sent = split_masked_sent(r[0]) if mask in r[0] else score.split_sent(r[0])
                 ent_i = r[1]
                 entity = sent[ent_i]
                 entity_bert_i = tokenizer.convert_tokens_to_ids(entity)
@@ -84,32 +82,51 @@ def mask_targets(sentences, tokenizer):
 
 def split_masked_sent(sent):
     """Custom sentence splitter to contain [MASK] as an individual token."""
-    # replace masked token with a single character
     sent = sent.split()
-    sent[sent.index(mask)] = "@"
+    #sent[sent.index(mask)] = "@"
+
+    # replace masked token with a single character
+    # replace word pieces with single character
+    word_pieces = []
+    for i, piece in enumerate(sent):
+        if piece == mask:
+            sent[i] = "@"
+        if piece.startswith("##"):
+            word_pieces.append(piece)
+            sent[i] = '#'
 
     # split the sentence into tokens
     res = re.findall(r"\w+|[^\w\s]", ' '.join(sent))
 
+    #res[res.index('@')] = mask
     # add mask token back
-    res[res.index('@')] = mask
+    # add word pieces back
+    word_pieces = iter(word_pieces)
+    for i, token in enumerate(res):
+        if token == "@":
+            res[i] = mask
+        if token == "#":
+            res[i] = next(word_pieces)
     return res
 
 
-def get_bert_and_new_probs(sentences, model, tokenizer, pref=""):
+def get_bert_and_new_probs(sentences, model, tokenizer, pref="", tokenize=True):
     # (sent, (word, old, new, difference))
     result = {}
     for eth in sentences:
         result[eth] = {}
 
         for i, sent in enumerate(sentences[eth]['sents']):
-            sent2 = split_masked_sent(
-                c.debiasing_template.format(sent=' '.join(sent)))
-
-            inp = score.get_tokenized_sentence(sent, tokenizer)
+            inp = score.get_tokenized_sentence(sent, tokenizer) if tokenize else sent
             x_probs = score.predict_masked_sent(model, tokenizer, inp)
 
-            inp2 = score.get_tokenized_sentence(sent2, tokenizer)
+            # remove CLS and SEP if the sentence has already been tokenized
+            if tokenize == False:
+                sent = sent[1:len(sent)-1]
+
+            sent2 = split_masked_sent(
+                c.debiasing_template.format(sent=' '.join(sent)))
+            inp2 = score.get_tokenized_sentence(sent2, tokenizer) if tokenize else ['[CLS]', *sent2, '[SEP]']
             sdb_probs = score.predict_masked_sent(model, tokenizer, inp2)
 
             new_probs = get_new_probs(x_probs, sdb_probs)
