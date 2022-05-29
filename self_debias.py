@@ -73,6 +73,7 @@ def mask_targets(sentences, tokenizer):
                     target = tokenizer.tokenize(target)[0]
                 else:
                     sent[target_i] = mask
+                    sent = score.get_tokenized_sentence(sent, tokenizer)
 
                 if sent not in result[eth]['sents']:
                     result[eth]['sents'].append(sent)
