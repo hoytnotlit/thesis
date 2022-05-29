@@ -62,21 +62,22 @@ def mask_targets(sentences, tokenizer):
 
             for i, r in enumerate(sentences[eth]):
                 sent = split_masked_sent(r[0]) if mask in r[0] else score.split_sent(r[0])
-                ent_i = r[1]
-                entity = sent[ent_i]
-                entity_bert_i = tokenizer.convert_tokens_to_ids(entity)
-                ent_is_unk = entity_bert_i == tokenizer.convert_tokens_to_ids(
+                target_i = r[1]
+                target = sent[target_i]
+                target_bert_i = tokenizer.convert_tokens_to_ids(target)
+                target_is_unk = target_bert_i == tokenizer.convert_tokens_to_ids(
                     unk)
 
-                if ent_is_unk:
-                    sent, _ = score.mask_tokenized_word(ent_i, sent, tokenizer)
+                if target_is_unk:
+                    sent, _ = score.mask_tokenized_word(target_i, sent, tokenizer)
+                    target = tokenizer.tokenize(target)[0]
                 else:
-                    sent[ent_i] = mask
+                    sent[target_i] = mask
 
                 if sent not in result[eth]['sents']:
                     result[eth]['sents'].append(sent)
-                if entity not in result[eth]['terms']:
-                    result[eth]['terms'].append(entity)
+                if target not in result[eth]['terms']:
+                    result[eth]['terms'].append(target)
     return result
 
 
@@ -111,8 +112,7 @@ def split_masked_sent(sent):
 
 
 def get_bert_and_new_probs(sentences, model, tokenizer, pref="", tokenize=True):
-    # (sent, (word, old, new, difference))
-    result = {}
+    result = {} # (sent, (word, old, new, difference))
     for eth in sentences:
         result[eth] = {}
 
@@ -176,14 +176,26 @@ def save_scores(data, file_name):
         json.dump(data, f)
 
 
-def save_antonym_probabilities(s_a, l_a, model, tokenizer):
-    """Save raw probabilities of bias antonyms masked in sentence."""
+# def save_antonym_probabilities(s_a, l_a, model, tokenizer):
+#     """Save raw probabilities of bias antonyms masked in sentence."""
 
-    save_scores(get_bert_probs(s_a, model, tokenizer), 'ant_short_probs.json')
-    save_scores(get_bert_probs(l_a, model, tokenizer), 'ant_long_probs.json')
+#     save_scores(get_bert_probs(s_a, model, tokenizer), 'ant_short_probs.json')
+#     save_scores(get_bert_probs(l_a, model, tokenizer), 'ant_long_probs.json')
 
-    # cant use Results/raw/short or long because it saves only the association score, no probabilities
 
+def save_sdb_association_scores(model, tokenizer, sents, pref=""):
+    sents_masked = mask_targets(sents, tokenizer)
+    temp = mask_attributes(sents)
+    temp2 = {}
+    for k in temp:
+        temp2[k] = [(" ".join(sent), 3, 6) for sent in temp[k]['sents']]
+    sents_masked2 = mask_targets(temp2, tokenizer)
+    
+    target_probs = get_bert_and_new_probs(sents_masked, model, tokenizer, tokenize=False)
+    prior_probs = get_bert_and_new_probs(sents_masked2, model, tokenizer, tokenize=False)
+    
+    save_scores(target_probs, f"{pref}sdb_target_probs.json")
+    save_scores(prior_probs, f"{pref}sdb_prior_probs.json")
 
 def main():
     short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
