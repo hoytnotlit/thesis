@@ -119,6 +119,7 @@ def get_bert_and_new_probs(sentences, model, tokenizer, pref="", tokenize=True):
 
         for i, sent in enumerate(sentences[eth]['sents']):
             inp = score.get_tokenized_sentence(sent, tokenizer) if tokenize else sent
+            print(inp)
             x_probs = score.predict_masked_sent(model, tokenizer, inp)
 
             # remove CLS and SEP if the sentence has already been tokenized
@@ -140,6 +141,7 @@ def get_bert_and_new_probs(sentences, model, tokenizer, pref="", tokenize=True):
             temp = []
             for term in sentences[eth]['terms']:
                 t_index = tokenizer.convert_tokens_to_ids(term)
+                print(term)
                 temp.append((term,                      # biased term
                             float(x_probs[t_index]),    # original probability
                             float(new_probs[t_index]),  # new probability
@@ -192,11 +194,11 @@ def save_sdb_association_scores(model, tokenizer, sents, t_i, a_i, pref=""):
         temp2[k] = [(" ".join(sent), t_i, a_i) for sent in temp[k]['sents']]
     sents_masked2 = mask_targets(temp2, tokenizer)
     
-    target_probs = get_bert_and_new_probs(sents_masked, model, tokenizer, tokenize=False)
+    #target_probs = get_bert_and_new_probs(sents_masked, model, tokenizer, tokenize=False)
     prior_probs = get_bert_and_new_probs(sents_masked2, model, tokenizer, tokenize=False)
     
-    save_scores(target_probs, f"{pref}sdb_target_probs.json")
-    save_scores(prior_probs, f"{pref}sdb_prior_probs.json")
+    #save_scores(target_probs, f"{pref}sdb_target_probs.json")
+    #save_scores(prior_probs, f"{pref}sdb_prior_probs.json")
 
 def main():
     short = data.get_context_sentences(c.context, c.context_t_i, c.context_a_i)
