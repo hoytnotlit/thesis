@@ -184,12 +184,12 @@ def save_scores(data, file_name):
 #     save_scores(get_bert_probs(l_a, model, tokenizer), 'ant_long_probs.json')
 
 
-def save_sdb_association_scores(model, tokenizer, sents, pref=""):
+def save_sdb_association_scores(model, tokenizer, sents, t_i, a_i, pref=""):
     sents_masked = mask_targets(sents, tokenizer)
     temp = mask_attributes(sents)
     temp2 = {}
     for k in temp:
-        temp2[k] = [(" ".join(sent), 3, 6) for sent in temp[k]['sents']]
+        temp2[k] = [(" ".join(sent), t_i, a_i) for sent in temp[k]['sents']]
     sents_masked2 = mask_targets(temp2, tokenizer)
     
     target_probs = get_bert_and_new_probs(sents_masked, model, tokenizer, tokenize=False)
