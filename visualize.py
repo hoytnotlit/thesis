@@ -317,6 +317,9 @@ def get_sdb_means(df, file_name=None):
     if 'Antonym probability' in res.columns:
         del res['Antonym probability']  # no need for this column
 
+    res['Original prob.'] = res['Original prob.'].round(6)
+    res['New prob'] = res['New prob'].round(6)
+
     # recalculate percentage changes (we dont want the average change)
     res['Change'] = percentage_change(
         res['Original prob.'], res['New prob']).values
@@ -337,6 +340,13 @@ def get_top_n_changes(ant_comb, n=10, file_name=None, no_unk=False):
         ant_comb = ant_comb.loc[ant_comb['Bias UNK'] == False]
 
     res = ant_comb.head(n)
+
+    res['Original prob.'] = res['Original prob.'].round(6)
+    res['New prob'] = res['New prob'].round(6)
+
+    res['Change'] = percentage_change(
+        res['Original prob.'], res['New prob']).values
+    res = res.sort_values(by="Change", ascending=False)
     res['Change'] = res['Change'].map('{0:.2f} %'.format)
 
     del res['Bias UNK']
@@ -347,7 +357,12 @@ def get_top_n_changes(ant_comb, n=10, file_name=None, no_unk=False):
     return res
 
 
-def percentage_change(col1, col2):
+def percentage_change(col1, col2, decimals=None):
+    # TODO the decrease between the displayed value is not correct in the dataframe
+    # round the values first for calculating this, otherwise the tables will have wrong values
+    #if decimals:
+    #    col1 = col1.round(decimals)#np.round(col1.to_numpy(), 6)
+    #    col2 = col2.round(decimals)#np.round(col2.to_numpy(), 6)
     return ((col1 - col2) / col1) * 100
 
 
