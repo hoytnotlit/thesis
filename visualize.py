@@ -96,6 +96,7 @@ def get_sdb_df(debiased_data, t_i, tokenizer):
                 ent_en = [
                     substring for substring in entities_en if substring in sent[t_i]]
                 ent = entities_en[ent_en[0]] if len(ent_en) > 0 else sent[t_i]
+                #trns = translations[term[0]]
                 term[0] = f"{term[0]} ({translations[term[0]]})" if term[0] in translations else term[0]
                 data_as_list.append(
                     (ethnicities_en[k], ent, *term, bias_is_unk))
@@ -104,10 +105,12 @@ def get_sdb_df(debiased_data, t_i, tokenizer):
     # add percentage change as column
     df = df.assign(Change=percentage_change(
         df['Original prob.'], df['New prob']).values).sort_values(by="Change", ascending=False)
-    # rearrange columns
-    #cols = list(df.columns.values)
-    #cols.insert(cols.index("Biased term"), cols.pop(cols.index('Translation')))
-    #df = df[cols]
+    
+    # rearrange columns (for translation column)
+    # cols = list(df.columns.values)
+    # cols.insert(cols.index("Biased term")+1, cols.pop(cols.index('Translation')))
+    # df = df[cols]
+
     return df
 
 
