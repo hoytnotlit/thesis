@@ -1,0 +1,8 @@
+{
+    "fin": {"female": ["Päivi"], "male": ["Mikko"]},
+    "fswe": {"female": ["Laura"], "male": ["Joel"]},
+    "sami": {"female": ["Elen"], "male": ["Hugo"]},
+    "rus": {"female": ["Irina"], "male": ["Nikolai"]},
+    "roma": {"female": ["Anneli"],"male": ["Veijo"]},
+    "som": {"female": ["Isra"], "male": ["Mohamed"]}
+ }
